@@ -1,143 +1,127 @@
-# Mantis Free React Material UI Dashboard Template [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Download%20Mantis%20React%20-%20The%20professional%20Material%20designed%20React%20Admin%20Dashboard%20Template%20&url=https://mantisdashboard.io&via=codedthemes&hashtags=reactjs,webdev,developers,javascript)
+# Berry Free React Material UI Admin Template [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Get%20Berry%20React%20-%20The%20most%20beautiful%20Material%20designed%20Admin%20Dashboard%20Template%20&url=https://berrydashboard.io&via=codedthemes&hashtags=reactjs,webdev,developers,javascript)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Price](https://img.shields.io/badge/price-FREE-0098f7.svg)](https://github.com/codedthemes/mantis-free-react-admin-template/blob/main/LICENSE)
-[![GitHub package version](https://img.shields.io/github/package-json/v/codedthemes/mantis-free-react-admin-template)](https://github.com/codedthemes/mantis-free-react-admin-template/)
+[![Price](https://img.shields.io/badge/price-FREE-0098f7.svg)](https://github.com/codedthemes/berry-free-react-admin-template/blob/main/LICENSE)
 
-Mantis is a free and open source React dashboard template made using the Material UI React component library with aim of flexibility and better customizability.
+Berry is a free Material UI admin dashboard template built with React. It is meant to provide the best possible User Experience with highly customizable feature-rich pages. It is a complete Dashboard Template that has easy and intuitive responsive design whether it is viewed on retina screens or laptops.
 
-### Name Derived From Nature
+:star: :star: :star: Do not forget to star (Top right of this page) it if you like the theme :star: :star: :star:
 
-Mantis Logo is inspired from the insect name - 'Mantises' as they have triangular heads with flexible Necks. Also, the name is derived from two popular UI frameworks, Material UI and Ant Design (M-Ant-is).
+![IMG_8566.jpg](https://berrydashboard.io/imp-images/berry-github-free-repo-1.jpg)
 
-Mantis has Ant Design principal on top of the MAterial UI React component library.
+[Pro version](https://berrydashboard.io) of Berry react template contains features like TypeScript, Next.js Seed versions, Apps, Authentication Methods (i.e. JWT, Auth0, Firebase), Advance Components, Form Plugins, Layouts, Widgets, and many more.
 
-:star: :star: :star: Support us by giving star (Top right of this page) if you like the theme :star: :star: :star:
+| [Berry Free](https://berrydashboard.io/free/) | [Berry](https://material-ui.com/store/items/berry-react-material-admin/) |
+| --------------------------------------------- | :----------------------------------------------------------------------- |
+| **9** Demo pages                              | **45+** demo pages                                                       |
+| -                                             | ✓ Multi-language                                                         |
+| -                                             | ✓ Dark/Light Mode 🌓                                                     |
+| -                                             | ✓ TypeScript version                                                     |
+| -                                             | ✓ Design files (Figma)                                                   |
+| -                                             | ✓ 6+ color Options                                                       |
+| -                                             | ✓ RTL                                                                    |
+| -                                             | ✓ JWT, Firebase, Auth0 authentications                                   |
+| -                                             | ✓ [More components](https://berrydashboard.io/dashboard/default)         |
 
-![mantis-free-react-dashboard-template.jpg](https://mantisdashboard.io/adv-banner-images/og-social-v1.1.0.png)
+## Why Berry?
 
-The [Pro version](https://mantisdashboard.io) of Mantis react template includes features such as TypeScript, apps, authentication methods (i.e. JWT, Auth0, Firebase), advance components, form plugins, layouts, widgets, and more.
+Berry offers everything you need to create dashboards. We have included the following high-end features in our initial release:
 
-| [Mantis Free](https://mantisdashboard.io/free) | [Mantis Pro](https://mantisdashboard.io)                                         |
-| ---------------------------------------------- | :------------------------------------------------------------------------------- |
-| **7** Demo pages                               | **85+** Demo pages                                                               |
-| -                                              | ✓ Multi-language                                                                 |
-| -                                              | ✓ Dark/Light Mode 🌓                                                             |
-| -                                              | ✓ TypeScript version                                                             |
-| -                                              | ✓ Design files (Figma)                                                           |
-| -                                              | ✓ Multiple color options                                                         |
-| -                                              | ✓ RTL                                                                            |
-| -                                              | ✓ JWT, Firebase, Auth0, AWS authentication                                       |
-| -                                              | ✓ [More components](https://mantisdashboard.io/components-overview/autocomplete) |
-| ✓ MIT License                                  | ✓ [Pro License](https://mui.com/store/license/)                                  |
+-   Modern aesthetics UI design
+-   Material-UI components
+-   Fully Responsive, all modern browser supported
+-   Easy to use code structure
+-   Flexible & High-Performance code
+-   Easy Documentation Guide
 
-## Why Mantis?
-
-Mantis offers everything needed to build an advanced dashboard application. In the initial release, we included following high-end features,
-
-- Support React18.
-- Professional user interface.
-- Material UI React components.
-- Fully responsive, all modern browser supported.
-- Easy to use code structure
-- Flexible & high-Performance code
-- Simple documentation
-
-## Free Mantis React version
+## Free Berry React version
 
 #### Preview
 
-- [Demo](https://mantisdashboard.io/free)
+- [Demo](https://berrydashboard.io/free/)
 
 #### Download
 
-- [Download from GitHub](https://github.com/codedthemes/mantis-free-react-admin-template)
+- [Download from GitHub](https://github.com/codedthemes/berry-free-react-admin-template)
 
-## Mantis Pro version
+## Berry Pro version
 
 #### Preview
 
-- [Demo](https://mantisdashboard.io)
+- [Demo](https://berrydashboard.io)
 
 #### Purchase
 
-- [Buy now](https://mui.com/store/items/mantis-react-admin-dashboard-template/)
+- [Purchase from MUI Store](https://material-ui.com/store/items/berry-react-material-admin/)
 
 ## Table of contents
 
-- [Getting started](#getting-started)
-- [Documentation](#documentation)
-- [Technology stack](#technology-stack)
-- [Author](#author)
-- [Issues?](#issues)
-- [License](#license)
-- [More Free React Templates](#more-free-react-material-admin-dashboard-templates)
-- [More Pro React Templates](#more-premium-react-material-admin-dashboard-templates)
-- [Follow us](#follow-us)
+-   [Getting Started](#getting-started)
+-   [Documentation](#documentation)
+-   [Technology Stack](#technology-stack)
+-   [Author](#author)
+-   [Issues?](#issues)
+-   [License](#license)
+-   [More Free Angular Templates](#more-free-react-material-admin-templates)
+-   [More Pro Angular Templates](#more-premium-react-material-admin-templates)
+-   [Follow us](#follow-us)
 
 ## Getting Started
 
-1. Clone from Github
+Clone from Github
 
 ```
-git clone https://github.com/codedthemes/mantis-free-react-admin-template.git
-```
-
-2. Install packages
-
-```
-yarn
-```
-
-3. Run project
-
-```
-yarn start
+git clone https://github.com/codedthemes/berry-free-react-admin-template.git
 ```
 
 ## Documentation
 
-[Mantis documentation](https://codedthemes.gitbook.io/mantis/) helps you out in all aspects from Installation to deployment.
+[Berry documentation](https://codedthemes.gitbook.io/berry/) helps you with installation, deployment, and troubleshooting.
 
-## Technology stack
+## Technology Stack
 
-- [Material UI V5](https://mui.com/core/)
-- Built with React Hooks API.
-- React context API for state management.
-- SWR.
-- React Router for navigation routing.
-- Support for Vite.
-- Code splitting.
-- CSS-in-JS.
+-   [Material UI V5](https://material-ui.com/)
+-   Built with React Hooks API
+-   Redux & React Context API for State Management
+-   React Router for Navigation Routing
+-   Support of vite
+-   Code Splitting
+-   CSS-in-JS where CSS is composed using JavaScript instead of defined in external files
 
 ## Author
 
-Mantis is managed by team [CodedThemes](https://codedthemes.com).
+Berry is developed by Team [CodedThemes](https://codedthemes.com).
 
 ## Issues
 
-Please generate a [GitHub issue](https://github.com/codedthemes/mantis-free-react-admin-template/issues) if you found a bug in any version. We are try our best to resolve the issue.
+To report a bug, please submit an [issue](https://github.com/codedthemes/berry-free-react-admin-template/issues) on Github. We will respond as soon as possible to resolve the issue.
 
 ## License
 
-- Licensed under [MIT](https://github.com/codedthemes/datta-able-bootstrap-dashboard/blob/master/LICENSE)
+-   Licensed cover under [MIT](https://github.com/codedthemes/datta-able-bootstrap-dashboard/blob/master/LICENSE)
 
-## More Free React Material Admin Dashboard Templates
+## Berry - Nodejs version by Appseed
 
-- [Free Materially](https://codedthemes.com/item/materially-free-reactjs-admin-template/)
-- [Free Berry](https://mui.com/store/items/berry-react-material-admin-free/)
+-   [Free Nodejs](https://appseed.us/product/react-node-js-berry-dashboard)
+-   [Premium Berry Nodejs](https://appseed.us/full-stack/react-berry-dashboard)
 
-## More premium React Material Admin Dashboard Templates
+## More Free React Material Admin Templates
 
-- [Materially](https://codedthemes.com/item/materially-reactjs-admin-dashboard/)
-- [Berry](https://mui.com/store/items/berry-react-material-admin/)
+-   [Free Materially](https://codedthemes.com/item/materially-free-reactjs-admin-template/)
+-   [Free Mantis](https://mantisdashboard.io/free/)
+-   [Free Datta Able](https://lite.codedthemes.com/datta-able/react/default)
+
+## More Premium React Material Admin Templates
+
+-   [Mantis](https://mui.com/store/items/mantis-react-admin-dashboard-template/)
+-   [Materially](https://codedthemes.com/item/materially-reactjs-admin-dashboard/)
+-   [Datta Able](https://codedthemes.com/item/datta-able-react-admin-template/)
 
 ## Follow us
 
-- Website [https://mantisdashboard.io](https://mantisdashboard.io)
-- Blog [https://blog.mantisdashboard.io](https://blog.mantisdashboard.io)
-- CodedThemes [https://codedthemes.com](https://codedthemes.com)
-- Dribbble [https://dribbble.com/codedthemes](https://dribbble.com/codedthemes)
-- Facebook [https://www.facebook.com/codedthemes](https://www.facebook.com/codedthemes)
-- Twitter [https://twitter.com/codedthemes](https://twitter.com/codedthemes)
-"# StockVista" 
+-   [Website](https://berrydashboard.io)
+-   [Blog](https://blog.berrydashboard.io)
+-   [CodedThemes](https://codedthemes.com)
+-   [Dribbble](https://dribbble.com/codedthemes)
+-   [Facebook](https://www.facebook.com/codedthemes)
+-   [𝕏 (Twitter)](https://twitter.com/codedthemes)

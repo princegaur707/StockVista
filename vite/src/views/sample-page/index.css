@@ -1,0 +1,49 @@
+/* index.css */
+
+.navbar-product-name {
+  background: linear-gradient(90deg, #ffcc19 0%, #ffe072 53%, #ffcc19 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 400;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 1.4rem;
+}
+.navbar-border {
+  border-bottom: 1.25px solid;
+  border-image-source: linear-gradient(
+    90deg,
+    rgba(255, 204, 25, 0.013) 0%,
+    rgba(255, 204, 25, 0.65) 36%,
+    rgba(255, 231, 145, 0.65) 51.5%,
+    rgba(255, 204, 25, 0.65) 65%,
+    rgba(255, 204, 25, 0.013) 100%
+  );
+  border-image-slice: 1;
+  backdrop-filter: blur(120px); /* Adds the blur effect */
+}
+.product-info-container {
+  height: -webkit-fill-available;
+  align-content: end;
+  padding-top: 4rem;
+}
+.feature-preview {
+  display: flex;
+  row-gap: 10px;
+  flex-direction: column;
+}
+.feature-icon {
+  width: 4rem;
+  height: 4rem;
+  align-self: center;
+  padding-bottom: 0.6rem;
+}
+.landing-page-navbar .MuiPaper-root {
+  padding: 0rem 2rem 0rem 2rem;
+}
+.custom-product-name {
+  font-family: Forum;
+  font-size: 2.4rem;
+  font-weight: 400;
+  line-height: 44.16px;
+}

@@ -1,0 +1,67 @@
+.market-data .MuiDataGrid-root {
+  background-color: #141516; /* Dark background for the table */
+  color: #EEEEEE; /* Light grey text color */
+  border: none; /* Remove outer border */
+}
+
+.market-data .MuiDataGrid-columnHeaders {
+  background-color: #1972cb; /* Darker header background to match image */
+  /* color: #c31919;  */
+  color: #EEEEEE; 
+  /* White header text */
+  font-weight: bold;
+  font-size: 20px;
+  border-bottom: 1px solid #444; /* Border between header and rows */
+}
+
+/* Name LTP Header insider Header */
+.market-data .MuiDataGrid-columnHeaderTitle {
+  color: #D9D9D9; /* Light grey color for header text */
+  font-size: 14px;
+  /* background-color: #00ff00; */
+}
+
+.market-data .MuiDataGrid- {
+  color:#00ff00;
+}
+
+.market-data .MuiDataGrid-cell {
+  border-bottom: 1px solid #333; /* Light border between rows */
+}
+
+.market-data .MuiDataGrid-row:hover {
+  background-color: #333335; /* Row hover effect */
+}
+
+.market-data .MuiDataGrid-row.Mui-selected {
+  background-color: #2d2dc4; /* Keep row selected background similar */
+}
+
+.market-data .MuiDataGrid-cell--textLeft {
+  color: #EEEEEE; /* Light grey for left-aligned text */
+}
+
+.market-data .MuiDataGrid-cell--number {
+  color: #ffcc19; /* Yellow for numerical values */
+  /* background-color: red; */
+}
+
+.market-data .MuiDataGrid-cell--buy {
+  color: #00ff00; /* Green color for Buy data */
+}
+
+.market-data .MuiDataGrid-cell--sell {
+  color: #161414; /* Red color for Sell data */
+}
+
+/* Columns Filters row */
+.market-data .MuiDataGrid-toolbarContainer {
+  color: #EEEEEE; /* Light color for toolbar text */
+}
+
+/* Customize pagination style */
+.market-data .MuiDataGrid-footerContainer {
+  background-color: #1D1E20; 
+  /* Darker footer background */
+  color: #EEEEEE;
+}

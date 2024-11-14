@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+
+/* Scrollable areas with hidden scrollbar */
+.scrollable {
+  overflow: auto;
+  scrollbar-width: 0px; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  margin-left: 30px;
+}
+
+.scrollable::-webkit-scrollbar {
+  display: none; /* WebKit-based browsers */
+}
+.scrollable .MuiTabs-root {
+  margin-left: 10px;
+  padding-top: 1rem;
+}
+.heading-dashboard{
+  font-family: "Figtree", serif;
+  color: #EEEEEE;
+  font-weight: 500;
+  font-size: 24px;
+}
+.dashboard-font-box{
+  width: 222px;
+  height: 40px;
+  margin-top: 30px;
+}
+.Analyticbox{
+  /* width:372px; */
+  height: 100px ;
+  border-radius: 1px;
+}
+.Analyticbox .MuiPaper-root{
+  border: 0px solid;
+  border-radius: 0px;
+}
+
+.tabValue-head {
+  font-size: 14px;
+  background-color: #1D1E20;
+  border: 6px solid;
+  /* border-color: red; */
+  border-color: #131415;
+  font-family: "Figtree", serif;
+  color:#D9D9D9;
+  /* width: 100%; */
+}
+
+.tabValue-head:focus{
+  color: #FFD56B;
+  border:1px solid;
+  border-color: #FFD56B;
+}
+
