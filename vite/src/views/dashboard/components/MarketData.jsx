@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import './MarketData.css';
+import { IconBackground } from '@tabler/icons-react';
 
 const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, setSymbolToken, liveMarketData }) => {
   console.log(liveMarketData, 'bro');
@@ -80,10 +81,11 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
   }
 
   const columns = [
-    { field: 'tradingSymbol', headerName: 'Name', flex: 1 },
+    { field: 'tradingSymbol', headerName: 'Name', headerClassName: 'header-name', flex: 1 },
     {
       field: 'ltp',
       headerName: 'LTP',
+      headerClassName: 'header-name',
       flex: 1,
       type: 'number',
       renderCell: (params) => (
@@ -95,6 +97,7 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
     {
       field: 'percentChange',
       headerName: 'Change %',
+      headerClassName: 'header-name',
       flex: 1,
       type: 'number',
       renderCell: (params) => (
@@ -103,7 +106,7 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
           alignItems="center"
           justifyContent="center"
           height="100%"
-          color={params.value > 0 ? 'green' : params.value < 0 ? 'red' : 'white'}
+          color={params.value > 0 ? '#00EFC8' : params.value < 0 ? '#FF5966' : '#EEEEEE'}
         >
           {params.value}
         </Box>
@@ -112,6 +115,7 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
     {
       field: 'netChange',
       headerName: 'Change',
+      headerClassName: 'header-name',
       flex: 1,
       type: 'number',
       renderCell: (params) => (
@@ -120,20 +124,21 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
           alignItems="center"
           justifyContent="center"
           height="100%"
-          color={params.value > 0 ? 'green' : params.value < 0 ? 'red' : 'black'}
+          color={params.value > 0 ? '#00EFC8' : params.value < 0 ? '#FF5966' : '#EEEEEE'}
         >
           {params.value}
         </Box>
       )
     },
-    { field: 'tradeVolume', headerName: 'Volume', type: 'number', flex: 1 },
+    { field: 'tradeVolume', headerName: 'Volume', headerClassName: 'header-name', type: 'number', flex: 1 },
     {
       field: 'buyPrice',
       headerName: 'Buy Price',
+      headerClassName: 'header-name',
       flex: 1,
       type: 'number',
       renderCell: (params) => (
-        <Box display="flex" alignItems="center" justifyContent="center" height="100%" color="green">
+        <Box display="flex" alignItems="center" justifyContent="center" height="100%" color="#00EFC8">
           {params.value}
         </Box>
       )
@@ -141,23 +146,25 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
     {
       field: 'sellPrice',
       headerName: 'Sell Price',
+      headerClassName: 'header-name',
       flex: 1,
       type: 'number',
       renderCell: (params) => (
-        <Box display="flex" alignItems="center" justifyContent="center" height="100%" color="red">
+        <Box display="flex" alignItems="center" justifyContent="center" height="100%" color="#FF5966">
           {params.value}
         </Box>
       )
     },
-    { field: 'buyQty', headerName: 'Buy Quantity', type: 'number', flex: 1 },
+    { field: 'buyQty', headerName: 'Buy Quantity', headerClassName: 'header-name', type: 'number', flex: 1 },
 
     {
       field: 'sellQty',
       headerName: 'Sell Quantity',
+      headerClassName: 'header-name',
       flex: 1,
       type: 'number',
       renderCell: (params) => (
-        <Box display="flex" alignItems="center" justifyContent="center" height="100%" color="red">
+        <Box display="flex" alignItems="center" justifyContent="center" height="100%" color="#FF5966">
           {params.value}
         </Box>
       )

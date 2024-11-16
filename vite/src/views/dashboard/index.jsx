@@ -222,7 +222,7 @@ export default function DashboardDefault() {
   }, [symbolToken]);
 
   return (
-    <Box className="scrollable" style={{ height: '100vh', overflowX: 'auto', overflowY:'auto', marginRight: '25px', marginLeft:'105px' }}>
+    <Box className="scrollable" style={{ height: '100vh', overflowX: 'hidden', overflowY:'auto', marginRight: '25px', marginLeft:'105px' }}>
       <Grid container rowSpacing={4.5} columnSpacing={2.75}>
         {/* row 1 */}
           <Grid item xs={12} sx={{ mb: -2.25 }}>
@@ -235,6 +235,7 @@ export default function DashboardDefault() {
               <AnalyticEcommerce title="NIFTY" 
               count={data.nifty.count} 
               percentage={data.nifty.percentage} 
+              isLoss={data.niftyBank.percentage < 0}
             />
             </div>
           </Grid>
@@ -244,6 +245,7 @@ export default function DashboardDefault() {
                 title="SENSEX" 
                 count={data.sensex.count} 
                 percentage={data.sensex.percentage}
+                isLoss={data.niftyBank.percentage < 0}
               />
             </div>
           </Grid>

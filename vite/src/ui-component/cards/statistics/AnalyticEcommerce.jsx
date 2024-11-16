@@ -10,8 +10,7 @@ import Box from '@mui/material/Box';
 import MainCard from 'ui-component/MainCard';
 
 export default function AnalyticEcommerce({ title, count, percentage, isLoss }) {
-  const percentageColor = isLoss ? 'error.main' : 'success.main';
-
+  const percentageColor = percentage < 0 ? '#FF5966' : '#00EFC8';
   return (
     <MainCard
       contentSX={{
@@ -23,14 +22,16 @@ export default function AnalyticEcommerce({ title, count, percentage, isLoss }) 
       <Grid container justifyContent="space-between" alignItems="center">
         {/* Left side: Title */}
         <Grid item>
-          <Typography variant="h6" color="text.secondary" 
-          sx={{ 
-            fontFamily: "Figtree",
-            color: '#FFFFFF', 
-            opacity: 0.8, 
-            fontWeight:'400',
-            fontSize: '20px'
-             }}>
+          <Typography
+            variant="h6"
+            sx={{
+              fontFamily: 'Figtree',
+              color: '#FFFFFF',
+              opacity: 0.8,
+              fontWeight: '400',
+              fontSize: '20px',
+            }}
+          >
             {title}
           </Typography>
         </Grid>
@@ -39,28 +40,31 @@ export default function AnalyticEcommerce({ title, count, percentage, isLoss }) 
         <Grid item>
           <Stack direction="column" alignItems="flex-end">
             {/* Count */}
-            <Typography variant="h4"
-            sx={{ 
-              fontFamily: "Figtree",
-              color: '#FFFFFF', 
-              opacity: 0.8, 
-              fontWeight:'300',
-              fontSize: '24px'
-               }}
+            <Typography
+              variant="h4"
+              sx={{
+                fontFamily: 'Figtree',
+                color: '#FFFFFF',
+                opacity: 0.8,
+                fontWeight: '300',
+                fontSize: '24px',
+              }}
             >
               {count}
             </Typography>
 
             {/* Percentage */}
-            {percentage && (
-              <Typography variant="body2" 
-              sx={{ 
-                color: percentageColor,
-                fontFamily: "Figtree", 
-                fontWeight:'500',
-                fontSize: '14px'
-              }}>
-                {isLoss ? `-${percentage}%` : `${percentage}%`}
+            {percentage !== undefined && (
+              <Typography
+                variant="body2"
+                sx={{
+                  color: percentageColor,
+                  fontFamily: 'Figtree',
+                  fontWeight: '500',
+                  fontSize: '14px',
+                }}
+              >
+                {`${percentage}%`}
               </Typography>
             )}
           </Stack>

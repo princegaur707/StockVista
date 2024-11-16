@@ -1,11 +1,41 @@
+import React, { useState } from 'react';
 import { Box } from '@mui/material';
 
 const Sidebar = () => {
+  // State to track the active box
+  const [activeBox, setActiveBox] = useState(0);
+
+  // Function to handle click and redirect
+  const handleClick = (index) => {
+    setActiveBox(index);
+
+    // Redirect logic for specific boxes
+    if (index === 0) {
+      window.location.href = 'http://localhost:3000/myapp'; // Redirect for the first box
+    } else if (index === 1) {
+      window.location.href = 'http://localhost:3000/myapp/investor'; // Redirect for the second box
+    }  else if (index === 2) {
+      window.location.href = 'http://localhost:3000/myapp/intraday'; // Redirect for the second box
+    } else if (index === 3) {
+      window.location.href = 'http://localhost:3000/myapp/sector'; // Redirect for the second box
+    } else if (index === 4) {
+      window.location.href = 'http://localhost:3000/myapp/ranking'; // Redirect for the second box
+    } else if (index === 6) {
+      window.location.href = 'http://localhost:3000/myapp/market-view'; // Redirect for the second box
+    } else if (index === 7) {
+      window.location.href = 'http://localhost:3000/myapp/account'; // Redirect for the second box
+    } else if (index === 8) {
+      window.location.href = 'http://localhost:3000/myapp/about-us'; // Redirect for the second box
+    }else {
+      console.log(`Redirecting to page ${index + 1}`); // Placeholder for other boxes
+    }
+  };
+
   return (
     <Box
       sx={{
-        top: '25px',
-        width: 80,
+        top: '50px',
+        width: 70,
         height: '100vh',
         bgcolor: '#1D1E20',
         display: 'flex',
@@ -15,152 +45,222 @@ const Sidebar = () => {
         position: 'fixed',
       }}
     >
-      {/* Active item with yellow stroke */}
+      {/* Box 1 */}
       <Box
+        onClick={() => handleClick(0)} // Click handler for second box
         sx={{
-          width: 30,
-          height: 30,
+          width: 40,
+          height: 40,
           borderRadius: 1,
-          backgroundColor: '#26282B',
-          border: '2px solid #FFD56B',
           marginBottom: '33px',
+          cursor: 'pointer', // Pointer cursor for clickable effect
         }}
-      />
-      {/* Inactive items */}
-      {[...Array(5)].map((_, index) => (
-        <Box
-          key={index}
-          sx={{
-            width: 30,
-            height: 30,
-            borderRadius: 1,
-            backgroundColor: '#26282B',
-            marginBottom: '33px',
+      >
+        <svg
+          width="40"
+          height="40"
+          viewBox="0 0 40 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{
+            border: activeBox === 0 ? '1px solid #FFD56B' : 'none', // Dynamic border
+            borderRadius: '7px',
           }}
-        />
+        >
+          <rect
+            x="1"
+            y="1"
+            width="38"
+            height="38"
+            rx="7"
+            fill="#26282B"
+            stroke={activeBox === 0 ? '#FFD56B' : 'none'}
+            strokeWidth="2"
+          />
+        </svg>
+      </Box>
+
+      {/* Box 2 */}
+      <Box
+        onClick={() => handleClick(1)} // Click handler for second box
+        sx={{
+          width: 40,
+          height: 40,
+          borderRadius: 1,
+          marginBottom: '33px',
+          cursor: 'pointer', // Pointer cursor for clickable effect
+        }}
+      >
+        <svg
+          width="40"
+          height="40"
+          viewBox="0 0 40 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{
+            border: activeBox === 1 ? '1px solid #FFD56B' : 'none', // Dynamic border
+            borderRadius: '7px',
+          }}
+        >
+          <rect
+            x="1"
+            y="1"
+            width="38"
+            height="38"
+            rx="7"
+            fill="#26282B"
+            stroke={activeBox === 1 ? '#FFD56B' : 'none'}
+            strokeWidth="2"
+          />
+        </svg>
+      </Box>
+
+      {/* Box 3 */}
+      <Box
+        onClick={() => handleClick(2)} // Click handler for second box
+        sx={{
+          width: 40,
+          height: 40,
+          borderRadius: 1,
+          marginBottom: '33px',
+          cursor: 'pointer', // Pointer cursor for clickable effect
+        }}
+      >
+        <svg
+          width="40"
+          height="40"
+          viewBox="0 0 40 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{
+            border: activeBox === 2 ? '1px solid #FFD56B' : 'none', // Dynamic border
+            borderRadius: '7px',
+          }}
+        >
+          <rect
+            x="1"
+            y="1"
+            width="38"
+            height="38"
+            rx="7"
+            fill="#26282B"
+            stroke={activeBox === 2 ? '#FFD56B' : 'none'}
+            strokeWidth="2"
+          />
+        </svg>
+      </Box>
+
+      {/* Box 4 */}
+      <Box
+        onClick={() => handleClick(3)} // Click handler for second box
+        sx={{
+          width: 40,
+          height: 40,
+          borderRadius: 1,
+          marginBottom: '33px',
+          cursor: 'pointer', // Pointer cursor for clickable effect
+        }}
+      >
+        <svg
+          width="40"
+          height="40"
+          viewBox="0 0 40 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{
+            border: activeBox === 3 ? '1px solid #FFD56B' : 'none', // Dynamic border
+            borderRadius: '7px',
+          }}
+        >
+          <rect
+            x="1"
+            y="1"
+            width="38"
+            height="38"
+            rx="7"
+            fill="#26282B"
+            stroke={activeBox === 3 ? '#FFD56B' : 'none'}
+            strokeWidth="2"
+          />
+        </svg>
+      </Box>
+
+      {/* Box 5 */}
+      <Box
+        onClick={() => handleClick(4)} // Click handler for second box
+        sx={{
+          width: 40,
+          height: 40,
+          borderRadius: 1,
+          marginBottom: '33px',
+          cursor: 'pointer', // Pointer cursor for clickable effect
+        }}
+      >
+        <svg
+          width="40"
+          height="40"
+          viewBox="0 0 40 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{
+            border: activeBox === 4 ? '1px solid #FFD56B' : 'none', // Dynamic border
+            borderRadius: '7px',
+          }}
+        >
+          <rect
+            x="1"
+            y="1"
+            width="38"
+            height="38"
+            rx="7"
+            fill="#26282B"
+            stroke={activeBox === 4 ? '#FFD56B' : 'none'}
+            strokeWidth="2"
+          />
+        </svg>
+      </Box>
+
+      <Box sx={{ flexGrow: 0.8 }} />
+
+      {/* Bottom Boxes */}
+      {[0, 1].map((index) => (
+        <Box
+          key={6 + index}
+          onClick={() => handleClick(6 + index)} // Click handler
+          sx={{
+            width: 40,
+            height: 40,
+            borderRadius: 1,
+            marginBottom: index === 0 ? '32px' : '40px',
+            cursor: 'pointer', // Pointer cursor for clickable effect
+          }}
+        >
+          <svg
+            width="40"
+            height="40"
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{
+              border: activeBox === 6 + index ? '1px solid #FFD56B' : 'none', // Dynamic border
+              borderRadius: '7px',
+            }}
+          >
+            <rect
+              x="1"
+              y="1"
+              width="38"
+              height="38"
+              rx="7"
+              fill="#26282B"
+              stroke={activeBox === 6 + index ? '#FFD56B' : 'none'}
+              strokeWidth="2"
+            />
+          </svg>
+        </Box>
       ))}
-      {/* Bottom items */}
-      <Box sx={{ flexGrow: 1 }} />
-      <Box
-        sx={{
-          width: 30,
-          height: 30,
-          borderRadius: 1,
-          backgroundColor: '#26282B',
-          marginBottom: '32px',
-        }}
-      />
-      <Box
-        sx={{
-          width: 30,
-          height: 30,
-          borderRadius: 1,
-          backgroundColor: '#26282B',
-          marginBottom: '40px',
-        }}
-      />
     </Box>
   );
 };
 
 export default Sidebar;
-
-// import PropTypes from 'prop-types';
-
-// // material-ui
-// import { useTheme } from '@mui/material';
-// import Box from '@mui/material/Box';
-// import Drawer from '@mui/material/Drawer';
-// import Stack from '@mui/material/Stack';
-// import useMediaQuery from '@mui/material/useMediaQuery';
-
-// // third-party
-// import PerfectScrollbar from 'react-perfect-scrollbar';
-// import { BrowserView, MobileView } from 'react-device-detect';
-
-// // project imports
-// import MenuCard from './MenuCard';
-// import MenuList from './MenuList';
-// import LogoSection from '../LogoSection';
-// import Chip from 'ui-component/extended/Chip';
-
-// import { drawerWidth } from 'store/constant';
-
-// // ==============================|| SIDEBAR DRAWER ||============================== //
-
-// const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
-//   const theme = useTheme();
-//   const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
-
-//   const drawer = (
-//     <>
-//       <Box sx={{ display: { xs: 'block', md: 'none'}}}>
-//         <Box sx={{ display: 'flex', p: 2, mx: 'auto' }}>
-//           <LogoSection />
-//         </Box>
-//       </Box>
-//       <BrowserView>
-//         <PerfectScrollbar
-//           component="div"
-//           style={{
-//             height: !matchUpMd ? 'calc(100vh - 56px)' : 'calc(100vh - 88px)',
-//             paddingLeft: '16px',
-//             paddingRight: '16px'
-//           }}
-//         >
-//           <MenuList />
-//           <MenuCard />
-//           <Stack direction="row" justifyContent="center" sx={{ mb: 2 }}>
-//             <Chip label={import.meta.env.VITE_APP_VERSION} disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />
-//           </Stack>
-//         </PerfectScrollbar>
-//       </BrowserView>
-//       <MobileView>
-//         <Box sx={{ px: 2 }}>
-//           <MenuList />
-//           <MenuCard />
-//           <Stack direction="row" justifyContent="center" sx={{ mb: 2 }}>
-//             <Chip label={import.meta.env.VITE_APP_VERSION} disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />
-//           </Stack>
-//         </Box>
-//       </MobileView>
-//     </>
-//   );
-
-//   const container = window !== undefined ? () => window.document.body : undefined;
-
-//   return (
-//     <Box component="nav" sx={{ flexShrink: { md: 0 }, width: matchUpMd ? drawerWidth : 'auto' }} aria-label="mailbox folders">
-//       <Drawer
-//         container={container}
-//         variant={matchUpMd ? 'persistent' : 'temporary'}
-//         anchor="left"
-//         open={drawerOpen}
-//         onClose={drawerToggle}
-//         sx={{
-//           '& .MuiDrawer-paper': {
-//             width: drawerWidth,
-//             background: theme.palette.background.default,
-//             color: theme.palette.text.primary,
-//             borderRight: 'none',
-//             [theme.breakpoints.up('md')]: {
-//               top: '88px'
-//             }
-//           }
-//         }}
-//         ModalProps={{ keepMounted: true }}
-//         color="inherit"
-//       >
-//         {drawer}
-//       </Drawer>
-//     </Box>
-//   );
-// };
-
-// Sidebar.propTypes = {
-//   drawerOpen: PropTypes.bool,
-//   drawerToggle: PropTypes.func,
-//   window: PropTypes.object
-// };
-
-// export default Sidebar;
