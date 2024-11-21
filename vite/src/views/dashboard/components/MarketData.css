@@ -2,44 +2,57 @@
   background-color: #141516; /* Dark background for the table */
   color: #EEEEEE; /* Light grey text color */
   border: none; /* Remove outer border */
+  font-size: 12px; /* Enteries of rows */
+  --DataGrid-rowBorderColor:#1D1E20;
+  /* For border b/w rows */
+}
+
+
+.market-data .MuiDataGrid-virtualScroller {
+  border: 'none', 
+}
+.market-data MuiDataGrid-cell {
+  border: 'none',
+}
+
+/* Columns Filters row */
+.market-data .MuiDataGrid-toolbarContainer {
+  color: #EEEEEE; /* Light color for toolbar text */
+  font-size: 2px;
+}
+
+/* Columns Filters text color */
+.market-data .MuiButtonBase-root {
+  color: #FFD56B;
+}
+
+.header-name{
+  background-color: #1D1E20;
 }
 
 .market-data .MuiDataGrid-columnHeaders {
   color: #db2727;/* Not getting applied */
   /* White header text */
   font-weight: bold;
-  border-bottom: 1px solid #1D1E20; /* Getting applied:Border between header and rows */
-}
-
-/* Columns Filters row */
-.market-data .MuiDataGrid-toolbarContainer {
-  color: #EEEEEE; /* Light color for toolbar text */
-}
-
-.header-name{
-  background-color: #1D1E20;
-  font-size: 200px;/* Not getting applied */
+  border: 0px solid #1D1E20; /* Getting applied:Border between header and rows */
 }
 
 /* Name LTP Header insider Header */
 .market-data .MuiDataGrid-columnHeaderTitle {
   color: #D9D9D9; /* Light grey color for header text */
   font-size: 14px;
+  /* border: none; */
   /* background-color: #00ff00; */
 }
 
 .market-data .MuiDataGrid-cell {
   /* border-bottom: 1px solid #1D1E20;  */
   /* Light border between rows */
-  border-bottom: none; /* Remove border between rows */
-}
-
-.market-data .MuiDataGrid-row:hover {
-  background-color: #2727a8; /* Row hover effect */
+  border: 0px solid rgb(92, 92, 95); /* Remove border between rows */
 }
 
 .market-data .MuiDataGrid-row.Mui-selected {
-  background-color: #2d2dc4; /* Keep row selected background similar */
+  background-color: #313437 !important;/* Keep row selected background similar */
 }
 
 .market-data .MuiDataGrid-cell--number {
@@ -60,4 +73,8 @@
   background-color: #1D1E20; 
   /* Darker footer background */
   color: #b62727;
+}
+
+.market-data .Mui-selected{
+  color:red;
 }

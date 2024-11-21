@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography, CssBaseline } from '@mui/material';
 import './MarketData.css';
 import { IconBackground } from '@tabler/icons-react';
 
@@ -14,7 +14,7 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
   useEffect(() => {
     const fetchMarketData = async () => {
       try {
-        const response = await fetch('http://localhost:8000/market-data/');
+        const response = await fetch('http://localhost:8000/api/service/market-data/');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -186,8 +186,10 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
   }));
 
   return (
-    <Box className="market-data" sx={{ mt: 0,  width:'100vw'}}>
-      <Box sx={{ height: '86vh' }}>
+    <Box className="market-data" sx={{ mt: 0, width: '100vw'}}>
+      {/* <CssBaseline /> */}
+      <Box sx={{ height: '86vh'}}>
+      {/* <Box className="scrollable" style={{ height: '100vh', overflowY:'auto', marginRight: '25px'}}> */}
         <DataGrid
           rows={rows}
           columns={columns}

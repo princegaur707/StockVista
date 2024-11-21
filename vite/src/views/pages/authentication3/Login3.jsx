@@ -19,10 +19,10 @@ const Login = () => {
     >
       <Box
         sx={{
-          width: 720,                   // Fixed width
-          height: 648,                  // Fixed height
-          padding: '80px 100px',        // Padding
-          gap: '40px',                  // Gap
+          width: 620,                   // Fixed width
+          height: 548,                  // Fixed height
+          padding: '60px 80px',        // Padding
+          gap: '30px',                  // Gap
           backgroundColor: '#141516',   // Darker background for the card
           boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
           borderRadius: 2,
@@ -30,7 +30,7 @@ const Login = () => {
           border: '1px solid #313437',  // Border color
         }}
       >
-        <Typography variant="h4" sx={{ color: '#ffffff', mb: 2, textAlign: 'left'}}>
+        <Typography variant="h4" sx={{ color: '#ffffff', mb: 6, textAlign: 'left'}}>
           Login
         </Typography>
 
@@ -48,7 +48,7 @@ const Login = () => {
                 color: '#ffffff',
                 backgroundColor: '#141516', // Explicitly set background color
                 '& fieldset': {
-                  borderColor: '#ffffff',
+                  borderColor: '#777C81',
                 },
                 '&:hover fieldset': {
                   borderColor: '#ffffff',
@@ -74,7 +74,7 @@ const Login = () => {
               color: '#ffffff',
               backgroundColor: '#141516',
               '& fieldset': {
-                borderColor: '#ffffff',
+                borderColor: '#777C81',
               },
               '&:hover fieldset': {
                 borderColor: '#ffffff',
@@ -95,8 +95,10 @@ const Login = () => {
           variant="outlined"
           sx={{
             color: '#ffffff',
+            fontFamily: 'figtree',
+            fontSize: '14px',
             borderColor: '#ffffff',
-            mb: 2,
+            mb: 4,
             '&:hover': {
               backgroundColor: '#ffffff',
               color: '#1e1e1e'
@@ -108,13 +110,10 @@ const Login = () => {
 
         {/* Divider with "OR" text */}
         <div className="DividerContainer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Divider sx={{ color: '#ffffff', my: 2, borderColor: '#ffffff', flex: 1 }} />
+          <Divider sx={{ color: '#777C81', my: 3, borderColor: '#777C81', flex: 1 }} />
           <span style={{ margin: '0 10px', color: '#ffffff' }}>OR</span>
-          <Divider sx={{ color: '#ffffff', my: 2, borderColor: '#ffffff', flex: 1 }} />
+          <Divider sx={{ color: '#777C81', my: 3, borderColor: '#777C81', flex: 1 }} />
         </div>
-
-        
-
 
         {/* Google Login Button */}
         <Button
@@ -123,6 +122,9 @@ const Login = () => {
           sx={{
             color: '#ffffff' ,
             borderColor: '#ffffff',
+            mt: 3,
+            fontFamily: 'figtree',
+            fontSize: '14px',
             mb: 2,
             '&:hover': {
               backgroundColor: '#ffffff',

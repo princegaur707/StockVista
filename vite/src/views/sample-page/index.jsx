@@ -290,7 +290,7 @@ const SamplePage = () => (
                         Your edge in the market starts with superior analysis.
                       </Typography>
                       <Button
-                        onClick={() => { window.location.href = 'http://localhost:3000/free/pages/login/login3'; }}
+                        onClick={() => { window.location.href = 'http://localhost:3000/myapp/pages/login/login3'; }}
                         variant="outlined"
                         sx={{
                           fontFamily: 'Figtree',
