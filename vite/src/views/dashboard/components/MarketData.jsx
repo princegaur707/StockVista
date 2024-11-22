@@ -72,12 +72,12 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
 
   if (displayTopGainers) {
     filteredData.sort((a, b) => b.percentChange - a.percentChange); // Sort by largest change %
-    filteredData = filteredData.slice(0, 20); // Get top 20
+    filteredData = filteredData.slice(0, 50); // Get top 20
   }
 
   if (displayTopLosers) {
     filteredData.sort((a, b) => a.percentChange - b.percentChange); // Sort by smallest change %
-    filteredData = filteredData.slice(0, 20); // Get bottom 20
+    filteredData = filteredData.slice(0, 50); // Get bottom 20
   }
 
   const columns = [

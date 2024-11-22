@@ -11,6 +11,7 @@ import TabPanel from '@mui/lab/TabPanel';
 import './index.css';
 import AnalyticEcommerce from 'ui-component/cards/statistics/AnalyticEcommerce';
 import MarketDataTable from './components/MarketData';
+import ThirtyDayReport from './components/ThirtyDayReport';
 import CandlestickChart from './components/CandleStickChart';
 import EarningCard from './components/EarningCard';
 import PopularCard from './components/PopularCard';
@@ -44,6 +45,7 @@ export default function DashboardDefault() {
   const [symbolToken, setSymbolToken] = useState('');
   const [openModal, setOpenModal] = useState(false);
   const [liveMarketData, setLiveMarketData] = useState([]); // State for live WebSocket data
+  const [ThirtyDayReportData, setThirtyDayReportData] = useState([]);
 
   const [data, setData] = useState({
     nifty: { count: '0', percentage: 0 },
@@ -101,9 +103,12 @@ export default function DashboardDefault() {
       }
     };
 
-    setLiveMarketData((prevData) => {
+    ((prevData) => {
+      // Ensure prevData is an array
+      const currentData = Array.isArray(prevData) ? prevData : [];
+
       // Check if the stock already exists based on Symbol
-      const stockIndex = prevData.findIndex((stock) => stock.tradingSymbol === Symbol);
+      const stockIndex = currentData.findIndex((stock) => stock.tradingSymbol === Symbol);
       // Create the updated stock data object with defaults
       const updatedStockData = {
         ...defaultStockData,
@@ -136,11 +141,11 @@ export default function DashboardDefault() {
 
       // If the stock exists, update the corresponding entry
       if (stockIndex !== -1) {
-        return prevData.map((stock, index) => (index === stockIndex ? { ...stock, ...updatedStockData } : stock));
+        return currenData.map((stock, index) => (index === stockIndex ? { ...stock, ...updatedStockData } : stock));
       }
 
       // If the stock doesn't exist, add it to the array only if it's not already present
-      return [...prevData, updatedStockData];
+      return [...currentData, updatedStockData];
     });
   };
 
@@ -152,7 +157,7 @@ export default function DashboardDefault() {
       updateData(message); // Existing logic for specific stock updates
       console.log(message, 'live4');
       updateLiveData(message);
-      // setLiveMarketData(message); // New: Set live data for MarketDataTable
+      setLiveMarketData(message); // New: Set live data for MarketDataTable
     };
 
     return () => {
@@ -222,7 +227,7 @@ export default function DashboardDefault() {
   }, [symbolToken]);
 
   return (
-    <Box className="scrollable" style={{ height: '100vh', overflowY:'auto', marginRight: '25px', marginLeft:'105px' }}>
+    <Box className="scrollable" style={{ height: '100vh', overflowX: 'hidden', overflowY:'auto', marginRight: '25px', marginLeft:'105px' }}>
       <Grid container rowSpacing={4.5} columnSpacing={2.75}>
         {/* row 1 */}
           <Grid item xs={12} sx={{ mb: -2.25 }}>
@@ -235,7 +240,7 @@ export default function DashboardDefault() {
               <AnalyticEcommerce title="NIFTY" 
               count={data.nifty.count} 
               percentage={data.nifty.percentage} 
-              isLoss={data.nifty.percentage < 0}
+              isLoss={data.niftyBank.percentage < 0}
             />
             </div>
           </Grid>
@@ -245,7 +250,7 @@ export default function DashboardDefault() {
                 title="SENSEX" 
                 count={data.sensex.count} 
                 percentage={data.sensex.percentage}
-                isLoss={data.sensex.percentage < 0}
+                isLoss={data.niftyBank.percentage < 0}
               />
             </div>
           </Grid>
@@ -269,11 +274,10 @@ export default function DashboardDefault() {
               />
             </div>
           </Grid>
-          
-      <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
 
+      <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
         {/* row 2 */}
-        <Box sx={{ width: 'auto' }}>
+        <Box sx={{ overflowX: 'auto' }}>
         {/* <Box> */}
           <TabContext value={value}>
             <Box>
@@ -300,10 +304,8 @@ export default function DashboardDefault() {
             </TabPanel>
             <TabPanel value="2">
               <Box>
-                <MarketDataTable
+                <ThirtyDayReport
                   updateToken={updateToken}
-                  displayTopGainers={true} // or false depending on the case
-                  displayTopLosers={false} // or true depending on the case
                   setSymbolToken={setSymbolToken}
                   liveMarketData={liveMarketData} // New prop for live WebSocket data
                 />
