@@ -11,6 +11,22 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  console.log(data, 'orignal');
+
+  const fetchReportData = async () => {
+    try {
+      console.log('calling');
+      const response = await fetch('http://localhost:8000/api/service/report/30-day-report/');
+      if (!response.ok) throw new Error('Failed to fetch report data.');
+
+      const result = await response.json();
+      console.log(result, 'time?');
+    } catch (err) {
+    } finally {
+      console.log('finished calling');
+    }
+  };
+
   useEffect(() => {
     const fetchMarketData = async () => {
       try {
@@ -24,6 +40,7 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
         setError('Failed to fetch market data: ' + err.message);
       } finally {
         setLoading(false);
+        fetchReportData();
       }
     };
 
@@ -81,11 +98,12 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
   }
 
   const columns = [
-    { field: 'tradingSymbol', headerName: 'Name', headerClassName: 'header-name', flex: 1 },
+    { field: 'tradingSymbol', headerName: 'Symbol', headerClassName: 'header-name', flex: 1 },
     {
       field: 'ltp',
-      headerName: 'LTP',
+      headerName: 'Price',
       headerClassName: 'header-name',
+      headerAlign: 'center',
       flex: 1,
       type: 'number',
       renderCell: (params) => (
@@ -94,30 +112,15 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
         </Box>
       )
     },
-    {
-      field: 'percentChange',
-      headerName: 'Change %',
-      headerClassName: 'header-name',
-      flex: 1,
-      type: 'number',
-      renderCell: (params) => (
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          height="100%"
-          color={params.value > 0 ? '#00EFC8' : params.value < 0 ? '#FF5966' : '#EEEEEE'}
-        >
-          {params.value}
-        </Box>
-      )
-    },
+
     {
       field: 'netChange',
       headerName: 'Change',
       headerClassName: 'header-name',
       flex: 1,
       type: 'number',
+      headerAlign: 'center',
+
       renderCell: (params) => (
         <Box
           display="flex"
@@ -130,44 +133,14 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
         </Box>
       )
     },
-    { field: 'tradeVolume', headerName: 'Volume', headerClassName: 'header-name', type: 'number', flex: 1 },
     {
-      field: 'buyPrice',
-      headerName: 'Buy Price',
+      field: 'tradeVolume',
+      headerName: 'Volume',
+      headerAlign: 'center',
       headerClassName: 'header-name',
-      flex: 1,
       type: 'number',
-      renderCell: (params) => (
-        <Box display="flex" alignItems="center" justifyContent="center" height="100%" color="#00EFC8">
-          {params.value}
-        </Box>
-      )
-    },
-    {
-      field: 'sellPrice',
-      headerName: 'Sell Price',
-      headerClassName: 'header-name',
       flex: 1,
-      type: 'number',
-      renderCell: (params) => (
-        <Box display="flex" alignItems="center" justifyContent="center" height="100%" color="#FF5966">
-          {params.value}
-        </Box>
-      )
-    },
-    { field: 'buyQty', headerName: 'Buy Quantity', headerClassName: 'header-name', type: 'number', flex: 1 },
-
-    {
-      field: 'sellQty',
-      headerName: 'Sell Quantity',
-      headerClassName: 'header-name',
-      flex: 1,
-      type: 'number',
-      renderCell: (params) => (
-        <Box display="flex" alignItems="center" justifyContent="center" height="100%" color="#FF5966">
-          {params.value}
-        </Box>
-      )
+      align: 'center'
     }
   ];
 
@@ -186,10 +159,10 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
   }));
 
   return (
-    <Box className="market-data" sx={{ mt: 0, width: '100vw'}}>
+    <Box className="market-data" sx={{ mt: 0, width: ' -webkit-fill-available' }}>
       {/* <CssBaseline /> */}
-      <Box sx={{ height: '86vh'}}>
-      {/* <Box className="scrollable" style={{ height: '100vh', overflowY:'auto', marginRight: '25px'}}> */}
+      <Box sx={{ height: '86vh' }}>
+        {/* <Box className="scrollable" style={{ height: '100vh', overflowY:'auto', marginRight: '25px'}}> */}
         <DataGrid
           rows={rows}
           columns={columns}

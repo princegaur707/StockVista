@@ -1,45 +1,48 @@
 .market-data .MuiDataGrid-root {
   background-color: #141516; /* Dark background for the table */
-  color: #EEEEEE; /* Light grey text color */
+  color: #eeeeee; /* Light grey text color */
   border: none; /* Remove outer border */
   font-size: 12px; /* Enteries of rows */
-  --DataGrid-rowBorderColor:#1D1E20;
+  --DataGrid-rowBorderColor: #1d1e20;
   /* For border b/w rows */
 }
 
-
 .market-data .MuiDataGrid-virtualScroller {
-  border: 'none', 
+  border: 'none';
 }
 .market-data MuiDataGrid-cell {
-  border: 'none',
+  border: 'none';
+}
+
+.market-data .MuiDataGrid-columnSeparator {
+  display: none !important;
 }
 
 /* Columns Filters row */
 .market-data .MuiDataGrid-toolbarContainer {
-  color: #EEEEEE; /* Light color for toolbar text */
+  color: #eeeeee; /* Light color for toolbar text */
   font-size: 2px;
 }
 
 /* Columns Filters text color */
 .market-data .MuiButtonBase-root {
-  color: #FFD56B;
+  color: #ffd56b;
 }
 
-.header-name{
-  background-color: #1D1E20;
+.header-name {
+  background-color: #1d1e20;
 }
 
 .market-data .MuiDataGrid-columnHeaders {
-  color: #db2727;/* Not getting applied */
+  color: #db2727; /* Not getting applied */
   /* White header text */
   font-weight: bold;
-  border: 0px solid #1D1E20; /* Getting applied:Border between header and rows */
+  border: 0px solid #1d1e20; /* Getting applied:Border between header and rows */
 }
 
 /* Name LTP Header insider Header */
 .market-data .MuiDataGrid-columnHeaderTitle {
-  color: #D9D9D9; /* Light grey color for header text */
+  color: #d9d9d9; /* Light grey color for header text */
   font-size: 14px;
   /* border: none; */
   /* background-color: #00ff00; */
@@ -52,7 +55,7 @@
 }
 
 .market-data .MuiDataGrid-row.Mui-selected {
-  background-color: #313437 !important;/* Keep row selected background similar */
+  background-color: #313437 !important; /* Keep row selected background similar */
 }
 
 .market-data .MuiDataGrid-cell--number {
@@ -70,11 +73,11 @@
 
 /* Customize pagination style */
 .market-data .MuiDataGrid-footerContainer {
-  background-color: #1D1E20; 
+  background-color: #1d1e20;
   /* Darker footer background */
   color: #b62727;
 }
 
-.market-data .Mui-selected{
-  color:red;
+.market-data .Mui-selected {
+  color: red;
 }
