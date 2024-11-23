@@ -12,6 +12,8 @@ import './index.css';
 import AnalyticEcommerce from 'ui-component/cards/statistics/AnalyticEcommerce';
 import MarketDataTable from './components/MarketData';
 import CandlestickChart from './components/CandleStickChart';
+import NintyDayReportTable from './components/NintyDayReport';
+import WeeklyBreakoutTable from './components/WeeklyBreakout';
 
 // modal style
 const modalStyle = {
@@ -248,7 +250,7 @@ export default function DashboardDefault() {
         <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
 
         {/* row 2 */}
-        <Box sx={{ width: 'auto' }}>
+        <Box sx={{ overflowX:'hidden' }}>
           {/* <Box> */}
           <TabContext value={value}>
             <Box>
@@ -275,7 +277,7 @@ export default function DashboardDefault() {
             </TabPanel>
             <TabPanel value="2">
               <Box>
-                <MarketDataTable
+                <NintyDayReportTable
                   updateToken={updateToken}
                   displayTopGainers={true} // or false depending on the case
                   displayTopLosers={false} // or true depending on the case
@@ -308,7 +310,7 @@ export default function DashboardDefault() {
             </TabPanel>
             <TabPanel value="5">
               <Box>
-                <MarketDataTable
+                <WeeklyBreakoutTable
                   updateToken={updateToken}
                   displayTopGainers={true} // or false depending on the case
                   displayTopLosers={false} // or true depending on the case

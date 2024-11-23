@@ -4,11 +4,19 @@
   border: none; /* Remove outer border */
   font-size: 12px; /* Enteries of rows */
   --DataGrid-rowBorderColor: #1d1e20;
+  --DataGrid-containerBackground: #141516;
   /* For border b/w rows */
 }
 
-.market-data .MuiDataGrid-virtualScroller {
-  border: 'none';
+/* Main Scrollbar hidden */
+&::-webkit-scrollbar { display: none; }
+
+.market-data .MuiDataGrid-scrollbarFiller-filler{
+  display: none;
+}
+
+.market-data .MuiDataGrid-scrollbar{
+  width: 0px;;
 }
 .market-data MuiDataGrid-cell {
   border: 'none';
@@ -16,6 +24,16 @@
 
 .market-data .MuiDataGrid-columnSeparator {
   display: none !important;
+}
+
+.market-data .MuiDataGrid-filler{
+  color: blue !important;
+}
+
+.market-data{
+  width: 89vw;
+  /* max-width: 100%; */
+  overflow-x: auto;
 }
 
 /* Columns Filters row */
@@ -75,9 +93,9 @@
 .market-data .MuiDataGrid-footerContainer {
   background-color: #1d1e20;
   /* Darker footer background */
-  color: #b62727;
+  color: #b62727 !important;
 }
 
-.market-data .Mui-selected {
+/* .market-data .Mui-selected {
   color: red;
-}
+} */
