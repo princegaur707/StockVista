@@ -20,7 +20,7 @@ const CandlestickChart = ({ token }) => {
     const fetchHistoricalData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`http://127.0.0.1:8000/historical-data/?exchange=NSE&token=${selectedStock}&timeperiod=ONE_DAY`);
+        const response = await fetch(`http://localhost:8000/api/service/historical-data/?exchange=NSE&token=${selectedStock}&timeperiod=ONE_DAY`);
         if (!response.ok) throw new Error('Network response was not ok');
         const jsonData = await response.json();
 

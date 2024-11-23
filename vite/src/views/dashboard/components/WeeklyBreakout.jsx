@@ -3,14 +3,14 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import './MarketData.css';
 
-const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, setSymbolToken, liveMarketData }) => {
+const WeeklyBreakoutTable = ({ updateToken, displayTopGainers, displayTopLosers, setSymbolToken, liveMarketData }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   const fetchReportData = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/service/report/30-day-report/');
+      const response = await fetch('http://localhost:8000/api/service/breakout/weekly-breakout/');
       if (!response.ok) throw new Error('Failed to fetch report data.');
 
       const result = await response.json();
@@ -192,4 +192,4 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
   );
 };
 
-export default MarketDataTable;
+export default WeeklyBreakoutTable;
