@@ -1,47 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography, CssBaseline } from '@mui/material';
 import './MarketData.css';
+import { IconBackground } from '@tabler/icons-react';
 
 const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, setSymbolToken, liveMarketData }) => {
+  console.log(liveMarketData, 'bro');
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
-  const fetchReportData = async () => {
-    try {
-      const response = await fetch('http://localhost:8000/api/service/report/30-day-report/');
-      if (!response.ok) throw new Error('Failed to fetch report data.');
-
-      const result = await response.json();
-      const reportData = result['30_day_report'];
-
-      setData((prevData) =>
-        prevData.map((item) => {
-          const matchingReport = reportData.find((report) => report.symbol === item.tradingSymbol);
-          return matchingReport ? { ...item, price_rating: matchingReport.price_rating } : { ...item, price_rating: null }; // Assign null if no match found
-        })
-      );
-    } catch (err) {
-      console.error('Error fetching report data:', err);
-    }
-  };
 
   useEffect(() => {
     const fetchMarketData = async () => {
       try {
         const response = await fetch('http://localhost:8000/api/service/market-data/');
-        if (!response.ok) throw new Error('Failed to fetch market data.');
-
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
         const jsonData = await response.json();
         setData(jsonData.data.fetched); // Assuming the fetched data is inside `data.fetched`
       } catch (err) {
         setError('Failed to fetch market data: ' + err.message);
       } finally {
         setLoading(false);
-        setTimeout(() => {
-          fetchReportData();
-        }, 1000);
       }
     };
 
@@ -50,13 +32,15 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
 
   useEffect(() => {
     if (liveMarketData) {
-      setData((prevData) =>
-        prevData.map((item) => (item.tradingSymbol === liveMarketData.tradingSymbol ? { ...item, ...liveMarketData } : item))
-      );
+      setData(liveMarketData);
+      console.log(liveMarketData, 'live');
+      // Find the stock in the existing data and update it
+      // setData((prevData) => prevData.map((stock) => (stock.Symbol === liveMarketData.Symbol ? { ...stock, ...liveMarketData } : stock)));
     }
   }, [liveMarketData]);
 
   const handleCellClick = (params) => {
+    // console.log('param', params.row.symbolToken);
     setSymbolToken(params.row.symbolToken);
     if (params.field === 'tradingSymbol') {
       updateToken(params.row.symbolToken);
@@ -65,7 +49,7 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
 
   if (loading) {
     return (
-      <Box display="flex" flexDirection="column" alignItems="center" height="18vh" justifyContent="center">
+      <Box style={{ alignSelf: 'center' }} display="flex" flexDirection="column" alignItems="center" height="18vh" justifyContent="center">
         <CircularProgress />
       </Box>
     );
@@ -83,22 +67,51 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
     return <Typography align="center">No Data Available</Typography>;
   }
 
-  // Filter data based on props
+  // Filter data based on the props
   let filteredData = [...data]; // Create a copy of the data
 
   if (displayTopGainers) {
     filteredData.sort((a, b) => b.percentChange - a.percentChange); // Sort by largest change %
-    filteredData = filteredData.slice(0, 50); // Get top 20
+    filteredData = filteredData.slice(0, 20); // Get top 20
   }
 
   if (displayTopLosers) {
     filteredData.sort((a, b) => a.percentChange - b.percentChange); // Sort by smallest change %
-    filteredData = filteredData.slice(0, 50);
+    filteredData = filteredData.slice(0, 20); // Get bottom 20
   }
 
   const columns = [
-    { field: 'tradingSymbol', headerName: 'Symbol', headerClassName: 'header-name', flex: 1 },
-    { field: 'ltp', headerName: 'Price', headerClassName: 'header-name', flex: 1, type: 'number' },
+    { field: 'tradingSymbol', headerName: 'Name', headerClassName: 'header-name', flex: 1 },
+    {
+      field: 'ltp',
+      headerName: 'LTP',
+      headerClassName: 'header-name',
+      flex: 1,
+      type: 'number',
+      renderCell: (params) => (
+        <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+          <Typography align="center">{params?.value}</Typography>
+        </Box>
+      )
+    },
+    {
+      field: 'percentChange',
+      headerName: 'Change %',
+      headerClassName: 'header-name',
+      flex: 1,
+      type: 'number',
+      renderCell: (params) => (
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          height="100%"
+          color={params.value > 0 ? '#00EFC8' : params.value < 0 ? '#FF5966' : '#EEEEEE'}
+        >
+          {params.value}
+        </Box>
+      )
+    },
     {
       field: 'netChange',
       headerName: 'Change',
@@ -107,9 +120,9 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
       type: 'number',
       renderCell: (params) => (
         <Box
-          // display="flex"
-          // alignItems="center"
-          // justifyContent="center"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
           height="100%"
           color={params.value > 0 ? '#00EFC8' : params.value < 0 ? '#FF5966' : '#EEEEEE'}
         >
@@ -117,33 +130,44 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
         </Box>
       )
     },
-    { field: 'market_cap', headerName: 'Market Cap', headerClassName: 'header-name', flex: 1, type: 'number' },
+    { field: 'tradeVolume', headerName: 'Volume', headerClassName: 'header-name', type: 'number', flex: 1 },
     {
-      field: 'price_rating',
-      headerName: 'Price Rating',
+      field: 'buyPrice',
+      headerName: 'Buy Price',
       headerClassName: 'header-name',
       flex: 1,
       type: 'number',
-      align: 'center',
-      headerAlign: 'center'
+      renderCell: (params) => (
+        <Box display="flex" alignItems="center" justifyContent="center" height="100%" color="#00EFC8">
+          {params.value}
+        </Box>
+      )
     },
     {
-      field: 'earning_rating',
-      headerName: 'Earning Rating',
+      field: 'sellPrice',
+      headerName: 'Sell Price',
       headerClassName: 'header-name',
       flex: 1,
       type: 'number',
-      align: 'center',
-      headerAlign: 'center'
+      renderCell: (params) => (
+        <Box display="flex" alignItems="center" justifyContent="center" height="100%" color="#FF5966">
+          {params.value}
+        </Box>
+      )
     },
+    { field: 'buyQty', headerName: 'Buy Quantity', headerClassName: 'header-name', type: 'number', flex: 1 },
+
     {
-      field: 'investo_rating',
-      headerName: 'Investo Rating',
+      field: 'sellQty',
+      headerName: 'Sell Quantity',
       headerClassName: 'header-name',
       flex: 1,
       type: 'number',
-      align: 'center',
-      headerAlign: 'center'
+      renderCell: (params) => (
+        <Box display="flex" alignItems="center" justifyContent="center" height="100%" color="#FF5966">
+          {params.value}
+        </Box>
+      )
     }
   ];
 
@@ -154,29 +178,25 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
     percentChange: row.percentChange,
     netChange: row.netChange,
     tradeVolume: row.tradeVolume,
-    price_rating: row.price_rating,
+    buyPrice: row.depth.buy[0]?.price || 0,
+    sellPrice: row.depth.sell[0]?.price || 0,
+    buyQty: row.depth.buy[0]?.quantity || 0,
+    sellQty: row.depth.sell[0]?.quantity || 0,
     symbolToken: row.symbolToken
   }));
 
   return (
-    <Box className="market-data" 
-        sx={{ mt: 0,
-         width: '100%',
-         scrollbarWidth: 'none', // Firefox: hides scrollbar but still allows scrolling
-        msOverflowStyle: 'none', // IE/Edge: hides scrollbar
-        '&::-webkit-scrollbar': {
-          display: 'none', 
-        }
-      }}
-      >
-      <Box sx={{ height: '86vh',width:'90vw' }}>
+    <Box className="market-data" sx={{ mt: 0, width: '100vw'}}>
+      {/* <CssBaseline /> */}
+      <Box sx={{ height: '86vh'}}>
+      {/* <Box className="scrollable" style={{ height: '100vh', overflowY:'auto', marginRight: '25px'}}> */}
         <DataGrid
           rows={rows}
           columns={columns}
           pageSize={10}
-          rowsPerPageOptions={[10]}
+          rowsPerPageOptions={[10]} // Set the rows per page options
           onCellClick={handleCellClick}
-          components={{ Toolbar: GridToolbar }}
+          components={{ Toolbar: GridToolbar }} // Updated for newer versions of MUI
           pagination
           initialState={{
             pagination: {
@@ -185,7 +205,9 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
               }
             }
           }}
-          paginationMode="client"
+          pageSizeOptions={[10]}
+          paginationMode="client" // This enables client-side pagination
+          slots={{ toolbar: GridToolbar }}
         />
       </Box>
     </Box>

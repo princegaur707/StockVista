@@ -8,25 +8,6 @@ const NintyDayReportTable = ({ updateToken, displayTopGainers, displayTopLosers,
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const fetchReportData = async () => {
-    try {
-      const response = await fetch('http://localhost:8000/api/service/report/90-day-report/');
-      if (!response.ok) throw new Error('Failed to fetch report data.');
-
-      const result = await response.json();
-      const reportData = result['90_day_report'];
-
-      setData((prevData) =>
-        prevData.map((item) => {
-          const matchingReport = reportData.find((report) => report.symbol === item.tradingSymbol);
-          return matchingReport ? { ...item, price_rating: matchingReport.price_rating } : { ...item, price_rating: null }; // Assign null if no match found
-        })
-      );
-    } catch (err) {
-      console.error('Error fetching report data:', err);
-    }
-  };
-
   useEffect(() => {
     const fetchMarketData = async () => {
       try {
@@ -37,21 +18,48 @@ const NintyDayReportTable = ({ updateToken, displayTopGainers, displayTopLosers,
         setData(jsonData.data.fetched); // Assuming the fetched data is inside `data.fetched`
       } catch (err) {
         setError('Failed to fetch market data: ' + err.message);
-      } finally {
-        setLoading(false);
-        setTimeout(() => {
-          fetchReportData();
-        }, 1000);
       }
     };
 
-    fetchMarketData();
+    const fetchReportData = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/service/report/90-day-report/');
+        if (!response.ok) throw new Error('Failed to fetch 90-day report.');
+
+        const reportResult = await response.json();
+        const reportData = reportResult['90_day_report'];
+
+        // Merge market data with report data
+        setData((prevData) =>
+          prevData.map((item) => {
+            const matchingReport = reportData.find((report) => report.symbol === item.tradingSymbol);
+            return matchingReport
+              ? { ...item, price_rating: matchingReport.price_rating }
+              : { ...item, price_rating: null }; // Assign null if no match found
+          })
+        );
+      } catch (err) {
+        setError('Failed to fetch 90-day report: ' + err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchData = async () => {
+      setLoading(true);
+      await fetchMarketData();
+      await fetchReportData();
+    };
+
+    fetchData();
   }, []);
 
   useEffect(() => {
     if (liveMarketData) {
       setData((prevData) =>
-        prevData.map((item) => (item.tradingSymbol === liveMarketData.tradingSymbol ? { ...item, ...liveMarketData } : item))
+        prevData.map((item) =>
+          item.tradingSymbol === liveMarketData.tradingSymbol ? { ...item, ...liveMarketData } : item
+        )
       );
     }
   }, [liveMarketData]);
@@ -83,75 +91,30 @@ const NintyDayReportTable = ({ updateToken, displayTopGainers, displayTopLosers,
     return <Typography align="center">No Data Available</Typography>;
   }
 
-  // Filter data based on props
   let filteredData = [...data]; // Create a copy of the data
 
   if (displayTopGainers) {
     filteredData.sort((a, b) => b.percentChange - a.percentChange); // Sort by largest change %
-    filteredData = filteredData.slice(0, 50); // Get top 20
+    filteredData = filteredData.slice(0, 20); // Get top 20
   }
 
   if (displayTopLosers) {
     filteredData.sort((a, b) => a.percentChange - b.percentChange); // Sort by smallest change %
-    filteredData = filteredData.slice(0, 50);
+    filteredData = filteredData.slice(0, 20);
   }
 
   const columns = [
-    { field: 'tradingSymbol', headerName: 'Symbol', headerClassName: 'header-name', flex: 1 },
-    { field: 'ltp', headerName: 'Price', headerClassName: 'header-name', flex: 1, type: 'number' },
-    {
-      field: 'netChange',
-      headerName: 'Change',
-      headerClassName: 'header-name',
-      flex: 1,
-      type: 'number',
-      renderCell: (params) => (
-        <Box
-          // display="flex"
-          // alignItems="center"
-          // justifyContent="center"
-          height="100%"
-          color={params.value > 0 ? '#00EFC8' : params.value < 0 ? '#FF5966' : '#EEEEEE'}
-        >
-          {params.value}
-        </Box>
-      )
-    },
-    { field: 'market_cap', headerName: 'Market Cap', headerClassName: 'header-name', flex: 1, type: 'number' },
-    {
-      field: 'price_rating',
-      headerName: 'Price Rating',
-      headerClassName: 'header-name',
-      flex: 1,
-      type: 'number',
-      align: 'center',
-      headerAlign: 'center'
-    },
-    {
-      field: 'earning_rating',
-      headerName: 'Earning Rating',
-      headerClassName: 'header-name',
-      flex: 1,
-      type: 'number',
-      align: 'center',
-      headerAlign: 'center'
-    },
-    {
-      field: 'investo_rating',
-      headerName: 'Investo Rating',
-      headerClassName: 'header-name',
-      flex: 1,
-      type: 'number',
-      align: 'center',
-      headerAlign: 'center'
-    }
+    { field: 'tradingSymbol', headerName: 'Symbol', flex: 1 },
+    { field: 'ltp', headerName: 'Price', flex: 1, type: 'number' },
+    { field: 'netChange', headerName: 'Change', flex: 1, type: 'number' },
+    { field: 'tradeVolume', headerName: 'Volume', flex: 1, type: 'number' },
+    { field: 'price_rating', headerName: 'Price Rating', flex: 1, align: 'center', headerAlign: 'center' }
   ];
 
   const rows = filteredData.map((row, index) => ({
     id: index,
     tradingSymbol: row.tradingSymbol,
     ltp: row.ltp,
-    percentChange: row.percentChange,
     netChange: row.netChange,
     tradeVolume: row.tradeVolume,
     price_rating: row.price_rating,
@@ -159,17 +122,8 @@ const NintyDayReportTable = ({ updateToken, displayTopGainers, displayTopLosers,
   }));
 
   return (
-    <Box className="market-data" 
-        sx={{ mt: 0,
-         width: '100%',
-         scrollbarWidth: 'none', // Firefox: hides scrollbar but still allows scrolling
-        msOverflowStyle: 'none', // IE/Edge: hides scrollbar
-        '&::-webkit-scrollbar': {
-          display: 'none', 
-        }
-      }}
-      >
-      <Box sx={{ height: '86vh',width:'90vw' }}>
+    <Box className="market-data" sx={{ mt: 0, width: '100%' }}>
+      <Box sx={{ height: '86vh' }}>
         <DataGrid
           rows={rows}
           columns={columns}
@@ -178,13 +132,6 @@ const NintyDayReportTable = ({ updateToken, displayTopGainers, displayTopLosers,
           onCellClick={handleCellClick}
           components={{ Toolbar: GridToolbar }}
           pagination
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 10
-              }
-            }
-          }}
           paginationMode="client"
         />
       </Box>

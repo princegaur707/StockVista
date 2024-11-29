@@ -13,7 +13,15 @@ import AnalyticEcommerce from 'ui-component/cards/statistics/AnalyticEcommerce';
 import MarketDataTable from './components/MarketData';
 import CandlestickChart from './components/CandleStickChart';
 import NintyDayReportTable from './components/NintyDayReport';
-import WeeklyBreakoutTable from './components/WeeklyBreakout';
+import EarningCard from './components/EarningCard';
+import PopularCard from './components/PopularCard';
+import TotalOrderLineChartCard from './components/TotalOrderLineChartCard';
+import TotalIncomeDarkCard from './components/TotalIncomeDarkCard';
+import TotalIncomeLightCard from './components/TotalIncomeLightCard';
+import TotalGrowthBarChart from './components/TotalGrowthBarChart';
+import PropTypes from 'prop-types';
+import { Tabs, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { x } from 'joi';
 
 // modal style
 const modalStyle = {
@@ -44,6 +52,23 @@ export default function DashboardDefault() {
     nifty50: { count: '0', percentage: 0 },
     niftyBank: { count: '0', percentage: 0 }
   });
+  // const updateLiveData = (message) => {
+  //   const { Symbol } = message; // Extract the stock symbol from the message
+
+  //   setLiveMarketData((prevData) => {
+  //     // If prevData is indeed an array, this will work
+  //     const stockIndex = prevData.findIndex((stock) => stock.Symbol === Symbol);
+
+  //     // If the stock exists, update the corresponding entry
+  //     if (stockIndex !== -1) {
+  //       // Create a new array with updated stock data
+  //       return prevData.map((stock, index) => (index === stockIndex ? { ...stock, ...message } : stock));
+  //     }
+
+  //     // If the stock doesn't exist, add it to the array
+  //     return [...prevData, message];
+  //   });
+  // };
 
   const updateLiveData = (message) => {
     const { Symbol } = message; // Extract the stock symbol and token from the message
@@ -137,33 +162,33 @@ export default function DashboardDefault() {
   }, []);
 
   const updateData = (message) => {
-    const { Name, LTP, Change } = message;
+    const { Name, LTP, Change, 'Change %': ChangePercentage} = message;
 
-    console.log(Name, LTP, Change, 'here');
+    console.log(Name, LTP, Change, ChangePercentage, 'here');
 
     switch (Name) {
       case 'NIFTY':
         setData((prevData) => ({
           ...prevData,
-          nifty: { count: `${parseFloat(LTP).toFixed(2)}`, percentage: parseFloat(Change) }
+          nifty: { count: `${parseFloat(LTP).toFixed(2)}`, percentage: parseFloat(ChangePercentage) }
         }));
         break;
       case 'SENSEX':
         setData((prevData) => ({
           ...prevData,
-          sensex: { count: `${parseFloat(LTP).toFixed(2)}`, percentage: parseFloat(Change) }
+          sensex: { count: `${parseFloat(LTP).toFixed(2)}`, percentage: parseFloat(ChangePercentage) }
         }));
         break;
       case 'NIFTY MIDCAP':
         setData((prevData) => ({
           ...prevData,
-          nifty50: { count: `${parseFloat(LTP).toFixed(2)}`, percentage: parseFloat(Change) }
+          nifty50: { count: `${parseFloat(LTP).toFixed(2)}`, percentage: parseFloat(ChangePercentage) }
         }));
         break;
       case 'BANKNIFTY':
         setData((prevData) => ({
           ...prevData,
-          niftyBank: { count: `${parseFloat(LTP).toFixed(2)}`, percentage: parseFloat(Change) }
+          niftyBank: { count: `${parseFloat(LTP).toFixed(2)}`, percentage: parseFloat(ChangePercentage) }
         }));
         break;
       default:
@@ -198,63 +223,62 @@ export default function DashboardDefault() {
   }, [symbolToken]);
 
   return (
-    <Box className="scrollable" style={{ height: '100vh', overflowY: 'auto', marginRight: '25px', marginLeft: '105px' }}>
+    <Box className="scrollable" style={{ height: '100vh', overflowY:'auto', marginRight: '25px', marginLeft:'105px' }}>
       <Grid container rowSpacing={4.5} columnSpacing={2.75}>
         {/* row 1 */}
-        <Grid item xs={12} sx={{ mb: -2.25 }}>
-          <div className="dashboard-font-box">
-            <Typography className="heading-dashboard">MOMENTUM KING</Typography>
-          </div>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <div className="Analyticbox">
-            <AnalyticEcommerce
-              title="NIFTY"
-              count={data.nifty.count}
-              percentage={data.nifty.percentage}
+          <Grid item xs={12} sx={{ mb: -2.25 }}>
+            <div className='dashboard-font-box'>
+              <Typography className='heading-dashboard'>MOMENTUM KING</Typography>
+            </div>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <div className='Analyticbox'>
+              <AnalyticEcommerce title="NIFTY" 
+              count={data.nifty.count} 
+              percentage={data.nifty.percentage} 
               isLoss={data.nifty.percentage < 0}
             />
-          </div>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <div className="Analyticbox">
-            <AnalyticEcommerce
-              title="SENSEX"
-              count={data.sensex.count}
-              percentage={data.sensex.percentage}
-              isLoss={data.sensex.percentage < 0}
-            />
-          </div>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <div className="Analyticbox">
-            <AnalyticEcommerce
-              title="NIFTY BANK"
-              count={data.niftyBank.count}
-              percentage={data.niftyBank.percentage}
-              isLoss={data.niftyBank.percentage < 0}
-            />
-          </div>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <div className="Analyticbox">
-            <AnalyticEcommerce
-              title="NIFTY 50"
-              count={data.nifty50.count}
-              percentage={data.nifty50.percentage}
-              isLoss={data.nifty50.percentage < 0}
-            />
-          </div>
-        </Grid>
-
-        <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
+            </div>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <div className='Analyticbox'>
+              <AnalyticEcommerce 
+                title="SENSEX" 
+                count={data.sensex.count} 
+                percentage={data.sensex.percentage}
+                isLoss={data.sensex.percentage < 0}
+              />
+            </div>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <div className='Analyticbox'>
+              <AnalyticEcommerce
+                title="NIFTY BANK"
+                count={data.niftyBank.count}
+                percentage={data.niftyBank.percentage}
+                isLoss={data.niftyBank.percentage < 0}
+              />
+            </div>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <div className='Analyticbox'>
+              <AnalyticEcommerce
+                title="NIFTY 50"
+                count={data.nifty50.count}
+                percentage={data.nifty50.percentage}
+                isLoss={data.nifty50.percentage < 0}
+              />
+            </div>
+          </Grid>
+          
+      <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
 
         {/* row 2 */}
-        <Box sx={{ overflowX:'hidden' }}>
-          {/* <Box> */}
+        <Box sx={{ width: 'auto' }}>
+        {/* <Box> */}
           <TabContext value={value}>
             <Box>
-              <TabList className="tab-values" onChange={handleChange} aria-label="lab API tabs example">
+              <TabList className ="tab-values" onChange={handleChange} aria-label="lab API tabs example">
                 <Tab className="tabValue-head" label="30 days report" value="1" />
                 <Tab className="tabValue-head" label="90 days report" value="2" />
                 <Tab className="tabValue-head" label="IPO" value="3" />
@@ -310,7 +334,7 @@ export default function DashboardDefault() {
             </TabPanel>
             <TabPanel value="5">
               <Box>
-                <WeeklyBreakoutTable
+                <MarketDataTable
                   updateToken={updateToken}
                   displayTopGainers={true} // or false depending on the case
                   displayTopLosers={false} // or true depending on the case
@@ -360,3 +384,75 @@ export default function DashboardDefault() {
     </Box>
   );
 }
+
+// import { useEffect, useState } from 'react';
+
+// // material-ui
+// import Grid from '@mui/material/Grid';
+
+// // project imports
+// import EarningCard from './EarningCard';
+// import PopularCard from './PopularCard';
+// import TotalOrderLineChartCard from './TotalOrderLineChartCard';
+// import TotalIncomeDarkCard from './TotalIncomeDarkCard';
+// import TotalIncomeLightCard from './TotalIncomeLightCard';
+// import TotalGrowthBarChart from './TotalGrowthBarChart';
+
+// import { gridSpacing } from 'store/constant';
+
+// // assets
+// import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
+
+// // ==============================|| DEFAULT DASHBOARD ||============================== //
+
+// const Dashboard = () => {
+//   const [isLoading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     setLoading(false);
+//   }, []);
+
+//   return (
+//     <Grid container spacing={gridSpacing}>
+//       <Grid item xs={12}>
+//         <Grid container spacing={gridSpacing}>
+//           <Grid item lg={4} md={6} sm={6} xs={12}>
+//             <EarningCard isLoading={isLoading} />
+//           </Grid>
+//           <Grid item lg={4} md={6} sm={6} xs={12}>
+//             <TotalOrderLineChartCard isLoading={isLoading} />
+//           </Grid>
+//           <Grid item lg={4} md={12} sm={12} xs={12}>
+//             <Grid container spacing={gridSpacing}>
+//               <Grid item sm={6} xs={12} md={6} lg={12}>
+//                 <TotalIncomeDarkCard isLoading={isLoading} />
+//               </Grid>
+//               <Grid item sm={6} xs={12} md={6} lg={12}>
+//                 <TotalIncomeLightCard
+//                   {...{
+//                     isLoading: isLoading,
+//                     total: 203,
+//                     label: 'Total Income',
+//                     icon: <StorefrontTwoToneIcon fontSize="inherit" />
+//                   }}
+//                 />
+//               </Grid>
+//             </Grid>
+//           </Grid>
+//         </Grid>
+//       </Grid>
+//       <Grid item xs={12}>
+//         <Grid container spacing={gridSpacing}>
+//           <Grid item xs={12} md={8}>
+//             <TotalGrowthBarChart isLoading={isLoading} />
+//           </Grid>
+//           <Grid item xs={12} md={4}>
+//             <PopularCard isLoading={isLoading} />
+//           </Grid>
+//         </Grid>
+//       </Grid>
+//     </Grid>
+//   );
+// };
+
+// export default Dashboard;

@@ -102,7 +102,8 @@ const SmallBoxContent = styled(Box)({
   flexDirection: 'column',
   alignItems: 'center',
   textAlign: 'center',
-  gap: '10px'
+  // letterSpacing:'10px',
+  gap: '10px'//gap b/w the lines vertically
 });
 
 const LargeBox = styled(Box)({
@@ -277,39 +278,44 @@ const SamplePage = () => (
             <FlexColumnContainer>
               {' '}
               {/* New wrapper for column layout */}
-              <Box display="flex" width="100%">
+              <Box display="flex" sx={{ width:'100%', alignContent:'center', marginLeft:'20px'  }}>
                 <SmallBox>
                   {index === 0 ? (
                     <SmallBoxContent>
-                      <Typography sx={{ fontSize: '2.2rem', fontWeight: '600', fontFamily: 'Playfair Display' }}>
+                      <Typography sx={{ fontSize: '3.4rem', fontWeight: '600', fontFamily: 'Playfair Display', letterSpacing:'2px' }}>
                         See Beyond,
                         <br />
                         Stand Apart
                       </Typography>
-                      <Typography sx={{ fontSize: '0.9rem', color: '#d3d3d3', fontFamily: 'Figtree' }}>
+                      <Typography sx={{ fontSize: '0.9rem', color: '#d3d3d3', fontFamily: 'Figtree', marginRight:'80px', textAlign:'left', marginLeft:'30px' }}>
                         Your edge in the market starts with superior analysis.
                       </Typography>
-                      <Button
-                        onClick={() => { window.location.href = 'http://localhost:3000/myapp/pages/login/login3'; }}
-                        variant="outlined"
-                        sx={{
-                          fontFamily: 'Figtree',
-                          backgroundColor: 'transparent',
-                          border: 'none',
-                          borderWidth: '2px',
-                          borderStyle: 'solid',
-                          borderImage: 'linear-gradient(93.4deg, #FFC42B 0%, #FFD567 50%, #FFC42B 100%)',
-                          borderImageSlice: 1,
-                          color: '#FFC42B',
-                          mt: '10px',
-                          '&:hover': {
-                            backgroundColor: 'rgba(255, 196, 43, 0.1)',
-                            borderImage: 'linear-gradient(93.4deg, #FFD567 0%, #FFC42B 50%, #FFD567 100%)'
-                          }
-                        }}
-                      >
-                        Get Started
-                      </Button>
+                      <Box sx={{ position: 'relative', width:'13rem' }}>
+                        <Button variant="contained"
+                          onClick={() => { window.location.href = 'http://localhost:3000/myapp/pages/login/login3'; }}                          
+                          sx={{        
+                            position:'absolute',
+                            left:'0',   
+                            fontFamily: 'Figtree',
+                            width:'13rem',
+                            height:'3.2rem',
+                            backgroundColor: '#231E13',
+                            border: 'none',
+                            borderWidth: '2px',
+                            borderStyle: 'solid',
+                            borderImage: 'linear-gradient(93.4deg, #FFC42B 0%, #FFD567 50%, #FFC42B 100%)',
+                            borderImageSlice: 1,
+                            color: '#FFC42B',
+                            mt: '10px',
+                            '&:hover': {
+                              backgroundColor: 'rgba(255, 196, 43, 0.1)',
+                              borderImage: 'linear-gradient(93.4deg, #FFC42B 100%, #FFD567 100%, #FFC42B 100%)'
+                            }
+                          }}
+                        >
+                          Get Started
+                        </Button>
+                      </Box>
                     </SmallBoxContent>
                   ) : (
                     <SmallBoxContent>
