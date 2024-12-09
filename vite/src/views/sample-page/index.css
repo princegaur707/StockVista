@@ -8,6 +8,8 @@
   padding: 0.2rem 0.5rem;
   border-radius: 4px;
   font-size: 1.4rem;
+  letter-spacing: 5px;
+  margin-left: 80px;
 }
 .navbar-border {
   border-bottom: 1.25px solid;
@@ -27,10 +29,11 @@
   align-content: end;
   padding-top: 4rem;
 }
+
 .feature-preview {
-  display: flex;
+  /* display: flex; */
   row-gap: 10px;
-  flex-direction: column;
+  /* flex-direction: column; */
 }
 .feature-icon {
   width: 4rem;

@@ -37,7 +37,8 @@ const Header = ({ handleLeftDrawerToggle }) => {
             variant="h6"
             component="div"
             className="navbar-product-name"
-            sx={{ flexGrow: { sm: 1 }, textAlign: { xs: 'center', sm: 'left' }, color: '#ffffff',borderImage: 'linear-gradient(93.4deg, #FFCC19 65%, #FFE791 65%, #FFCC19 65%)', }}
+            sx={{ flexGrow: { sm: 1 }, textAlign: { xs: 'center', 
+              sm: 'left' }, letterSpacing:'4px', color: '#ffffff',borderImage: 'linear-gradient(93.4deg, #FFCC19 65%, #FFE791 65%, #FFCC19 65%)', }}
           >
             <span className="custom-product-name">INVESTO</span>
           </Typography>

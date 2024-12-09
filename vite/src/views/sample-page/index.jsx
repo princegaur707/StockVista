@@ -34,22 +34,23 @@ const content = {
     title: 'Swing Centre',
     icon: SwingAnalysis,
     description:
-      'It provides the best stocks available to add in your swing baskets, & gives clear idea about current money flow across the different market segment. Stocks which are breaking important support and resistance with momentum will be filtered here'
+      'It provides the best stocks available to add in your swing baskets, & gives clear idea about current money flow across the different market segment. Stocks which are breaking important support and resistance with momentum will be filtered here.'
   },
   4: {
     title: 'Pro Setups',
     icon: ProSetup,
     description:
-      'Here active day traders will find most suitable trade setups as per their style of trading. Pro setup gives variety of trades starts from highest reversal trade opportunities, momentum trading, loss of momentum trading , multiple support/ resistance breakout and much more pro setups to trade in intraday'
+      'Here active day traders will find most suitable trade setups as per their style of trading. Pro setup gives variety of trades starts from highest reversal trade opportunities, momentum trading, loss of momentum trading , multiple support/ resistance breakout and much more pro setups to trade in intraday.'
   }
 };
 
 const RootContainer = styled('div')({
-  backgroundColor: '#121212',
   color: '#ffffff',
   minHeight: '100vh',
   display: 'flex',
-  flexDirection: 'column'
+  flexDirection: 'column',
+  background: 'linear-gradient(90deg, rgba(18, 18, 18, 1) 0%, rgba(35, 35, 35, 1) 50%, rgba(10, 10, 10, 0.5) 100%)',
+  // backgroundColor: 'linear-gradient(90deg, #000000 10%, #121212 100%, #141516 100%)'
 });
 
 const NavbarLink = styled(Link)(({ theme }) => ({
@@ -74,7 +75,7 @@ const ContentContainer = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
   gap: '20px',
-  marginTop: '10rem'
+  marginTop: '10rem',
 });
 
 const RowContainer = styled(Box)({
@@ -86,7 +87,6 @@ const RowContainer = styled(Box)({
 });
 
 const SmallBox = styled(Box)({
-  flexBasis: '30%',
   color: '#ffffff',
   padding: '20px',
   borderRadius: '8px',
@@ -102,15 +102,17 @@ const SmallBoxContent = styled(Box)({
   flexDirection: 'column',
   alignItems: 'center',
   textAlign: 'center',
-  gap: '10px'
+  letterSpacing:'10px',
+  gap: '10px'//gap b/w the lines vertically
 });
 
 const LargeBox = styled(Box)({
-  flexBasis: '70%',
+  width: '50rem',
+  height:'30rem',
   backdropFilter: 'blur(200px)',
   background: '#FFFFFF0A',
   padding: '20px',
-  borderRadius: '8px',
+  // borderRadius: '8px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -121,13 +123,13 @@ const LargeBox = styled(Box)({
 });
 
 const Heading = styled(Typography)({
-  fontSize: '1.25rem',
+  fontSize: '1.3rem',
   textTransform: 'uppercase',
   fontFamily: 'Figtree'
 });
 
 const Description = styled(Typography)({
-  fontSize: '0.875rem',
+  fontSize: '0.8rem',
   color: '#d3d3d3',
   fontFamily: 'Figtree'
 });
@@ -141,7 +143,7 @@ const TestimonialsContainer = styled(Box)({
 });
 
 const TestimonialHeading = styled(Typography)({
-  fontSize: '2.6rem',
+  fontSize: '3.1rem',
   fontWeight: '500',
   marginBottom: '20px',
   fontFamily: 'Playfair Display',
@@ -149,12 +151,14 @@ const TestimonialHeading = styled(Typography)({
 });
 
 const SampleReview = styled(Typography)({
-  textAlign: 'center',
-  maxWidth: '600px',
+  textAlign: 'left',
+  // fontSize:'1.3rem',
+  maxWidth: '1000px',
   marginBottom: '20px',
   color: '#443E4E',
   fontStyle: 'italic',
-  fontFamily: 'Figtree'
+  fontFamily: 'Figtree',
+  letterSpacing:'1px'
 });
 
 const TestimonialFooter = styled(Box)({
@@ -202,14 +206,14 @@ const TextContainer = styled(Box)({
 });
 
 const Line1 = styled(Typography)({
-  fontSize: '2.2rem',
+  fontSize: '3.4rem',
   fontWeight: '600',
   fontFamily: 'Playfair Display',
   textAlign: 'center'
 });
 
 const Line2 = styled(Typography)({
-  fontSize: '0.9rem',
+  fontSize: '0.8rem',
   color: '#d3d3d3',
   textAlign: 'center',
   fontFamily: 'Figtree'
@@ -218,7 +222,8 @@ const Line2 = styled(Typography)({
 const FlexColumnContainer = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
-  width: '100%' // Ensure it takes the full width
+  width: '92%', // Ensure it takes the full width
+  margin: 'auto'
 });
 
 const FullWidthImage = styled('div')({
@@ -233,6 +238,7 @@ const FullWidthImage = styled('div')({
 const FooterContainer = ({ children }) => (
   <Box
     sx={{
+      marginTop:'125px',
       backgroundColor: '#FFFFFF',
       borderRadius: '16px 16px 0 0',
       overflow: 'hidden' // Optional, prevents content from overflowing rounded corners
@@ -241,6 +247,8 @@ const FooterContainer = ({ children }) => (
     {children}
   </Box>
 );
+
+
 
 const SamplePage = () => (
   <RootContainer>
@@ -255,7 +263,7 @@ const SamplePage = () => (
           >
             <span className="custom-product-name">INVESTO</span>
           </Typography>
-          <Box sx={{ display: { xs: 'flex', sm: 'block' }, flexDirection: 'column', alignItems: 'center' }}>
+          <Box sx={{ display: { xs: 'flex', sm: 'block' }, flexDirection: 'column', alignItems: 'center', mr:'75px' }}>
             <NavbarLink href="#features" variant="body2">
               FEATURES
             </NavbarLink>
@@ -276,53 +284,63 @@ const SamplePage = () => (
           {index % 2 === 0 ? (
             <FlexColumnContainer>
               {' '}
-              {/* New wrapper for column layout */}
-              <Box display="flex" width="100%">
-                <SmallBox>
-                  {index === 0 ? (
-                    <SmallBoxContent>
-                      <Typography sx={{ fontSize: '2.2rem', fontWeight: '600', fontFamily: 'Playfair Display' }}>
+              {/* New wrapper for column layout */}  
+                {index === 0 ? (
+                  <Box display="flex"> 
+                  <SmallBox>
+                    <SmallBoxContent sx={{display:'flex', alignItems:'flex-start'}}>
+                      <Typography sx={{ fontSize: '3.6rem', fontWeight: '600', fontFamily: 'Playfair Display', letterSpacing:'2px' }}>
                         See Beyond,
                         <br />
                         Stand Apart
                       </Typography>
-                      <Typography sx={{ fontSize: '0.9rem', color: '#d3d3d3', fontFamily: 'Figtree' }}>
-                        Your edge in the market starts with superior analysis.
-                      </Typography>
-                      <Button
-                        onClick={() => { window.location.href = 'http://localhost:3000/myapp/pages/login/login3'; }}
-                        variant="outlined"
-                        sx={{
-                          fontFamily: 'Figtree',
-                          backgroundColor: 'transparent',
-                          border: 'none',
-                          borderWidth: '2px',
-                          borderStyle: 'solid',
-                          borderImage: 'linear-gradient(93.4deg, #FFC42B 0%, #FFD567 50%, #FFC42B 100%)',
-                          borderImageSlice: 1,
-                          color: '#FFC42B',
-                          mt: '10px',
-                          '&:hover': {
-                            backgroundColor: 'rgba(255, 196, 43, 0.1)',
-                            borderImage: 'linear-gradient(93.4deg, #FFD567 0%, #FFC42B 50%, #FFD567 100%)'
-                          }
-                        }}
-                      >
-                        Get Started
-                      </Button>
-                    </SmallBoxContent>
-                  ) : (
-                    <SmallBoxContent>
-                      <Box className="feature-preview">
-                        <img src={content[index].icon} className="feature-icon" />
-                        <Heading>{content[index].title}</Heading>
-                        <Description>{content[index].description}</Description>
+                      <Box sx={{width:'250px', mr:'200px'}}>
+                        <Typography sx={{ fontSize: '0.9rem', color: '#d3d3d3', fontFamily: 'Figtree', textAlign:'left'}}>
+                          Your edge in the market starts with superior analysis.
+                        </Typography>
+                        </Box>
+                      <Box sx={{width:'13rem'}}>
+                        <Button variant="contained"
+                          onClick={() => { window.location.href = 'http://localhost:3000/myapp/pages/login/login3'; }}                          
+                          sx={{           
+                            fontFamily: 'Figtree',
+                            width:'13rem',
+                            height:'3.2rem',
+                            backgroundColor: '#231E13',
+                            border: 'none',
+                            borderWidth: '2px',
+                            borderStyle: 'solid',
+                            borderImage: 'linear-gradient(93.4deg, #FFC42B 0%, #FFD567 50%, #FFC42B 100%)',
+                            borderImageSlice: 1,
+                            color: '#FFC42B',
+                            mt: '10px',
+                            '&:hover': {
+                              backgroundColor: 'rgba(255, 196, 43, 0.1)',
+                              borderImage: 'linear-gradient(93.4deg, #FFC42B 100%, #FFD567 100%, #FFC42B 100%)'
+                            }
+                          }}
+                        >
+                          Get Started
+                        </Button>
                       </Box>
                     </SmallBoxContent>
+                    </SmallBox >
+                    <LargeBox  />
+                    </Box>
+                  ) : (
+                    <Box display="flex">
+                    <SmallBox >
+                      <SmallBoxContent sx={{mr:'100px'}}>
+                        <Box className="feature-preview">
+                          <img src={content[index].icon} className="feature-icon" />
+                          <Heading>{content[index].title}</Heading>
+                          <Description>{content[index].description}</Description>
+                        </Box>
+                      </SmallBoxContent>
+                    </SmallBox >
+                    <LargeBox  sx={{width:'150rem', height:'30rem'}}/>
+                    </Box>
                   )}
-                </SmallBox>
-                <LargeBox />
-              </Box>
               {index === 0 && ( // Product info container should be below the boxes
                 <div className="product-info-container">
                   <TextContainer>
@@ -334,10 +352,10 @@ const SamplePage = () => (
             </FlexColumnContainer>
           ) : (
             <FlexColumnContainer>
-              <Box display="flex" width="100%">
-                <LargeBox />
-                <SmallBox>
-                  <SmallBoxContent>
+              <Box display="flex">
+                <LargeBox sx={{width:'150rem', height:'30rem'}}/>
+                <SmallBox >
+                  <SmallBoxContent sx={{ml:'80px'}}>
                     <Box className="feature-preview">
                       <img src={content[index].icon} className="feature-icon" />
                       <Heading>{content[index].title}</Heading>
