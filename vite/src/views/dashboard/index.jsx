@@ -14,6 +14,7 @@ import MarketDataTable from './components/MarketData';
 import CandlestickChart from './components/CandleStickChart';
 import ThirtyDayReportTable from './components/ThirtyDayReport';
 import NintyDayReportTable from './components/NintyDayReport';
+import WeeklyBreakoutTable from './components/WeeklyBreakout';
 import EarningCard from './components/EarningCard';
 import PopularCard from './components/PopularCard';
 import TotalOrderLineChartCard from './components/TotalOrderLineChartCard';
@@ -22,7 +23,7 @@ import TotalIncomeLightCard from './components/TotalIncomeLightCard';
 import TotalGrowthBarChart from './components/TotalGrowthBarChart';
 import PropTypes from 'prop-types';
 import { Tabs, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import { x } from 'joi';
+// import { x } from 'joi';
 
 // modal style
 const modalStyle = {
@@ -337,7 +338,7 @@ export default function DashboardDefault() {
             </TabPanel>
             <TabPanel value="5">
               <Box>
-                <MarketDataTable
+                <WeeklyBreakoutTable
                   updateToken={updateToken}
                   displayTopGainers={true} // or false depending on the case
                   displayTopLosers={false} // or true depending on the case
