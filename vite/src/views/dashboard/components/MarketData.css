@@ -4,7 +4,7 @@
   border: none; /* Remove outer border */
   font-size: 12px; /* Enteries of rows */
   --DataGrid-rowBorderColor: #1d1e20;
-  --DataGrid-containerBackground: #141516;
+  --DataGrid-containerBackground: #1D1E20;
   /* For border b/w rows */
 }
 
@@ -59,7 +59,7 @@
   color: #d9d9d9; /* Light grey color for header text */
   font-size: 14px;
   /* border: none; */
-  /* background-color: #00ff00; */
+  /* background-color: #00ff00 !important; */
 }
 
 .market-data .MuiDataGrid-cell {
@@ -87,7 +87,7 @@
 
 /* Customize pagination style */
 .market-data .MuiDataGrid-footerContainer {
-  background-color: #1d1e20;
+  background-color: #1956d2 !important;
   /* Darker footer background */
   color: #b62727 !important;
 }
