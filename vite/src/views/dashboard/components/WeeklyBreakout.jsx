@@ -227,4 +227,4 @@ const WeeklyBreakoutTable = ({ setSymbolToken, updateToken, liveMarketData }) =>
   );
 };
 
-export default ThirtyDayReportTable;
+export default WeeklyBreakoutTable;
