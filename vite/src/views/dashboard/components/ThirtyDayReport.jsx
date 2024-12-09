@@ -34,7 +34,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
         investo_rating: null,
         symbolToken: item.token,
       }));
-  
+      console.log(initialData,"initial data output")
       setData(initialData);
       setError(''); // Clear any previous errors
     } catch (err) {
@@ -56,13 +56,15 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
   }, []);
 
 
-  useEffect(() => {
-    if(liveMarketData) {
-      setData(liveMarketData);
-    }
-  },[liveMarketData]);
+  // useEffect(() => {
+  //   if(liveMarketData) {
+  //     console.log(liveMarketData, "test");
+  //     setData(liveMarketData);
+  //   }
+  // },[liveMarketData]);
   // useEffect(() => {
   //   if (liveMarketData) {
+  //     console.log(liveMarketData, "test");
   //     setData((prevData) =>
   //       prevData.map((item) =>
   //         item.tradingSymbol === liveMarketData.tradingSymbol
@@ -72,6 +74,25 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
   //     );
   //   }
   // }, [liveMarketData]);
+  useEffect(() => {
+    if (Array.isArray(liveMarketData) && liveMarketData.length > 0) {
+      setData((prevData) =>
+        prevData.map((item) => {
+          // Find matching live market data for the current item
+          const liveData = liveMarketData.find(
+            (liveItem) => liveItem.tradingSymbol === item.tradingSymbol
+          );
+  
+          // If a match is found and ltp exists, update the item
+          return liveData && liveData.ltp
+            ? { ...item, ltp: liveData.ltp }
+            : item;
+        })
+      );
+    }
+  }, [liveMarketData]);
+  
+  
 
   const handleCellClick = (params) => {
     setSymbolToken(params.row.symbolToken);
@@ -109,6 +130,8 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
     {
       field: 'ltp',
       headerName: 'Price',
+      // alignContent: 'center',
+      headerAlign: 'center',
       headerClassName: 'header-name',
       flex: 1,
       type: 'number',
