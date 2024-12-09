@@ -4,7 +4,7 @@ import { Box, CircularProgress, Typography, CssBaseline } from '@mui/material';
 import './MarketData.css';
 import { IconBackground } from '@tabler/icons-react';
 
-const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, setSymbolToken, liveMarketData }) => {
+const IPODataTable = ({ updateToken, displayTopGainers, displayTopLosers, setSymbolToken, liveMarketData }) => {
   console.log(liveMarketData, 'bro');
 
   const [data, setData] = useState([]);
@@ -83,7 +83,8 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
   const columns = [
     { field: 'tradingSymbol', headerName: 'Name', headerClassName: 'header-name', flex: 1 },
     {
-      field: 'ltp',      headerName: 'LTP',
+      field: 'ltp',
+      headerName: 'LTP',
       headerClassName: 'header-name',
       flex: 1,
       type: 'number',
@@ -213,4 +214,4 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
   );
 };
 
-export default MarketDataTable;
+export default IPODataTable;

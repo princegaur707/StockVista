@@ -9,13 +9,24 @@ import Box from '@mui/material/Box';
 // project import
 import MainCard from 'ui-component/MainCard';
 
-export default function AnalyticEcommerce({ title, count, percentage, isLoss }) {
-  const percentageColor = percentage < 0 ? '#FF5966' : '#00EFC8';
+
+// Function to format numbers in the Indian numbering system
+const formatNumberToIndian = (num) => {
+  // Ensure the input is a number
+  const number = Number(num);
+  if (isNaN(number)) return num; // Return the original value if not a valid number
+  return number.toLocaleString('en-IN');
+};
+
+
+export default function AnalyticEcommerce({ title, count, change, percentage }) {
+  const percentageColor = percentage < 0 ? '#FF5966' : '#00EFC8'; // Red for loss, green for gain
+
   return (
     <MainCard
       contentSX={{
-        p: 2.25,
-        backgroundColor: '#1e1e1e', // Dark background similar to the image
+        p: 3.25,
+        backgroundColor: '#1e1e1e', // Dark background
         color: 'white', // White text color
       }}
     >
@@ -50,22 +61,42 @@ export default function AnalyticEcommerce({ title, count, percentage, isLoss }) 
                 fontSize: '24px',
               }}
             >
-              {count}
+              {formatNumberToIndian(count)}
             </Typography>
 
-            {/* Percentage */}
-            {percentage !== undefined && (
-              <Typography
-                variant="body2"
-                sx={{
-                  color: percentageColor,
-                  fontFamily: 'Figtree',
-                  fontWeight: '500',
-                  fontSize: '14px',
-                }}
-              >
-                {`${percentage}%`}
-              </Typography>
+            {/* Change and Percentage */}
+            {(change !== undefined || percentage !== undefined) && (
+              <Box sx={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+                {/* Change */}
+                {change !== undefined && (
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: percentageColor,
+                      fontFamily: 'Figtree',
+                      fontWeight: '500',
+                      fontSize: '14px',
+                    }}
+                  >
+                    {`${change}`}
+                  </Typography>
+                )}
+
+                {/* Percentage */}
+                {percentage !== undefined && (
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: percentageColor,
+                      fontFamily: 'Figtree',
+                      fontWeight: '500',
+                      fontSize: '14px',
+                    }}
+                  >
+                    {`(${percentage}%)`}
+                  </Typography>
+                )}
+              </Box>
             )}
           </Stack>
         </Grid>
@@ -76,7 +107,7 @@ export default function AnalyticEcommerce({ title, count, percentage, isLoss }) 
 
 AnalyticEcommerce.propTypes = {
   title: PropTypes.string,
-  count: PropTypes.string,
+  count: PropTypes.number,
+  change: PropTypes.number,
   percentage: PropTypes.number,
-  isLoss: PropTypes.bool,
 };

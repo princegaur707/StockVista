@@ -3,7 +3,7 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import './MarketData.css';
 
-const NintyDayReportTable = ({ updateToken, displayTopGainers, displayTopLosers, setSymbolToken, liveMarketData }) => {
+const NintyDayReportTable = ({ updateToken, setSymbolToken, liveMarketData }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -92,16 +92,6 @@ const NintyDayReportTable = ({ updateToken, displayTopGainers, displayTopLosers,
   }
 
   let filteredData = [...data]; // Create a copy of the data
-
-  if (displayTopGainers) {
-    filteredData.sort((a, b) => b.percentChange - a.percentChange); // Sort by largest change %
-    filteredData = filteredData.slice(0, 20); // Get top 20
-  }
-
-  if (displayTopLosers) {
-    filteredData.sort((a, b) => a.percentChange - b.percentChange); // Sort by smallest change %
-    filteredData = filteredData.slice(0, 20);
-  }
 
   const columns = [
     { field: 'tradingSymbol', headerName: 'Symbol', flex: 1 },

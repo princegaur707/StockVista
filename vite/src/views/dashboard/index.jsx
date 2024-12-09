@@ -12,6 +12,7 @@ import './index.css';
 import AnalyticEcommerce from 'ui-component/cards/statistics/AnalyticEcommerce';
 import MarketDataTable from './components/MarketData';
 import CandlestickChart from './components/CandleStickChart';
+import ThirtyDayReportTable from './components/ThirtyDayReport';
 import NintyDayReportTable from './components/NintyDayReport';
 import EarningCard from './components/EarningCard';
 import PopularCard from './components/PopularCard';
@@ -47,10 +48,10 @@ export default function DashboardDefault() {
   const [liveMarketData, setLiveMarketData] = useState([]); // State for live WebSocket data
 
   const [data, setData] = useState({
-    nifty: { count: '0', percentage: 0 },
-    sensex: { count: '0', percentage: 0 },
-    nifty50: { count: '0', percentage: 0 },
-    niftyBank: { count: '0', percentage: 0 }
+    nifty: { count: 0, change: 0, percentage: 0 },
+    sensex: { count: 0, change: 0, percentage: 0 },
+    nifty50: { count: 0, change: 0, percentage: 0 },
+    niftyBank: { count: 0, change: 0, percentage: 0 }
   });
   // const updateLiveData = (message) => {
   //   const { Symbol } = message; // Extract the stock symbol from the message
@@ -146,7 +147,7 @@ export default function DashboardDefault() {
   };
 
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:8000/ws/nifty50-feed/');
+    const ws = new WebSocket('ws://localhost:8000/ws/nse-feed/');
 
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
@@ -170,25 +171,25 @@ export default function DashboardDefault() {
       case 'NIFTY':
         setData((prevData) => ({
           ...prevData,
-          nifty: { count: `${parseFloat(LTP).toFixed(2)}`, percentage: parseFloat(ChangePercentage) }
+          nifty: { count: `${parseFloat(LTP).toFixed(2)}`, change: parseFloat(Change), percentage: parseFloat(ChangePercentage) }
         }));
         break;
       case 'SENSEX':
         setData((prevData) => ({
           ...prevData,
-          sensex: { count: `${parseFloat(LTP).toFixed(2)}`, percentage: parseFloat(ChangePercentage) }
+          sensex: { count: `${parseFloat(LTP).toFixed(2)}`, change: parseFloat(Change), percentage: parseFloat(ChangePercentage) }
         }));
         break;
       case 'NIFTY MIDCAP':
         setData((prevData) => ({
           ...prevData,
-          nifty50: { count: `${parseFloat(LTP).toFixed(2)}`, percentage: parseFloat(ChangePercentage) }
+          nifty50: { count: `${parseFloat(LTP).toFixed(2)}`, change: parseFloat(Change), percentage: parseFloat(ChangePercentage) }
         }));
         break;
       case 'BANKNIFTY':
         setData((prevData) => ({
           ...prevData,
-          niftyBank: { count: `${parseFloat(LTP).toFixed(2)}`, percentage: parseFloat(ChangePercentage) }
+          niftyBank: { count: `${parseFloat(LTP).toFixed(2)}`, change: parseFloat(Change), percentage: parseFloat(ChangePercentage) }
         }));
         break;
       default:
@@ -235,8 +236,9 @@ export default function DashboardDefault() {
             <div className='Analyticbox'>
               <AnalyticEcommerce title="NIFTY" 
               count={data.nifty.count} 
+              change={data.nifty.change}
               percentage={data.nifty.percentage} 
-              isLoss={data.nifty.percentage < 0}
+              // isLoss={data.nifty.percentage < 0}
             />
             </div>
           </Grid>
@@ -245,8 +247,9 @@ export default function DashboardDefault() {
               <AnalyticEcommerce 
                 title="SENSEX" 
                 count={data.sensex.count} 
+                change={data.sensex.change}
                 percentage={data.sensex.percentage}
-                isLoss={data.sensex.percentage < 0}
+                // isLoss={data.sensex.percentage < 0}
               />
             </div>
           </Grid>
@@ -255,8 +258,9 @@ export default function DashboardDefault() {
               <AnalyticEcommerce
                 title="NIFTY BANK"
                 count={data.niftyBank.count}
+                change={data.niftyBank.change}
                 percentage={data.niftyBank.percentage}
-                isLoss={data.niftyBank.percentage < 0}
+                // isLoss={data.niftyBank.percentage < 0}
               />
             </div>
           </Grid>
@@ -265,8 +269,9 @@ export default function DashboardDefault() {
               <AnalyticEcommerce
                 title="NIFTY 50"
                 count={data.nifty50.count}
+                change={data.nifty50.change}
                 percentage={data.nifty50.percentage}
-                isLoss={data.nifty50.percentage < 0}
+                // isLoss={data.nifty50.percentage < 0}
               />
             </div>
           </Grid>
@@ -290,10 +295,8 @@ export default function DashboardDefault() {
             </Box>
             <TabPanel value="1">
               <Box>
-                <MarketDataTable
+                <ThirtyDayReportTable
                   updateToken={updateToken}
-                  displayTopGainers={true}
-                  displayTopLosers={false}
                   setSymbolToken={setSymbolToken}
                   liveMarketData={liveMarketData} // New prop for live WebSocket data
                 />
@@ -384,75 +387,3 @@ export default function DashboardDefault() {
     </Box>
   );
 }
-
-// import { useEffect, useState } from 'react';
-
-// // material-ui
-// import Grid from '@mui/material/Grid';
-
-// // project imports
-// import EarningCard from './EarningCard';
-// import PopularCard from './PopularCard';
-// import TotalOrderLineChartCard from './TotalOrderLineChartCard';
-// import TotalIncomeDarkCard from './TotalIncomeDarkCard';
-// import TotalIncomeLightCard from './TotalIncomeLightCard';
-// import TotalGrowthBarChart from './TotalGrowthBarChart';
-
-// import { gridSpacing } from 'store/constant';
-
-// // assets
-// import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
-
-// // ==============================|| DEFAULT DASHBOARD ||============================== //
-
-// const Dashboard = () => {
-//   const [isLoading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     setLoading(false);
-//   }, []);
-
-//   return (
-//     <Grid container spacing={gridSpacing}>
-//       <Grid item xs={12}>
-//         <Grid container spacing={gridSpacing}>
-//           <Grid item lg={4} md={6} sm={6} xs={12}>
-//             <EarningCard isLoading={isLoading} />
-//           </Grid>
-//           <Grid item lg={4} md={6} sm={6} xs={12}>
-//             <TotalOrderLineChartCard isLoading={isLoading} />
-//           </Grid>
-//           <Grid item lg={4} md={12} sm={12} xs={12}>
-//             <Grid container spacing={gridSpacing}>
-//               <Grid item sm={6} xs={12} md={6} lg={12}>
-//                 <TotalIncomeDarkCard isLoading={isLoading} />
-//               </Grid>
-//               <Grid item sm={6} xs={12} md={6} lg={12}>
-//                 <TotalIncomeLightCard
-//                   {...{
-//                     isLoading: isLoading,
-//                     total: 203,
-//                     label: 'Total Income',
-//                     icon: <StorefrontTwoToneIcon fontSize="inherit" />
-//                   }}
-//                 />
-//               </Grid>
-//             </Grid>
-//           </Grid>
-//         </Grid>
-//       </Grid>
-//       <Grid item xs={12}>
-//         <Grid container spacing={gridSpacing}>
-//           <Grid item xs={12} md={8}>
-//             <TotalGrowthBarChart isLoading={isLoading} />
-//           </Grid>
-//           <Grid item xs={12} md={4}>
-//             <PopularCard isLoading={isLoading} />
-//           </Grid>
-//         </Grid>
-//       </Grid>
-//     </Grid>
-//   );
-// };
-
-// export default Dashboard;
