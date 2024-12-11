@@ -149,6 +149,7 @@ export default function DashboardDefault() {
 
   useEffect(() => {
     const ws = new WebSocket('ws://localhost:8000/ws/nse-feed/');
+    // const ws = [];
 
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);

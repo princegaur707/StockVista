@@ -3,66 +3,96 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import './MarketData.css';
 
-const NintyDayReportTable = ({ updateToken, setSymbolToken, liveMarketData }) => {
+const NintyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  const fetchReportData = async (retries = 3, delay = 1000) => {
+    try {
+      const response = await fetch('http://localhost:8000/api/service/report/90-day-report/');
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+  
+      const result = await response.json();
+      const reportData = result['data'];
+  
+      if (!Array.isArray(reportData)) {
+        console.error('Expected reportData to be an array:', reportData);
+        setError('Invalid data structure received from the 30-day report API.');
+        return;
+      }
+  
+      // Map the fetched report data to the initial table data
+      const initialData = reportData.map((item) => ({
+        tradingSymbol: item.symbol,
+        ltp: item.latest_price || '',
+        market_cap: item.market_cap,
+        price_rating: item.price_rating,
+        netChange: item.pct_change,
+        percentChange: null,
+        earning_rating: null,
+        investo_rating: null,
+        symbolToken: item.token,
+      }));
+      console.log(initialData,"initial data output")
+      setData(initialData);
+      setError(''); // Clear any previous errors
+    } catch (err) {
+      if (retries > 0) {
+        console.warn(`Retrying... Attempts left: ${retries}`);
+        setTimeout(() => fetchReportData(retries - 1, delay), delay);
+      } else {
+        console.error('Failed to fetch report data after retries:', err);
+        setError('Failed to fetch report data after multiple attempts.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+
   useEffect(() => {
-    const fetchMarketData = async () => {
-      try {
-        const response = await fetch('http://localhost:8000/api/service/market-data/');
-        if (!response.ok) throw new Error('Failed to fetch market data.');
-
-        const jsonData = await response.json();
-        setData(jsonData.data.fetched); // Assuming the fetched data is inside `data.fetched`
-      } catch (err) {
-        setError('Failed to fetch market data: ' + err.message);
-      }
-    };
-
-    const fetchReportData = async () => {
-      try {
-        const response = await fetch('http://localhost:8000/api/service/report/90-day-report/');
-        if (!response.ok) throw new Error('Failed to fetch 90-day report.');
-
-        const reportResult = await response.json();
-        const reportData = reportResult['90_day_report'];
-
-        // Merge market data with report data
-        setData((prevData) =>
-          prevData.map((item) => {
-            const matchingReport = reportData.find((report) => report.symbol === item.tradingSymbol);
-            return matchingReport
-              ? { ...item, price_rating: matchingReport.price_rating }
-              : { ...item, price_rating: null }; // Assign null if no match found
-          })
-        );
-      } catch (err) {
-        setError('Failed to fetch 90-day report: ' + err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const fetchData = async () => {
-      setLoading(true);
-      await fetchMarketData();
-      await fetchReportData();
-    };
-
-    fetchData();
+    fetchReportData();
   }, []);
 
+
+  // useEffect(() => {
+  //   if(liveMarketData) {
+  //     console.log(liveMarketData, "test");
+  //     setData(liveMarketData);
+  //   }
+  // },[liveMarketData]);
+  // useEffect(() => {
+  //   if (liveMarketData) {
+  //     console.log(liveMarketData, "test");
+  //     setData((prevData) =>
+  //       prevData.map((item) =>
+  //         item.tradingSymbol === liveMarketData.tradingSymbol
+  //           ? { ...item, ...liveMarketData }
+  //           : item
+  //       )
+  //     );
+  //   }
+  // }, [liveMarketData]);
   useEffect(() => {
-    if (liveMarketData) {
+    if (Array.isArray(liveMarketData) && liveMarketData.length > 0) {
       setData((prevData) =>
-        prevData.map((item) =>
-          item.tradingSymbol === liveMarketData.tradingSymbol ? { ...item, ...liveMarketData } : item
-        )
+        prevData.map((item) => {
+          // Find matching live market data for the current item
+          const liveData = liveMarketData.find(
+            (liveItem) => liveItem.tradingSymbol === item.tradingSymbol
+          );
+  
+          // If a match is found and ltp exists, update the item
+          return liveData && liveData.ltp
+            ? { ...item, ltp: liveData.ltp }
+            : item;
+        })
       );
     }
   }, [liveMarketData]);
+  
+  
 
   const handleCellClick = (params) => {
     setSymbolToken(params.row.symbolToken);
@@ -91,29 +121,91 @@ const NintyDayReportTable = ({ updateToken, setSymbolToken, liveMarketData }) =>
     return <Typography align="center">No Data Available</Typography>;
   }
 
-  let filteredData = [...data]; // Create a copy of the data
-
   const columns = [
-    { field: 'tradingSymbol', headerName: 'Symbol', flex: 1 },
-    { field: 'ltp', headerName: 'Price', flex: 1, type: 'number' },
-    { field: 'netChange', headerName: 'Change', flex: 1, type: 'number' },
-    { field: 'tradeVolume', headerName: 'Volume', flex: 1, type: 'number' },
-    { field: 'price_rating', headerName: 'Price Rating', flex: 1, align: 'center', headerAlign: 'center' }
+    { 
+      field: 'tradingSymbol', 
+      headerName: 'Symbol', 
+      flex: 1 
+    },
+    {
+      field: 'ltp',
+      headerName: 'Price',
+      // alignContent: 'center',
+      headerAlign: 'center',
+      headerClassName: 'header-name',
+      flex: 1,
+      type: 'number',
+      renderCell: (params) => (
+        <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+          <Typography align="center">{params?.value}</Typography>
+        </Box>
+      )
+    },
+    {
+      field: 'netChange',
+      headerName: 'Change',
+      flex: 1,
+      type: 'number',
+      renderCell: (params) => (
+        <Box
+          height="100%"
+          color={params.value > 0 ? '#00EFC8' : params.value < 0 ? '#FF5966' : '#EEEEEE'}
+        >
+          {params.value}
+        </Box>
+      ),
+    },
+    { 
+      field: 'market_cap', 
+      headerName: 'Market Cap',
+      flex: 1, 
+      type: 'number' 
+    },
+    { 
+      field: 'price_rating',
+      headerName: 'Price Rating', 
+      flex: 1, 
+      type: 'number',
+      alignContent: 'center' 
+    },
+    {
+      field: 'earning_rating',
+      headerName: 'Earning Rating',
+      flex: 1,
+      type: 'number',
+      align: 'center',
+    },
+    {
+      field: 'investo_rating',
+      headerName: 'Investo Rating',
+      flex: 1,
+      type: 'number',
+      align: 'center',
+    },
   ];
 
-  const rows = filteredData.map((row, index) => ({
+  const rows = data.map((row, index) => ({
     id: index,
     tradingSymbol: row.tradingSymbol,
     ltp: row.ltp,
     netChange: row.netChange,
-    tradeVolume: row.tradeVolume,
+    market_cap: row.market_cap,
     price_rating: row.price_rating,
-    symbolToken: row.symbolToken
+    earning_rating: row.earning_rating,
+    investo_rating: row.investo_rating,
+    symbolToken: row.symbolToken,
   }));
 
   return (
-    <Box className="market-data" sx={{ mt: 0, width: '100%' }}>
-      <Box sx={{ height: '86vh' }}>
+    <Box
+      className="market-data"
+      sx={{
+        mt: 0,
+        width: '100%',
+        '&::-webkit-scrollbar': { display: 'none' },
+      }}
+    >
+      <Box sx={{ height: '86vh', width: '90vw' }}>
         <DataGrid
           rows={rows}
           columns={columns}
@@ -122,7 +214,13 @@ const NintyDayReportTable = ({ updateToken, setSymbolToken, liveMarketData }) =>
           onCellClick={handleCellClick}
           components={{ Toolbar: GridToolbar }}
           pagination
-          paginationMode="client"
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 10,
+              },
+            },
+          }}
         />
       </Box>
     </Box>

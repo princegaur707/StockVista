@@ -87,9 +87,10 @@
 
 /* Customize pagination style */
 .market-data .MuiDataGrid-footerContainer {
-  background-color: #1956d2 !important;
+  background-color: #1D1E20 !important;
   /* Darker footer background */
-  color: #b62727 !important;
+  margin-right:40px !important;
+  color: #eeeeee !important;
 }
 
 /* .market-data .Mui-selected {

@@ -14,7 +14,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
   
       const result = await response.json();
-      const reportData = result['30_day_report']?.data;
+      const reportData = result['data'];
   
       if (!Array.isArray(reportData)) {
         console.error('Expected reportData to be an array:', reportData);
@@ -25,7 +25,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
       // Map the fetched report data to the initial table data
       const initialData = reportData.map((item) => ({
         tradingSymbol: item.symbol,
-        ltp: item.LTP || '',
+        ltp: item.latest_price || '',
         market_cap: item.market_cap,
         price_rating: item.price_rating,
         netChange: item.pct_change,
@@ -55,7 +55,13 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
     fetchReportData();
   }, []);
 
-
+  function standardizeSymbol(symbol) {
+    return symbol
+      .replace(/-EQ$/, '') // Remove "-EQ" if present
+      .replace('.NS', '')  // Remove ".NS" if present
+      .toUpperCase();      // Ensure uppercase
+  }
+  
   // useEffect(() => {
   //   if(liveMarketData) {
   //     console.log(liveMarketData, "test");
@@ -79,8 +85,9 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
       setData((prevData) =>
         prevData.map((item) => {
           // Find matching live market data for the current item
+          
           const liveData = liveMarketData.find(
-            (liveItem) => liveItem.tradingSymbol === item.tradingSymbol
+            (liveItem) => standardizeSymbol(liveItem.tradingSymbol) === standardizeSymbol(item.tradingSymbol)
           );
   
           // If a match is found and ltp exists, update the item
@@ -100,6 +107,8 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
       updateToken(params.row.symbolToken);
     }
   };
+  
+
 
   if (loading) {
     return (

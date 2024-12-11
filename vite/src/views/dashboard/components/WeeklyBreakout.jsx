@@ -26,10 +26,10 @@ const WeeklyBreakoutTable = ({ setSymbolToken, updateToken, liveMarketData }) =>
       const initialData = reportData.map((item) => ({
         tradingSymbol: item.symbol,
         ltp: item.latest_price || '',
-        market_cap: item.market_cap || '',
-        price_rating: item.price_rating || '',
-        netChange: item.change,
-        percentChange: item.pct_change,
+        market_cap: item.market_cap,
+        price_rating: item.price_rating,
+        netChange: item.pct_change,
+        percentChange: null,
         earning_rating: null,
         investo_rating: null,
         symbolToken: item.token,
@@ -80,7 +80,7 @@ const WeeklyBreakoutTable = ({ setSymbolToken, updateToken, liveMarketData }) =>
         prevData.map((item) => {
           // Find matching live market data for the current item
           const liveData = liveMarketData.find(
-            (liveItem) => liveItem.tradingSymbol === item.symbol
+            (liveItem) => liveItem.tradingSymbol === item.tradingSymbol
           );
   
           // If a match is found and ltp exists, update the item
