@@ -93,6 +93,16 @@
   color: #eeeeee !important;
 }
 
+.market-data p.MuiTablePagination-displayedRows.css-11cfq65-MuiTablePagination-displayedRows{
+  color: #ffd56b;
+}
 /* .market-data .Mui-selected {
   color: red;
 } */
+
+.market-data .css-m87zkl-MuiInputBase-input-MuiOutlinedInput-input{
+  background-color: transparent;
+  color: white;
+  border: 1px solid transparent;
+}
+
