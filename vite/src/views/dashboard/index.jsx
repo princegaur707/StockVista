@@ -13,7 +13,7 @@ import AnalyticEcommerce from 'ui-component/cards/statistics/AnalyticEcommerce';
 import MarketDataTable from './components/MarketData';
 import CandlestickChart from './components/CandleStickChart';
 import ThirtyDayReportTable from './components/ThirtyDayReport';
-import NintyDayReportTable from './components/NintyDayReport';
+import NinetyDayReportTable from './components/NinetyDayReport';
 import WeeklyBreakoutTable from './components/WeeklyBreakout';
 import IPOTable from './components/IPO';
 import EarningCard from './components/EarningCard';
@@ -308,7 +308,7 @@ export default function DashboardDefault() {
             </TabPanel>
             <TabPanel value="2">
               <Box>
-                <NintyDayReportTable
+                <NinetyDayReportTable
                   updateToken={updateToken}
                   displayTopGainers={true} // or false depending on the case
                   displayTopLosers={false} // or true depending on the case

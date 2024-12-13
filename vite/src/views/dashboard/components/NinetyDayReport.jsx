@@ -15,7 +15,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
 
   const fetchReportData = async (retries = 3, delay = 1000) => {
     try {
-      const response = await fetch('http://localhost:8000/api/service/report/30-day-report/');
+      const response = await fetch('http://localhost:8000/api/service/report/90-day-report/');
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
   
       const result = await response.json();

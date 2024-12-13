@@ -14,7 +14,7 @@ const CandlestickChart = ({ token }) => {
     const fetchHistoricalData = async () => {
       setLoading(true);
       try {
-        console.log(selectedStock, "selected stock");
+        // console.log(selectedStock, "selected stock");
         const response = await fetch(`http://localhost:8000/api/service/historical-data/?exchange=NSE&token=${selectedStock}&timeperiod=ONE_DAY`);
         if (!response.ok) throw new Error('Network response was not ok');
         const jsonData = await response.json();
@@ -40,28 +40,28 @@ const CandlestickChart = ({ token }) => {
         width: chartRef.current.clientWidth,
         height: chartRef.current.clientHeight,
         layout: {
-          backgroundColor: '#1E1E1E', // Always dark background
-          textColor: '#FFFFFF', // Light text color
+          backgroundColor: '#253248', // Always dark background
+          textColor: 'rgba(255, 255, 255, 0.9)', // Light text color
           fontSize: 12,
           fontFamily: 'Verdana, Arial, sans-serif'
         },
         grid: {
-          vertLines: { color: '#4A4A4A' },
-          horzLines: { color: '#4A4A4A' }
+          vertLines: { color: '#334158' },
+          horzLines: { color: '#334158' }
         },
         crosshair: {
-          mode: 1,
+          mode: CrosshairMode.Normal,
         },
         priceScale: {
           position: 'right',
-          borderColor: '#CCCCCC',
+          borderColor: '#485c7b',
         },
         timeScale: {
           rightOffset: 10,
           barSpacing: 6,
           timeVisible: true,
           secondsVisible: false,
-          borderColor: '#CCCCCC'
+          borderColor: '#485c7b'
         },
       };
 
