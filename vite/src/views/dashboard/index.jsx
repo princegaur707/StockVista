@@ -14,6 +14,8 @@ import MarketDataTable from './components/MarketData';
 import CandlestickChart from './components/CandleStickChart';
 import ThirtyDayReportTable from './components/ThirtyDayReport';
 import NintyDayReportTable from './components/NintyDayReport';
+import WeeklyBreakoutTable from './components/WeeklyBreakout';
+import IPOTable from './components/IPO';
 import EarningCard from './components/EarningCard';
 import PopularCard from './components/PopularCard';
 import TotalOrderLineChartCard from './components/TotalOrderLineChartCard';
@@ -48,10 +50,10 @@ export default function DashboardDefault() {
   const [liveMarketData, setLiveMarketData] = useState([]); // State for live WebSocket data
 
   const [data, setData] = useState({
-    nifty: { count: 0, change: 0, percentage: 0 },
-    sensex: { count: 0, change: 0, percentage: 0 },
-    nifty50: { count: 0, change: 0, percentage: 0 },
-    niftyBank: { count: 0, change: 0, percentage: 0 }
+    nifty: { count: 24618.8, change: 31.75, percentage: 0.13 },
+    sensex: { count: 81526.14, change: 16.09, percentage: 0.02 },
+    niftyBank: { count: 53391.35, change: -186.35, percentage: -0.35 },
+    nifty50: { count: 59292.95, change: 157.55, percentage: 0.27 }
   });
   // const updateLiveData = (message) => {
   //   const { Symbol } = message; // Extract the stock symbol from the message
@@ -148,6 +150,7 @@ export default function DashboardDefault() {
 
   useEffect(() => {
     const ws = new WebSocket('ws://localhost:8000/ws/nse-feed/');
+    // const ws = [];
 
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
@@ -161,6 +164,7 @@ export default function DashboardDefault() {
       ws.close();
     };
   }, []);
+
 
   const updateData = (message) => {
     const { Name, LTP, Change, 'Change %': ChangePercentage} = message;
@@ -337,7 +341,7 @@ export default function DashboardDefault() {
             </TabPanel>
             <TabPanel value="5">
               <Box>
-                <MarketDataTable
+                <WeeklyBreakoutTable
                   updateToken={updateToken}
                   displayTopGainers={true} // or false depending on the case
                   displayTopLosers={false} // or true depending on the case

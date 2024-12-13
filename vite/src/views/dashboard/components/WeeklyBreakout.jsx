@@ -3,58 +3,96 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import './MarketData.css';
 
-const WeeklyBreakoutTable = ({ updateToken, displayTopGainers, displayTopLosers, setSymbolToken, liveMarketData }) => {
+const WeeklyBreakoutTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const fetchReportData = async () => {
+  const fetchReportData = async (retries = 3, delay = 1000) => {
     try {
       const response = await fetch('http://localhost:8000/api/service/breakout/weekly-breakout/');
-      if (!response.ok) throw new Error('Failed to fetch report data.');
-
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+  
       const result = await response.json();
-      const reportData = result['30_day_report'];
-
-      setData((prevData) =>
-        prevData.map((item) => {
-          const matchingReport = reportData.find((report) => report.symbol === item.tradingSymbol);
-          return matchingReport ? { ...item, price_rating: matchingReport.price_rating } : { ...item, price_rating: null }; // Assign null if no match found
-        })
-      );
+      const reportData = result['data'];
+  
+      if (!Array.isArray(reportData)) {
+        console.error('Expected reportData to be an array:', reportData);
+        setError('Invalid data structure received from the 30-day report API.');
+        return;
+      }
+  
+      // Map the fetched report data to the initial table data
+      const initialData = reportData.map((item) => ({
+        tradingSymbol: item.symbol,
+        ltp: item.latest_price || '',
+        market_cap: item.market_cap,
+        price_rating: item.price_rating,
+        netChange: item.pct_change,
+        percentChange: null,
+        earning_rating: null,
+        investo_rating: null,
+        symbolToken: item.token,
+      }));
+      console.log(initialData,"initial data output")
+      setData(initialData);
+      setError(''); // Clear any previous errors
     } catch (err) {
-      console.error('Error fetching report data:', err);
+      if (retries > 0) {
+        console.warn(`Retrying... Attempts left: ${retries}`);
+        setTimeout(() => fetchReportData(retries - 1, delay), delay);
+      } else {
+        console.error('Failed to fetch report data after retries:', err);
+        setError('Failed to fetch report data after multiple attempts.');
+      }
+    } finally {
+      setLoading(false);
     }
   };
+  
 
   useEffect(() => {
-    const fetchMarketData = async () => {
-      try {
-        const response = await fetch('http://localhost:8000/api/service/market-data/');
-        if (!response.ok) throw new Error('Failed to fetch market data.');
-
-        const jsonData = await response.json();
-        setData(jsonData.data.fetched); // Assuming the fetched data is inside `data.fetched`
-      } catch (err) {
-        setError('Failed to fetch market data: ' + err.message);
-      } finally {
-        setLoading(false);
-        setTimeout(() => {
-          fetchReportData();
-        }, 1000);
-      }
-    };
-
-    fetchMarketData();
+    fetchReportData();
   }, []);
 
+
+  // useEffect(() => {
+  //   if(liveMarketData) {
+  //     console.log(liveMarketData, "test");
+  //     setData(liveMarketData);
+  //   }
+  // },[liveMarketData]);
+  // useEffect(() => {
+  //   if (liveMarketData) {
+  //     console.log(liveMarketData, "test");
+  //     setData((prevData) =>
+  //       prevData.map((item) =>
+  //         item.tradingSymbol === liveMarketData.tradingSymbol
+  //           ? { ...item, ...liveMarketData }
+  //           : item
+  //       )
+  //     );
+  //   }
+  // }, [liveMarketData]);
   useEffect(() => {
-    if (liveMarketData) {
+    if (Array.isArray(liveMarketData) && liveMarketData.length > 0) {
       setData((prevData) =>
-        prevData.map((item) => (item.tradingSymbol === liveMarketData.tradingSymbol ? { ...item, ...liveMarketData } : item))
+        prevData.map((item) => {
+          // Find matching live market data for the current item
+          const liveData = liveMarketData.find(
+            (liveItem) => liveItem.tradingSymbol === item.tradingSymbol
+          );
+  
+          // If a match is found and ltp exists, update the item
+          return liveData && liveData.ltp
+            ? { ...item, ltp: liveData.ltp }
+            : item;
+        })
       );
     }
   }, [liveMarketData]);
+  
+  
 
   const handleCellClick = (params) => {
     setSymbolToken(params.row.symbolToken);
@@ -83,93 +121,91 @@ const WeeklyBreakoutTable = ({ updateToken, displayTopGainers, displayTopLosers,
     return <Typography align="center">No Data Available</Typography>;
   }
 
-  // Filter data based on props
-  let filteredData = [...data]; // Create a copy of the data
-
-  if (displayTopGainers) {
-    filteredData.sort((a, b) => b.percentChange - a.percentChange); // Sort by largest change %
-    filteredData = filteredData.slice(0, 50); // Get top 20
-  }
-
-  if (displayTopLosers) {
-    filteredData.sort((a, b) => a.percentChange - b.percentChange); // Sort by smallest change %
-    filteredData = filteredData.slice(0, 50);
-  }
-
   const columns = [
-    { field: 'tradingSymbol', headerName: 'Symbol', headerClassName: 'header-name', flex: 1 },
-    { field: 'ltp', headerName: 'Price', headerClassName: 'header-name', flex: 1, type: 'number' },
+    { 
+      field: 'tradingSymbol', 
+      headerName: 'Symbol', 
+      flex: 1 
+    },
     {
-      field: 'netChange',
-      headerName: 'Change',
+      field: 'ltp',
+      headerName: 'Price',
+      // alignContent: 'center',
+      headerAlign: 'center',
       headerClassName: 'header-name',
       flex: 1,
       type: 'number',
       renderCell: (params) => (
+        <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+          <Typography align="center">{params?.value}</Typography>
+        </Box>
+      )
+    },
+    {
+      field: 'netChange',
+      headerName: 'Change',
+      flex: 1,
+      type: 'number',
+      renderCell: (params) => (
         <Box
-          // display="flex"
-          // alignItems="center"
-          // justifyContent="center"
           height="100%"
           color={params.value > 0 ? '#00EFC8' : params.value < 0 ? '#FF5966' : '#EEEEEE'}
         >
           {params.value}
         </Box>
-      )
+      ),
     },
-    { field: 'market_cap', headerName: 'Market Cap', headerClassName: 'header-name', flex: 1, type: 'number' },
-    {
+    { 
+      field: 'market_cap', 
+      headerName: 'Market Cap',
+      flex: 1, 
+      type: 'number' 
+    },
+    { 
       field: 'price_rating',
-      headerName: 'Price Rating',
-      headerClassName: 'header-name',
-      flex: 1,
+      headerName: 'Price Rating', 
+      flex: 1, 
       type: 'number',
-      align: 'center',
-      headerAlign: 'center'
+      alignContent: 'center' 
     },
     {
       field: 'earning_rating',
       headerName: 'Earning Rating',
-      headerClassName: 'header-name',
       flex: 1,
       type: 'number',
       align: 'center',
-      headerAlign: 'center'
     },
     {
       field: 'investo_rating',
       headerName: 'Investo Rating',
-      headerClassName: 'header-name',
       flex: 1,
       type: 'number',
       align: 'center',
-      headerAlign: 'center'
-    }
+    },
   ];
 
-  const rows = filteredData.map((row, index) => ({
+  const rows = data.map((row, index) => ({
     id: index,
     tradingSymbol: row.tradingSymbol,
     ltp: row.ltp,
-    percentChange: row.percentChange,
     netChange: row.netChange,
-    tradeVolume: row.tradeVolume,
+    market_cap: row.market_cap,
     price_rating: row.price_rating,
-    symbolToken: row.symbolToken
+    earning_rating: row.earning_rating,
+    investo_rating: row.investo_rating,
+    symbolToken: row.symbolToken,
   }));
 
   return (
-    <Box className="market-data" 
-        sx={{ mt: 0,
-         width: '100%',
-         scrollbarWidth: 'none', // Firefox: hides scrollbar but still allows scrolling
-        msOverflowStyle: 'none', // IE/Edge: hides scrollbar
-        '&::-webkit-scrollbar': {
-          display: 'none', 
-        }
+    <Box
+      className="market-data"
+      sx={{
+        mt: 0,
+        width: '100%',
+        '&::-webkit-scrollbar': { display: 'none' },
       }}
-      >
-      <Box sx={{ height: '86vh',width:'90vw' }}>
+    >
+      <Box sx={{ height: '86vh', width: '90vw' }}>
         <DataGrid
           rows={rows}
           columns={columns}
@@ -181,11 +217,10 @@ const WeeklyBreakoutTable = ({ updateToken, displayTopGainers, displayTopLosers,
           initialState={{
             pagination: {
               paginationModel: {
-                pageSize: 10
-              }
-            }
+                pageSize: 10,
+              },
+            },
           }}
-          paginationMode="client"
         />
       </Box>
     </Box>

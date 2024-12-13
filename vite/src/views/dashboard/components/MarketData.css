@@ -87,11 +87,22 @@
 
 /* Customize pagination style */
 .market-data .MuiDataGrid-footerContainer {
-  background-color: #1956d2 !important;
+  background-color: #1D1E20 !important;
   /* Darker footer background */
-  color: #b62727 !important;
+  margin-right:40px !important;
+  color: #eeeeee !important;
 }
 
+.market-data p.MuiTablePagination-displayedRows.css-11cfq65-MuiTablePagination-displayedRows{
+  color: #ffd56b;
+}
 /* .market-data .Mui-selected {
   color: red;
 } */
+
+.market-data .css-m87zkl-MuiInputBase-input-MuiOutlinedInput-input{
+  background-color: transparent;
+  color: white;
+  border: 1px solid transparent;
+}
+
