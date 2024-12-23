@@ -8,6 +8,73 @@
   /* For border b/w rows */
 }
 
+/* Remove outline and border from the TextField when focused */
+.MuiOutlinedInput-root.Mui-focused {
+  outline: none !important; /* Remove the outline */
+  border-color: transparent !important; /* Remove the border */
+}
+
+/* Remove the blue focus outline from the input element */
+.MuiOutlinedInput-input:focus {
+  outline: none !important; /* Remove the outline */
+  border: none !important; /* Remove the border */
+}
+
+/* Remove the border from the fieldset (default Material-UI border) */
+.MuiOutlinedInput-notchedOutline {
+  border: none !important; /* Remove the border */
+}
+
+/* Remove the focus outline and box-shadow from the IconButton */
+.MuiIconButton-root:focus {
+  outline: none !important; /* Remove the outline */
+  box-shadow: none !important; /* Remove the box-shadow */
+}
+
+/* Remove the blue outline from the DataGrid cells when focused */
+.MuiDataGrid-root .MuiDataGrid-cell:focus {
+  outline: none !important; /* Remove the outline */
+  box-shadow: none !important; /* Remove the box-shadow */
+}
+
+/* Remove the focus outline from the selected cell */
+.MuiDataGrid-root .MuiDataGrid-cell.Mui-focusVisible {
+  outline: none !important; /* Remove the outline */
+  box-shadow: none !important; /* Remove the box-shadow */
+}
+
+/* For the focus ring on the selected row, remove it as well */
+.MuiDataGrid-root .MuiDataGrid-row.Mui-selected {
+  outline: none !important; /* Remove the outline */
+  box-shadow: none !important; /* Remove the box-shadow */
+}
+
+/* Remove the blue outline from the DataGrid header when focused */
+.MuiDataGrid-root .MuiDataGrid-columnHeader:focus {
+  outline: none !important; /* Remove the outline */
+  box-shadow: none !important; /* Remove the box-shadow */
+}
+
+
+/* Additional custom styles for the TextField input field */
+.MuiInputBase-root {
+  background-color: #1d1e20 !important;
+  color: #EEEEEE !important;
+  border-radius: 0px !important;
+  padding: 1px 1px !important;
+}
+
+/* Additional custom styles for the IconButton */
+.MuiIconButton-root {
+  color: #EEEEEE !important;
+}
+
+/* Optional: For the search icon (just for styling the SVG icon) */
+.MuiSvgIcon-root {
+  color: #EEEEEE !important;
+}
+
+
 /* Main Scrollbar hidden */
 &::-webkit-scrollbar { display: none; }
 
@@ -105,4 +172,8 @@
 
 .market-data .MuiOutlinedInput-root{
   border:none !important;
+}
+
+.market-data .MuiDataGrid-columnHeader[data-field="name"] {
+  padding-right: 20px; /* Add right padding to the "Name" column header */
 }

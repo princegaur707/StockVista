@@ -155,7 +155,7 @@ export default function DashboardDefault() {
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
       updateData(message); // Existing logic for specific stock updates
-      console.log(message, 'live4');
+      // console.log(message, 'live4');
       updateLiveData(message);
       // setLiveMarketData(message); // New: Set live data for MarketDataTable
     };
@@ -169,7 +169,7 @@ export default function DashboardDefault() {
   const updateData = (message) => {
     const { Name, LTP, Change, 'Change %': ChangePercentage} = message;
 
-    console.log(Name, LTP, Change, ChangePercentage, 'here');
+    // console.log(Name, LTP, Change, ChangePercentage, 'here');
 
     switch (Name) {
       case 'NIFTY':
@@ -319,7 +319,7 @@ export default function DashboardDefault() {
             </TabPanel>
             <TabPanel value="3">
               <Box>
-                <MarketDataTable
+                <IPOTable
                   updateToken={updateToken}
                   displayTopGainers={true} // or false depending on the case
                   displayTopLosers={false} // or true depending on the case

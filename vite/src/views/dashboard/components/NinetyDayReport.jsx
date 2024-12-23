@@ -3,15 +3,17 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Box, IconButton, TextField, InputAdornment, CircularProgress, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
-import './MarketData.css';
+import './FullScreenTable.css';
+import { ForkLeft } from '@mui/icons-material';
 
-const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
+const NinetyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [searchText, setSearchText] = useState('');
   const [isSearchActive, setIsSearchActive] = useState(false);
+  
 
   const fetchReportData = async (retries = 3, delay = 1000) => {
     try {
@@ -29,12 +31,12 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
   
       // Map the fetched report data to the initial table data
       const initialData = reportData.map((item) => ({
-        tradingSymbol: item.symbol,
+        tradingSymbol: item.symbol.replace('.NS', ''),
         ltp: item.latest_price || '',
         market_cap: item.market_cap,
+        change: item.change,
+        pct_change: item.pct_change,
         price_rating: item.price_rating,
-        netChange: item.change,
-        percentChange: item.pct_change,
         earning_rating: null,
         investo_rating: null,
         symbolToken: item.token,
@@ -62,36 +64,53 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
 
   const handleSearch = (searchValue) => {
     setSearchText(searchValue);
-    setData((prevData) =>
-      prevData.filter((row) =>
+    if (searchValue.trim() === '') {
+      setFilteredData(data); // Show the whole table if the search is cleared
+    } else {
+      const filtered = data.filter((row) =>
         row.tradingSymbol.toLowerCase().includes(searchValue.toLowerCase())
-      )
-    );
+      );
+      setFilteredData(filtered);
+    }
   };
+  
+
+
   // utils/numberFormatter.js
   const formatMarketValue = (value) => {
     if (value == null) {
       return 'N/A';
     }
-    if (value >= 1_000_000_000) {
-      return `${(value / 1_000_000_000).toFixed(1)} B`;
+    if (value >= 1_000_000_0) {
+      value = value / 10000000;
+      value = value.toFixed(2); // Round to two decimal places
+      value = parseFloat(value).toLocaleString('en-IN'); // Format as Indian locale
+      return `${value} Cr`;
     }
     if (value >= 1_000_000) {
-      return `${(value / 1_000_000).toFixed(1)} M`;
+      value = value / 100000;
+      value = value.toFixed(2); // Round to two decimal places
+      value = parseFloat(value).toLocaleString('en-IN'); // Format as Indian locale
+      return `${value} L`;
     }
-    return value.toString();
+    return value.toFixed(2).toString(); // For values less than 1,000,000
   };
+  
 
 
-  const handleSearchIconClick = () => {
+  const handleSearchIconClick = (event) => {
+    event.stopPropagation(); // Prevent DataGrid column sorting
     setIsSearchActive(true);
   };
+  
 
-  const handleSearchClose = () => {
+  const handleSearchClose = (event) => {
+    event.stopPropagation();
     setIsSearchActive(false);
     setSearchText('');
-    fetchReportData(); // Reset data
+    setFilteredData(data); // Reset the table to show all rows
   };
+  
 
   function standardizeSymbol(symbol) {
     return symbol
@@ -100,30 +119,6 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
       .toUpperCase();      // Ensure uppercase
   }
 
-  function standardizeSymbol1(symbol) {
-    return symbol
-      .replace('.NS', '/-EQ$/')  // Remove ".NS" if present
-      .toUpperCase();      // Ensure uppercase
-  }
-  
-  // useEffect(() => {
-  //   if(liveMarketData) {
-  //     console.log(liveMarketData, "test");
-  //     setData(liveMarketData);
-  //   }
-  // },[liveMarketData]);
-  // useEffect(() => {
-  //   if (liveMarketData) {
-  //     console.log(liveMarketData, "test");
-  //     setData((prevData) =>
-  //       prevData.map((item) =>
-  //         item.tradingSymbol === liveMarketData.tradingSymbol
-  //           ? { ...item, ...liveMarketData }
-  //           : item
-  //       )
-  //     );
-  //   }
-  // }, [liveMarketData]);
   useEffect(() => {
     if (Array.isArray(liveMarketData) && liveMarketData.length > 0) {
       setData((prevData) =>
@@ -143,7 +138,6 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
     }
   }, [liveMarketData]);
   
-
   // Function to get token by symbol
   async function getTokenBySymbol(symbol) {
     try {
@@ -171,6 +165,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
       return null;
     }
   }
+  
 
   const handleCellClick = async (params) => {
     const symbolToken = await getTokenBySymbol(params.value);
@@ -183,8 +178,24 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
   
   if (loading) {
     return (
-      <Box display="flex" flexDirection="column" alignItems="center" height="18vh" justifyContent="center">
-        <CircularProgress />
+      <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'absolute',
+            top: 150,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            // backgroundColor: 'rgba(255, 255, 255, 0.8)', // Optional: add a translucent background
+          }}
+        >
+          <CircularProgress
+            sx={{
+              color: '#FFC42B',
+            }}
+          />
       </Box>
     );
   }
@@ -205,7 +216,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
     {
       field: 'tradingSymbol',
       headerName: 'Symbol',
-      flex: 1,
+      flex: 1.5,
       renderHeader: () => (
         <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
           {isSearchActive ? (
@@ -271,85 +282,141 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
         </Box>
       ),
     },
+    
     {
       field: 'ltp',
       headerName: 'Price',
-      headerAlign: 'center',
+      headerAlign: 'left',
       headerClassName: 'header-name',
       flex: 1,
       type: 'number',
       renderCell: (params) => (
-        <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+        <Box display="flex" alignItems="center" height="100%">
           <Typography align="center">{params?.value}</Typography>
         </Box>
       )
     },
 
     {
-      field: 'netChange',
+      field: 'change',
       headerName: 'Change',
-      flex: 0.8,
-      headerAlign: 'center',
+      flex: 1,
+      headerAlign: 'left',
       type: 'number',
-      renderCell: (params) => (
-        <Box
-        display= "flex"
-        justifyContent="center" 
-        alignItems="center"
-        height="100%"
-        color={params.value > 0 ? '#00EFC8' : params.value < 0 ? '#FF5966' : '#EEEEEE'}
-        >
-          {params.value}
-        </Box>
-      ),
+      renderCell: (params) => {
+        const change = params.row.change;
+        const pct_change = params.row.pct_change; // Accessing pct_change from the row
+        // Handle case where either value might be missing
+        if (change == null || pct_change == null) {
+          return <Typography align="left" color="error">N/A</Typography>;
+        }
+    
+        // Define colors based on values
+        const changeColor = change > 0 ? '#00EFC8' : change < 0 ? '#FF5966' : '#EEEEEE';
+        const pctChangeColor = pct_change > 0 ? '#00EFC8' : pct_change < 0 ? '#FF5966' : '#EEEEEE';
+    
+        return (
+          <Box display="flex" alignItems="center" height="100%">
+            {/* Render change */}
+            <Typography
+            align="left"
+              sx={{
+                color: changeColor,
+                // fontWeight: 'bold',
+                // marginRight: 1
+              }}
+            >
+              {change.toFixed(2)} {/* Format the number */}
+            </Typography>
+            
+            {/* Render pct_change */}
+            <Typography
+              sx={{
+                color: pctChangeColor,
+                // fontWeight: 'bold',
+                // marginLeft: 1,
+                // fontSize: '0.9rem'
+              }}
+            >
+              ({pct_change.toFixed(2)})
+            </Typography>
+          </Box>
+        );
+      },
     },
         
     { 
       field: 'market_cap', 
       headerName: 'Market Cap',
-      flex: 1,
-      headerAlign: 'center', 
+      flex: 1.3,
+      headerAlign: 'left', 
       type: 'number',
       renderCell: (params) => (
-        <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-          <Typography align="center">{formatMarketValue(params.value)}</Typography>
+        <Box display="flex" alignItems="center" height="100%">
+          <Typography align="left">
+            {formatMarketValue(params.value)}</Typography>
         </Box>
       ),
     },
+
     { 
       field: 'price_rating',
       headerName: 'Price Rating', 
       flex: .8, 
+      headerAlign: 'left',
       type: 'number',
-      alignContent: 'center' 
+      renderCell: (params) => (
+        <Box display="flex" alignItems="center" height="100%">
+          <Typography align="center">
+            {params?.value ? params.value.toFixed(2) : 'N/A'}
+          </Typography>
+        </Box>
+      )
     },
+    
     {
       field: 'earning_rating',
       headerName: 'Earning Rating',
       flex: .8,
+      headerAlign: 'left',
       type: 'number',
-      align: 'center',
+      renderCell: (params) => (
+        <Box display="flex" alignItems="center" height="100%">
+          <Typography align="center">
+            {params?.value ? params.value.toFixed(2) : 'N/A'}
+          </Typography>
+        </Box>
+      )
     },
+
     {
       field: 'investo_rating',
       headerName: 'Investo Rating',
       flex: .8,
+      headerAlign: 'left',
       type: 'number',
-      align: 'center',
+      renderCell: (params) => (
+        <Box display="flex" alignItems="center" height="100%">
+          <Typography align="center">
+            {params?.value ? params.value.toFixed(2) : 'N/A'}
+          </Typography>
+        </Box>
+      )
     },
   ];
 
-  const rows = data.map((row, index) => ({
+  const rows = (filteredData.length > 0 ? filteredData : data).map((row, index) => ({
     id: index,
     tradingSymbol: row.tradingSymbol,
     ltp: row.ltp,
-    netChange: row.netChange,
+    change: row.change,
+    pct_change: row.pct_change,
     market_cap: row.market_cap,
     price_rating: row.price_rating,
     earning_rating: row.earning_rating,
     investo_rating: row.investo_rating,
-    symbolToken: row.symbolToken,
   }));
+  
 
   return (
     <Box
@@ -382,4 +449,4 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
   );
 };
 
-export default ThirtyDayReportTable;
+export default NinetyDayReportTable;
