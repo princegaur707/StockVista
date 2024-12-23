@@ -6,7 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import './FullScreenTable.css';
 import { ForkLeft } from '@mui/icons-material';
 
-const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
+const NinetyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,7 +17,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
 
   const fetchReportData = async (retries = 3, delay = 1000) => {
     try {
-      const response = await fetch('http://localhost:8000/api/service/report/30-day-report/');
+      const response = await fetch('http://localhost:8000/api/service/report/90-day-report/');
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
   
       const result = await response.json();
@@ -449,4 +449,4 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
   );
 };
 
-export default ThirtyDayReportTable;
+export default NinetyDayReportTable;

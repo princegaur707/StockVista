@@ -61,6 +61,7 @@ export default function AnalyticEcommerce({ title, count, change, percentage }) 
                 fontSize: '24px',
               }}
             >
+              {/* {count} */}
               {formatNumberToIndian(count)}
             </Typography>
 

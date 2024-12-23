@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Box, CircularProgress, Typography, CssBaseline } from '@mui/material';
-import './MarketData.css';
+import './FullScreenTable.css';
 import { IconBackground } from '@tabler/icons-react';
 
 const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, setSymbolToken, liveMarketData }) => {
-  console.log(liveMarketData, 'bro');
+  // console.log(liveMarketData, 'bro');
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
