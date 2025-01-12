@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { useTheme } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
@@ -58,7 +59,7 @@ const ProfileSection = () => {
     sessionStorage.removeItem('accessToken');
     sessionStorage.removeItem('refreshToken');
     navigate('/pages/login/login3');
-    console.log('Logout');
+    // console.log('Logout');
   };
 
   const handleClose = (event) => {
@@ -97,16 +98,17 @@ const ProfileSection = () => {
           alignItems: 'center',
           borderRadius: '27px',
           transition: 'all .2s ease-in-out',
-          borderColor: theme.palette.primary.light,
-          backgroundColor: theme.palette.primary.light,
+          borderColor: theme.palette.primary.dark,
+          backgroundColor: theme.palette.primary.main,
           '&[aria-controls="menu-list-grow"], &:hover': {
             borderColor: theme.palette.primary.main,
-            background: `${theme.palette.primary.main}!important`,
+            background: `${theme.palette.primary.dark}!important`,
             color: theme.palette.primary.light,
             '& svg': {
               stroke: theme.palette.primary.light
             }
           },
+          
           '& .MuiChip-label': {
             lineHeight: 0
           }
@@ -131,7 +133,7 @@ const ProfileSection = () => {
         aria-controls={open ? 'menu-list-grow' : undefined}
         aria-haspopup="true"
         onClick={handleToggle}
-        color="primary"
+        // color="primaryight"
       />
       <Popper
         placement="bottom-end"
@@ -145,7 +147,7 @@ const ProfileSection = () => {
             {
               name: 'offset',
               options: {
-                offset: [0, 14]
+                offset: [0, 4]
               }
             }
           ]
@@ -236,14 +238,14 @@ const ProfileSection = () => {
                         sx={{
                           width: '100%',
                           maxWidth: 350,
-                          minWidth: 300,
+                          minWidth: 150,
                           backgroundColor: theme.palette.background.paper,
-                          borderRadius: '10px',
+                          borderRadius: '1px',
                           [theme.breakpoints.down('md')]: {
                             minWidth: '100%'
                           },
                           '& .MuiListItemButton-root': {
-                            mt: 0.5
+                            mt: 0
                           }
                         }}
                       >
@@ -285,16 +287,22 @@ const ProfileSection = () => {
                             }
                           />
                         </ListItemButton> */}
-                        <ListItemButton
-                          sx={{ borderRadius: `${customization.borderRadius}px` }}
+                        <Button
+                          // sx={{ borderRadius: `${customization.borderRadius}px` }}
                           selected={selectedIndex === 4}
                           onClick={handleLogout}
+                          sx={{
+                            color: '#FFFFFF', // Default text color
+                            '&:hover': {
+                              backgroundColor: '#141516', // Custom color on hover
+                            },
+                          }}
                         >
                           <ListItemIcon>
-                            <IconLogout stroke={1.5} size="1.3rem" />
+                            <IconLogout stroke={1.5} size="1.5rem" />
                           </ListItemIcon>
-                          <ListItemText primary={<Typography variant="body2">Logout</Typography>} />
-                        </ListItemButton>
+                          <ListItemText primary={<Typography variant="body2" color="#FFFFFF">Logout</Typography>} />
+                        </Button>
                       </List>
                     </Box>
                   </PerfectScrollbar>

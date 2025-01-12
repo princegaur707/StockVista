@@ -143,8 +143,8 @@ export default function DashboardDefault() {
   };
 
   useEffect(() => {
-    const ws = new WebSocket(`ws://${import.meta.env.VITE_API_URL}/ws/nse-feed/`);
-    // const ws = new WebSocket('ws://localhost:8000/ws/nse-feed/');
+    // const ws = new WebSocket(`${import.meta.env.VITE_API_URL}/ws/nse-feed/`);
+    const ws = new WebSocket('ws://localhost:8000/ws/nse-feed/');
     // const ws = [];
 
     ws.onmessage = (event) => {
