@@ -16,6 +16,7 @@ import ThirtyDayReportTable from './components/ThirtyDayReport';
 import NinetyDayReportTable from './components/NinetyDayReport';
 import WeeklyBreakoutTable from './components/WeeklyBreakout';
 import IPOTable from './components/IPO';
+import BigPlayersTable from './components/BigPlayers';
 import PropTypes from 'prop-types';
 import { Tabs, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { x } from 'joi';
@@ -358,7 +359,7 @@ export default function DashboardDefault() {
             </TabPanel>
             <TabPanel value="7">
               <Box>
-                <MarketDataTable
+                <BigPlayersTable
                   updateToken={updateToken}
                   displayTopGainers={true} // or false depending on the case
                   displayTopLosers={false} // or true depending on the case
