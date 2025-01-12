@@ -6,7 +6,7 @@ import Loadable from 'ui-component/Loadable';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard')));
-
+import ProtectedRoute from 'views/pages/authentication3/ProtectedRoute.jsx';
 // utilities routing
 const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
 const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
@@ -23,16 +23,20 @@ const MainRoutes = {
   path: '/',
   element: <MainLayout />,
   children: [
-    {
-      path: '/',
-      element: <DashboardDefault />
-    },
+    // {
+    //   path: '/',
+    //   element: <DashboardDefault />
+    // },
     {
       path: 'dashboard',
       children: [
         {
           path: 'default',
-          element: <DashboardDefault />
+          element: (
+            <ProtectedRoute>
+              <DashboardDefault />
+            </ProtectedRoute>
+          ),
         }
       ]
     },

@@ -16,12 +16,6 @@ import ThirtyDayReportTable from './components/ThirtyDayReport';
 import NinetyDayReportTable from './components/NinetyDayReport';
 import WeeklyBreakoutTable from './components/WeeklyBreakout';
 import IPOTable from './components/IPO';
-import EarningCard from './components/EarningCard';
-import PopularCard from './components/PopularCard';
-import TotalOrderLineChartCard from './components/TotalOrderLineChartCard';
-import TotalIncomeDarkCard from './components/TotalIncomeDarkCard';
-import TotalIncomeLightCard from './components/TotalIncomeLightCard';
-import TotalGrowthBarChart from './components/TotalGrowthBarChart';
 import PropTypes from 'prop-types';
 import { Tabs, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { x } from 'joi';
@@ -50,10 +44,10 @@ export default function DashboardDefault() {
   const [liveMarketData, setLiveMarketData] = useState([]); // State for live WebSocket data
 
   const [data, setData] = useState({
-    nifty: { count: 24618.8, change: 31.75, percentage: 0.13 },
-    sensex: { count: 81526.14, change: 16.09, percentage: 0.02 },
-    niftyBank: { count: 53391.35, change: -186.35, percentage: -0.35 },
-    nifty50: { count: 59292.95, change: 157.55, percentage: 0.27 }
+    nifty: { count: '24618.8', change: 31.75, percentage: 0.13 },
+    sensex: { count: '81526.14', change: 16.09, percentage: 0.02 },
+    niftyBank: { count: '53391.35', change: -186.35, percentage: -0.35 },
+    nifty50: { count: '59292.95', change: 157.55, percentage: 0.27 }
   });
   // const updateLiveData = (message) => {
   //   const { Symbol } = message; // Extract the stock symbol from the message
@@ -149,7 +143,8 @@ export default function DashboardDefault() {
   };
 
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:8000/ws/nse-feed/');
+    const ws = new WebSocket(`ws://${import.meta.env.VITE_API_URL}/ws/nse-feed/`);
+    // const ws = new WebSocket('ws://localhost:8000/ws/nse-feed/');
     // const ws = [];
 
     ws.onmessage = (event) => {

@@ -24,6 +24,7 @@ import Popper from '@mui/material/Popper';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
+// import { useNavigate } from 'react-router-dom'; 
 
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -54,6 +55,9 @@ const ProfileSection = () => {
    * */
   const anchorRef = useRef(null);
   const handleLogout = async () => {
+    sessionStorage.removeItem('accessToken');
+    sessionStorage.removeItem('refreshToken');
+    navigate('/pages/login/login3');
     console.log('Logout');
   };
 
@@ -152,7 +156,7 @@ const ProfileSection = () => {
             <Paper>
               <ClickAwayListener onClickAway={handleClose}>
                 <MainCard border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
-                  <Box sx={{ p: 2, pb: 0 }}>
+                  {/* <Box sx={{ p: 2, pb: 0 }}>
                     <Stack>
                       <Stack direction="row" spacing={0.5} alignItems="center">
                         <Typography variant="h4">Good Morning,</Typography>
@@ -179,12 +183,12 @@ const ProfileSection = () => {
                       }}
                     />
                     <Divider />
-                  </Box>
+                  </Box> */}
                   <PerfectScrollbar style={{ height: '100%', maxHeight: 'calc(100vh - 250px)', overflowX: 'hidden' }}>
                     <Box sx={{ p: 2, pt: 0 }}>
-                      <UpgradePlanCard />
-                      <Divider />
-                      <Card
+                      {/* <UpgradePlanCard /> */}
+                      {/* <Divider /> */}
+                      {/* <Card
                         sx={{
                           bgcolor: theme.palette.primary.light,
                           my: 2
@@ -225,8 +229,8 @@ const ProfileSection = () => {
                             </Grid>
                           </Grid>
                         </CardContent>
-                      </Card>
-                      <Divider />
+                      </Card> */}
+                      {/* <Divider /> */}
                       <List
                         component="nav"
                         sx={{
@@ -243,7 +247,7 @@ const ProfileSection = () => {
                           }
                         }}
                       >
-                        <ListItemButton
+                        {/* <ListItemButton
                           sx={{ borderRadius: `${customization.borderRadius}px` }}
                           selected={selectedIndex === 0}
                           onClick={(event) => handleListItemClick(event, 0, '#')}
@@ -252,8 +256,8 @@ const ProfileSection = () => {
                             <IconSettings stroke={1.5} size="1.3rem" />
                           </ListItemIcon>
                           <ListItemText primary={<Typography variant="body2">Account Settings</Typography>} />
-                        </ListItemButton>
-                        <ListItemButton
+                        </ListItemButton> */}
+                        {/* <ListItemButton
                           sx={{ borderRadius: `${customization.borderRadius}px` }}
                           selected={selectedIndex === 1}
                           onClick={(event) => handleListItemClick(event, 1, '#')}
@@ -280,7 +284,7 @@ const ProfileSection = () => {
                               </Grid>
                             }
                           />
-                        </ListItemButton>
+                        </ListItemButton> */}
                         <ListItemButton
                           sx={{ borderRadius: `${customization.borderRadius}px` }}
                           selected={selectedIndex === 4}

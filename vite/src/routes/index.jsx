@@ -10,3 +10,4 @@ const router = createBrowserRouter([MainRoutes, LoginRoutes], {
 });
 
 export default router;
+

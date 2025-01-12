@@ -216,7 +216,7 @@ const NinetyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
     {
       field: 'tradingSymbol',
       headerName: 'Symbol',
-      flex: 1.5,
+      flex: 1.3,
       renderHeader: () => (
         <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
           {isSearchActive ? (
@@ -300,7 +300,7 @@ const NinetyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
     {
       field: 'change',
       headerName: 'Change',
-      flex: 1,
+      flex: 1.2,
       headerAlign: 'left',
       type: 'number',
       renderCell: (params) => {

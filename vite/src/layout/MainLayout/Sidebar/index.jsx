@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom'; 
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const Sidebar = () => {
   // State to track the active box
   const [activeBox, setActiveBox] = useState(0);
+  const navigate = useNavigate();
 
   // Function to handle click and redirect
   const handleClick = (index) => {
@@ -11,21 +14,21 @@ const Sidebar = () => {
 
     // Redirect logic for specific boxes
     if (index === 0) {
-      window.location.href = 'http://localhost:3000/myapp'; // Redirect for the first box
+      navigate('/dashboard/default') // Redirect for the first box
     } else if (index === 1) {
-      window.location.href = 'http://localhost:3000/myapp/investor'; // Redirect for the second box
+      navigate('/investor'); // Redirect for the second box
     }  else if (index === 2) {
-      window.location.href = 'http://localhost:3000/myapp/intraday'; // Redirect for the second box
+      navigate('/intraday'); // Redirect for the second box
     } else if (index === 3) {
-      window.location.href = 'http://localhost:3000/myapp/sector'; // Redirect for the second box
+      navigate('/sector'); // Redirect for the second box
     } else if (index === 4) {
-      window.location.href = 'http://localhost:3000/myapp/ranking'; // Redirect for the second box
+      navigate('/ranking'); // Redirect for the second box
     } else if (index === 6) {
-      window.location.href = 'http://localhost:3000/myapp/market-view'; // Redirect for the second box
+      navigate('/market-view'); // Redirect for the second box
     } else if (index === 7) {
-      window.location.href = 'http://localhost:3000/myapp/account'; // Redirect for the second box
+      navigate('/account'); // Redirect for the second box
     } else if (index === 8) {
-      window.location.href = 'http://localhost:3000/myapp/about-us'; // Redirect for the second box
+      navigate('/about-us'); // Redirect for the second box
     }else {
       console.log(`Redirecting to page ${index + 1}`); // Placeholder for other boxes
     }
