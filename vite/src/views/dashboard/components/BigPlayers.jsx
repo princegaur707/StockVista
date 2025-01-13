@@ -17,7 +17,7 @@ const BigPlayersTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
 
   const fetchReportData = async (retries = 3, delay = 1000) => {
     try {
-      const response = await fetch('http://localhost:8000/api/service/big-players');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/service/big-players`);
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
   
       const result = await response.json();

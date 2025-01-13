@@ -18,6 +18,10 @@ const AuthenticationRoutes = {
   element: <MinimalLayout />,
   children: [
     {
+      path: '/landing', // New path for the landing page
+      element: <LandingPage />
+    },
+    {
       path: '/pages/login/login3',
       element: <Login />
     },
@@ -25,10 +29,7 @@ const AuthenticationRoutes = {
       path: '/pages/register/register3',
       element: <Register />
     },
-    {
-      path: '/landing', // New path for the landing page
-      element: <LandingPage />
-    },
+    
   ]
 };
 
