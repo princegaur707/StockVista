@@ -51,7 +51,7 @@ const Login = () => {
     } catch (err) {
       console.error('Login error:', err.response?.data || err.message);
       setError(err.response?.data?.detail || 'Login failed.');
-      setErrorFontSize('12px');
+      setErrorFontSize('5px');
     }
   };
 
@@ -140,11 +140,7 @@ const Login = () => {
           />
 
           {/* Error Message */}
-          {error && (
-            <Typography variant="body2" sx={{ color: 'red', mb: 2, textAlign: 'left' }}>
-              {error}
-            </Typography>
-          )}
+          {error && <Typography sx={{ color: 'red', mb: 2, textAlign: 'left' }}>{error}</Typography>}
 
           {/* Login Button */}
           <Button
