@@ -19,8 +19,6 @@ import BreakOutSoonDailyTable from './components/BreakSoonDaily';
 import WeeklyBreakoutTable from './components/WeeklyBreakout';
 import RecentBreakOutTable from './components/RecentBreakOut';
 import BigPlayersTable from './components/BigPlayers';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon component
-import PropTypes from 'prop-types';
 import { Tabs, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 // modal style
