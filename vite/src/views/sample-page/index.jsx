@@ -300,8 +300,7 @@ const SamplePage = () => (
                         </Typography>
                         </Box>
                       <Box sx={{width:'13rem'}}>
-                        <Button variant="contained"
-                          // onClick={() => { window.location.href = 'http://localhost:3000/myapp/pages/register/register3'; }}                          
+                        <Button variant="contained"                         
                           onClick={() => { window.location.href = `/myapp/pages/register/register3` }}                          
                           sx={{           
                             fontFamily: 'Figtree',

@@ -225,7 +225,7 @@ const Register = () => {
         </form>
 
         {/* Divider with "OR" text */}
-        <div
+        {/* <div
           className="DividerContainer"
           style={{
             display: 'flex',
@@ -240,10 +240,10 @@ const Register = () => {
           <Divider
             sx={{ color: '#777C81', my: 3, borderColor: '#777C81', flex: 1 }}
           />
-        </div>
+        </div> */}
 
         {/* Google Signup Button */}
-        <Button
+        {/* <Button
           fullWidth
           variant="outlined"
           sx={{
@@ -260,7 +260,7 @@ const Register = () => {
           }}
         >
           SIGN UP USING GOOGLE ACCOUNT
-        </Button>
+        </Button> */}
 
         <div className='Signuplogin'>
           {/* Link to Login */}

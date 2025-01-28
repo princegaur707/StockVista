@@ -17,7 +17,7 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
 
   const fetchReportData = async (retries = 3, delay = 1000) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/service/ipo`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/service/ipo-data/`);
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
   
       const result = await response.json();

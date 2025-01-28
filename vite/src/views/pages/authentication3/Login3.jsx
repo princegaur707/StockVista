@@ -67,7 +67,7 @@ const Login = () => {
         sx={{
           width: 620, // Fixed width
           height: 548, // Fixed height
-          padding: '60px 80px', // Padding
+          padding: '40px 80px', // Padding
           gap: '30px', // Gap
           backgroundColor: '#141516', // Darker background for the card
           boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
@@ -171,7 +171,7 @@ const Login = () => {
         </form>
 
         {/* Divider with "OR" text */}
-        <div
+        {/* <div
           className="DividerContainer"
           style={{
             display: 'flex',
@@ -186,10 +186,10 @@ const Login = () => {
           <Divider
             sx={{ color: '#777C81', my: 3, borderColor: '#777C81', flex: 1 }}
           />
-        </div>
+        </div> */}
 
         {/* Google Login Button */}
-        <Button
+        {/* <Button
           fullWidth
           variant="outlined"
           sx={{
@@ -206,7 +206,16 @@ const Login = () => {
           }}
         >
           SIGN IN USING GOOGLE ACCOUNT
-        </Button>
+        </Button> */}
+        <div className='Signuplogin'>
+          {/* Link to Login */}
+          <Typography
+            variant="body2"
+            sx={{ color: '#ffffff', fontSize: '12px', mt: 2, textAlign: 'center' }}
+          >
+            Don't have an account? <Link to="/pages/register/register3" style={{ color: '#00aaff' }}>Sign up</Link>
+          </Typography>
+        </div>
       </Box>
     </Box>
   );

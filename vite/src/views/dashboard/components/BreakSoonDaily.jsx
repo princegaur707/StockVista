@@ -6,7 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import './FullScreenTable.css';
 import { ForkLeft } from '@mui/icons-material';
 
-const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
+const BreakOutSoonDailyTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,7 +17,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
 
   const fetchReportData = async (retries = 3, delay = 1000) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/service/report/30-day-report/`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/service/breakout-soon-data/`);
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
   
       const result = await response.json();
@@ -137,16 +137,44 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
       );
     }
   }, [liveMarketData]);
+  
+  // Function to get token by symbol
+  async function getTokenBySymbol(symbol) {
+    try {
+      // Making the API call to get the scrip data
+      const response = await fetch('https://margincalculator.angelbroking.com/OpenAPI_File/files/OpenAPIScripMaster.json');
+      
+      // Check if the response is OK (status code 200)
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
 
-  const handleCellClick = (params) => {
-    // console.log(params);
-    // console.log('param', params.row.symbolToken);
-    setSymbolToken(params.row.tradingSymbol);
-    if (params.field === 'tradingSymbol') {
-      updateToken(params.row.tradingSymbol);
+      // Parsing the JSON data from the response
+      const data = await response.json();
+
+      // Mapping the symbol to match the response format
+      const formattedSymbol = symbol.replace('.NS', '-EQ');
+
+      // Search the API response for the matching symbol
+      const result = data.find(item => item.symbol === formattedSymbol);
+
+      // If a match is found, return the token, otherwise return null or appropriate error message
+      return result ? result.token : null;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return null;
+    }
+  }
+  
+
+  const handleCellClick = async (params) => {
+    const symbolToken = await getTokenBySymbol(params.value);
+    console.log(symbolToken);
+    setSymbolToken(symbolToken);
+    if (params.value === 'tradingSymbol') {
+      updateToken(symbolToken);
     }
   };
-
   
   if (loading) {
     return (
@@ -421,4 +449,4 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
   );
 };
 
-export default ThirtyDayReportTable;
+export default BreakOutSoonDailyTable;

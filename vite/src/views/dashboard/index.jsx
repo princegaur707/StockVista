@@ -14,9 +14,12 @@ import MarketDataTable from './components/MarketData';
 import CandlestickChart from './components/CandleStickChart';
 import ThirtyDayReportTable from './components/ThirtyDayReport';
 import NinetyDayReportTable from './components/NinetyDayReport';
-import WeeklyBreakoutTable from './components/WeeklyBreakout';
 import IPOTable from './components/IPO';
+import BreakOutSoonDailyTable from './components/BreakSoonDaily';
+import WeeklyBreakoutTable from './components/WeeklyBreakout';
+import RecentBreakOutTable from './components/RecentBreakOut';
 import BigPlayersTable from './components/BigPlayers';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon component
 import PropTypes from 'prop-types';
 import { Tabs, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { x } from 'joi';
@@ -161,9 +164,8 @@ export default function DashboardDefault() {
     };
   }, []);
 
-
   const updateData = (message) => {
-    const { Name, LTP, Change, 'Change %': ChangePercentage} = message;
+    const { Name, LTP, Change, 'Change %': ChangePercentage } = message;
 
     // console.log(Name, LTP, Change, ChangePercentage, 'here');
 
@@ -210,7 +212,7 @@ export default function DashboardDefault() {
     setSelected(event.target.value);
   };
 
-  const [value, setValue] = React.useState('1'); // Default to Top Gainers
+  const [value, setValue] = React.useState('1'); // Default to Thirty Day Table
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -224,66 +226,67 @@ export default function DashboardDefault() {
   }, [symbolToken]);
 
   return (
-    <Box className="scrollable" style={{ height: '100vh', overflowY:'auto', marginRight: '25px', marginLeft:'105px' }}>
+    <Box className="scrollable" style={{ height: '100vh', overflowY: 'auto', marginRight: '25px', marginLeft: '105px' }}>
       <Grid container rowSpacing={4.5} columnSpacing={2.75}>
         {/* row 1 */}
-          <Grid item xs={12} sx={{ mb: -2.25 }}>
-            <div className='dashboard-font-box'>
-              <Typography className='heading-dashboard'>MOMENTUM KING</Typography>
-            </div>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <div className='Analyticbox'>
-              <AnalyticEcommerce title="NIFTY" 
-              count={data.nifty.count} 
+        <Grid item xs={12} sx={{ mb: -2.25 }}>
+          <Typography mt='25px' className="heading-dashboard" >
+            MOMENTUM KING
+          </Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <div className="Analyticbox">
+            <AnalyticEcommerce
+              title="NIFTY"
+              count={data.nifty.count}
               change={data.nifty.change}
-              percentage={data.nifty.percentage} 
+              percentage={data.nifty.percentage}
               // isLoss={data.nifty.percentage < 0}
             />
-            </div>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <div className='Analyticbox'>
-              <AnalyticEcommerce 
-                title="SENSEX" 
-                count={data.sensex.count} 
-                change={data.sensex.change}
-                percentage={data.sensex.percentage}
-                // isLoss={data.sensex.percentage < 0}
-              />
-            </div>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <div className='Analyticbox'>
-              <AnalyticEcommerce
-                title="NIFTY BANK"
-                count={data.niftyBank.count}
-                change={data.niftyBank.change}
-                percentage={data.niftyBank.percentage}
-                // isLoss={data.niftyBank.percentage < 0}
-              />
-            </div>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <div className='Analyticbox'>
-              <AnalyticEcommerce
-                title="NIFTY 50"
-                count={data.nifty50.count}
-                change={data.nifty50.change}
-                percentage={data.nifty50.percentage}
-                // isLoss={data.nifty50.percentage < 0}
-              />
-            </div>
-          </Grid>
-          
-      <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <div className="Analyticbox">
+            <AnalyticEcommerce
+              title="SENSEX"
+              count={data.sensex.count}
+              change={data.sensex.change}
+              percentage={data.sensex.percentage}
+              // isLoss={data.sensex.percentage < 0}
+            />
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <div className="Analyticbox">
+            <AnalyticEcommerce
+              title="NIFTY BANK"
+              count={data.niftyBank.count}
+              change={data.niftyBank.change}
+              percentage={data.niftyBank.percentage}
+              // isLoss={data.niftyBank.percentage < 0}
+            />
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <div className="Analyticbox">
+            <AnalyticEcommerce
+              title="NIFTY 50"
+              count={data.nifty50.count}
+              change={data.nifty50.change}
+              percentage={data.nifty50.percentage}
+              // isLoss={data.nifty50.percentage < 0}
+            />
+          </div>
+        </Grid>
+
+        <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
 
         {/* row 2 */}
         <Box sx={{ width: 'auto' }}>
-        {/* <Box> */}
+          {/* <Box> */}
           <TabContext value={value}>
             <Box>
-              <TabList className ="tab-values" onChange={handleChange} aria-label="lab API tabs example">
+              <TabList className="tab-values" onChange={handleChange} aria-label="lab API tabs example">
                 <Tab className="tabValue-head" label="30 days report" value="1" />
                 <Tab className="tabValue-head" label="90 days report" value="2" />
                 <Tab className="tabValue-head" label="IPO" value="3" />
@@ -326,7 +329,7 @@ export default function DashboardDefault() {
             </TabPanel>
             <TabPanel value="4">
               <Box>
-                <MarketDataTable
+                <BreakOutSoonDailyTable
                   updateToken={updateToken}
                   displayTopGainers={true} // or false depending on the case
                   displayTopLosers={false} // or true depending on the case
@@ -348,7 +351,7 @@ export default function DashboardDefault() {
             </TabPanel>
             <TabPanel value="6">
               <Box>
-                <MarketDataTable
+                <RecentBreakOutTable
                   updateToken={updateToken}
                   displayTopGainers={true} // or false depending on the case
                   displayTopLosers={false} // or true depending on the case
