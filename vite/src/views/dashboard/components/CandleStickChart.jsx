@@ -1,3 +1,187 @@
+// import React, { useEffect, useRef, useState } from 'react';
+// import { createChart } from 'lightweight-charts';
+// import { Box, CircularProgress, Typography, FormControl, Select, MenuItem, Switch } from '@mui/material';
+// import './CandleStickChart.css';
+
+// const CandlestickChart = ( {token}) => {
+//   const chartRef = useRef(null);
+//   const [loading, setLoading] = useState(true);
+//   const [data, setData] = useState([]);
+//   const [error, setError] = useState('');
+//   const [selectedStock, setSelectedStock] = useState(token); // Example default stock symbol
+//   const [isDarkMode, setIsDarkMode] = useState(false);
+//   const [tooltipData, setTooltipData] = useState(null);
+//   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+
+//   const handleStockChange = (event) => {
+//     setSelectedStock(event.target.value); // Update selected stock symbol
+//   };
+
+//   const toggleDarkMode = () => setIsDarkMode((prevMode) => !prevMode);
+
+//   useEffect(() => {
+//     const fetchToken = async () => {
+//       try {
+//         setLoading(true);
+//         const response = await fetch(
+//           `${import.meta.env.VITE_API_URL}/api/service/get-token/?symbol=${selectedStock}`
+//         );
+//         if (!response.ok) throw new Error('Failed to fetch token');
+//         const jsonData = await response.json();
+
+//         if (jsonData.token) {
+//           setNumericalToken(jsonData.token); // Update numerical token
+//         } else {
+//           throw new Error('Token not found');
+//         }
+//       } catch (err) {
+//         setError('Error fetching token: ' + err.message);
+//         setNumericalToken(null);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchToken();
+//   }, [selectedStock]);
+
+//   useEffect(() => {
+//     if (numericalToken) {
+//       const fetchHistoricalData = async () => {
+//         setLoading(true);
+//         try {
+//           const response = await fetch(
+//             `${import.meta.env.VITE_API_URL}/api/service/get-historical-data/?symbol=${selectedStock}`
+//           );
+//           if (!response.ok) throw new Error('Failed to fetch historical data');
+//           const jsonData = await response.json();
+
+//           if (Array.isArray(jsonData) && jsonData.length > 0) {
+//             setData(jsonData);
+//           } else {
+//             throw new Error('Fetched data is not valid');
+//           }
+//         } catch (err) {
+//           setError('Error fetching historical data: ' + err.message);
+//         } finally {
+//           setLoading(false);
+//         }
+//       };
+
+//       fetchHistoricalData();
+//     }
+//   }, [numericalToken]);
+
+//   useEffect(() => {
+//     if (data.length > 0 && chartRef.current) {
+//       const chartOptions = {
+//         width: chartRef.current.clientWidth,
+//         height: chartRef.current.clientHeight,
+//         layout: {
+//           backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF',
+//           textColor: isDarkMode ? '#FFFFFF' : '#000000'
+//         },
+//         grid: {
+//           vertLines: { color: isDarkMode ? '#4A4A4A' : '#E0E0E0' },
+//           horzLines: { color: isDarkMode ? '#4A4A4A' : '#E0E0E0' }
+//         },
+//         crosshair: {
+//           mode: 1
+//         },
+//         priceScale: {
+//           position: 'right'
+//         },
+//         timeScale: {
+//           timeVisible: true,
+//           secondsVisible: false
+//         }
+//       };
+
+//       const chart = createChart(chartRef.current, chartOptions);
+
+//       // Add candlestick series
+//       const candlestickSeries = chart.addCandlestickSeries({
+//         upColor: '#4fff28',
+//         borderUpColor: '#4fff28',
+//         downColor: '#ff4976',
+//         borderDownColor: '#ff4976',
+//         wickUpColor: '#4fff28',
+//         wickDownColor: '#ff4976'
+//       });
+
+//       const candlestickData = data.map((entry) => ({
+//         time: new Date(entry.Date).getTime() / 1000,
+//         open: entry.Open,
+//         high: entry.High,
+//         low: entry.Low,
+//         close: entry.Close
+//       }));
+
+//       candlestickSeries.setData(candlestickData);
+
+//       chart.timeScale().fitContent();
+
+//       // Cleanup on unmount
+//       return () => chart.remove();
+//     }
+//   }, [data, isDarkMode]);
+
+//   if (loading) {
+//     return (
+//       <Box display="flex" alignItems="center" justifyContent="center" height="50vh">
+//         <CircularProgress />
+//       </Box>
+//     );
+//   }
+
+//   if (error) {
+//     return (
+//       <Typography color="error" align="center">
+//         {error}
+//       </Typography>
+//     );
+//   }
+
+//   return (
+//     <Box sx={{ width: '100%', height: '400px', position: 'relative' }}>
+//       <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
+//         <Select value={selectedStock} onChange={handleStockChange}>
+//           <MenuItem value="2min">2min</MenuItem>
+//           <MenuItem value="5min">5min</MenuItem>
+//           <MenuItem value="1Day">1Day</MenuItem>
+//         </Select>
+//       </FormControl>
+
+//       <Switch checked={isDarkMode} onChange={toggleDarkMode} />
+
+//       <div ref={chartRef} style={{ width: '100%', height: '400px' }} />
+
+//       {tooltipData && (
+//         <Box
+//           sx={{
+//             position: 'absolute',
+//             top: tooltipPosition.y - 30,
+//             left: tooltipPosition.x + 10,
+//             backgroundColor: 'rgba(0,0,0,0.7)',
+//             color: '#FFFFFF',
+//             padding: '5px',
+//             borderRadius: '5px',
+//             pointerEvents: 'none',
+//             zIndex: 1000
+//           }}
+//         >
+//           <div>Open: {tooltipData.open}</div>
+//           <div>High: {tooltipData.high}</div>
+//           <div>Low: {tooltipData.low}</div>
+//           <div>Close: {tooltipData.close}</div>
+//         </Box>
+//       )}
+//     </Box>
+//   );
+// };
+
+// export default CandlestickChart;
+
 import React, { useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
 import { Box, CircularProgress, Typography, FormControl, Select, MenuItem, Switch } from '@mui/material';
@@ -20,7 +204,7 @@ const CandlestickChart = ({ token }) => {
     const fetchHistoricalData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`http://127.0.0.1:8000/historical-data/?exchange=NSE&token=${selectedStock}&timeperiod=ONE_DAY`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/service/get-historical-data/?symbol=${selectedStock}`);
         if (!response.ok) throw new Error('Network response was not ok');
         const jsonData = await response.json();
 
