@@ -254,7 +254,7 @@ const CandlestickChart = ({ token }) => {
         width: chartRef.current.clientWidth, // Set chart width dynamically
         height: chartRef.current.clientHeight, // Set chart height dynamically
         layout: {
-          background: { type: 'solid', color: '#253248' },
+          background: { type: 'solid', color: '#1B1B1B' },
           textColor: 'rgba(255, 255, 255, 0.9)'
         },
         grid: {
