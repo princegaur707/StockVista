@@ -346,7 +346,7 @@ const CandlestickChart = ({ token }) => {
         time: new Date(entry.Date).getTime() / 1000,
         value: entry.Volume / 1000000, // Scale volume to millions
         // Add RGBA colors with reduced opacity for better visibility
-        color: entry.Close >= entry.Open ? 'rgba(41, 98, 255, 0.2)' : 'rgba(255, 165, 0, 0.2)' // Blue for up, Orange for down with 50% opacity
+        color: entry.Close >= entry.Open ? '#20605A' : '#853735' // Blue for up, Orange for down with 50% opacity
       }));
 
       volumeSeries.setData(volumeData);
