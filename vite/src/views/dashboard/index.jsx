@@ -22,7 +22,6 @@ import BigPlayersTable from './components/BigPlayers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon component
 import PropTypes from 'prop-types';
 import { Tabs, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import { x } from 'joi';
 
 // modal style
 const modalStyle = {
@@ -230,9 +229,9 @@ export default function DashboardDefault() {
       <Grid container rowSpacing={4.5} columnSpacing={2.75}>
         {/* row 1 */}
         <Grid item xs={12} sx={{ mb: -2.25 }}>
-          <Typography mt='25px' className="heading-dashboard" >
-            MOMENTUM KING
-          </Typography>
+          <div className="dashboard-font-box">
+            <Typography className="heading-dashboard">MOMENTUM KING</Typography>
+          </div>
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <div className="Analyticbox">

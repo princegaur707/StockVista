@@ -5,8 +5,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 const apiUrl = import.meta.env.VITE_API_URL;
 import './Login3.css';
 
@@ -22,17 +21,20 @@ const Login = () => {
     setError(null); // Reset error
     setErrorFontSize('5px');
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/service/login/`,
-        { username, password },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/service/login/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+      });
+
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
+
       // Check for tokens in the response
-      const { access, refresh } = response.data;
+      const { access, refresh } = await response.json();
 
       if (access && refresh) {
         // Save tokens to localStorage or sessionStorage
@@ -49,18 +51,19 @@ const Login = () => {
     } catch (err) {
       console.error('Login error:', err.response?.data || err.message);
       setError(err.response?.data?.detail || 'Login failed.');
-      setErrorFontSize('12px');
+      setErrorFontSize('5px');
     }
   };
 
   return (
-    <Box className="loginPage"
+    <Box
+      className="loginPage"
       sx={{
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#121212', // Dark background color
+        backgroundColor: '#121212' // Dark background color
       }}
     >
       <Box
@@ -73,13 +76,10 @@ const Login = () => {
           boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
           borderRadius: 2,
           textAlign: 'center',
-          border: '1px solid #313437', // Border color
+          border: '1px solid #313437' // Border color
         }}
       >
-        <Typography
-          variant="h4"
-          sx={{ color: '#ffffff', mb: 6, textAlign: 'left' }}
-        >
+        <Typography variant="h4" sx={{ color: '#ffffff', mb: 6, textAlign: 'left' }}>
           Login
         </Typography>
 
@@ -98,16 +98,16 @@ const Login = () => {
                 color: '#ffffff',
                 backgroundColor: '#141516', // Explicitly set background color
                 '& fieldset': {
-                  borderColor: '#777C81',
+                  borderColor: '#777C81'
                 },
                 '&:hover fieldset': {
-                  borderColor: '#ffffff',
+                  borderColor: '#ffffff'
                 },
                 '&.Mui-focused fieldset': {
-                  borderColor: '#ffffff',
-                },
+                  borderColor: '#ffffff'
+                }
               },
-              input: { color: '#ffffff' },
+              input: { color: '#ffffff' }
             }}
           />
 
@@ -126,28 +126,21 @@ const Login = () => {
                 color: '#ffffff',
                 backgroundColor: '#141516',
                 '& fieldset': {
-                  borderColor: '#777C81',
+                  borderColor: '#777C81'
                 },
                 '&:hover fieldset': {
-                  borderColor: '#ffffff',
+                  borderColor: '#ffffff'
                 },
                 '&.Mui-focused fieldset': {
-                  borderColor: '#ffffff',
-                },
+                  borderColor: '#ffffff'
+                }
               },
-              input: { color: '#ffffff' },
+              input: { color: '#ffffff' }
             }}
           />
 
           {/* Error Message */}
-          {error && (
-            <Typography
-              variant="body2"
-              sx={{ color: 'red', mb: 2, textAlign: 'left' }}
-            >
-              {error}
-            </Typography>
-          )}
+          {error && <Typography sx={{ color: 'red', mb: 2, textAlign: 'left' }}>{error}</Typography>}
 
           {/* Login Button */}
           <Button
@@ -162,8 +155,8 @@ const Login = () => {
               mb: 4,
               '&:hover': {
                 backgroundColor: '#ffffff',
-                color: '#1e1e1e',
-              },
+                color: '#1e1e1e'
+              }
             }}
           >
             LOGIN
@@ -176,17 +169,13 @@ const Login = () => {
           style={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'center'
           }}
         >
-          <Divider
-            sx={{ color: '#777C81', my: 3, borderColor: '#777C81', flex: 1 }}
-          />
+          <Divider sx={{ color: '#777C81', my: 3, borderColor: '#777C81', flex: 1 }} />
           <span style={{ margin: '0 10px', color: '#ffffff' }}>OR</span>
-          <Divider
-            sx={{ color: '#777C81', my: 3, borderColor: '#777C81', flex: 1 }}
-          />
-        </div> */}
+          <Divider sx={{ color: '#777C81', my: 3, borderColor: '#777C81', flex: 1 }} />
+        </div>
 
         {/* Google Login Button */}
         {/* <Button
@@ -201,8 +190,8 @@ const Login = () => {
             mb: 2,
             '&:hover': {
               backgroundColor: '#ffffff',
-              color: '#1e1e1e',
-            },
+              color: '#1e1e1e'
+            }
           }}
         >
           SIGN IN USING GOOGLE ACCOUNT
