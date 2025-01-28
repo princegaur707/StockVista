@@ -248,47 +248,52 @@ const CandlestickChart = ({ token }) => {
       //   }
       // };
       const chartOptions = {
+        handleScale: {
+          axisPressedMouseMove: true
+        },
         width: chartRef.current.clientWidth, // Set chart width dynamically
         height: chartRef.current.clientHeight, // Set chart height dynamically
         layout: {
-          backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF', // Set background color based on dark mode
-          textColor: isDarkMode ? '#FFFFFF' : '#000000', // Adjust text color based on dark mode
-          fontSize: 12, // Set default font size
-          fontFamily: 'Verdana, Arial, sans-serif' // Define font family
+          background: { type: 'solid', color: '#253248' },
+          textColor: 'rgba(255, 255, 255, 0.9)'
         },
         grid: {
-          vertLines: { color: isDarkMode ? '#4A4A4A' : '#E0E0E0', visible: true }, // Vertical grid lines
-          horzLines: { color: isDarkMode ? '#4A4A4A' : '#E0E0E0', visible: true } // Horizontal grid lines
-        },
-        crosshair: {
-          mode: 1, // Normal crosshair mode
-          vertLine: {
-            color: '#758696', // Customize vertical line color
-            width: 1, // Line width
-            style: 0, // Solid line
-            visible: true // Enable visibility
+          vertLines: {
+            color: '#334158'
           },
-          horzLine: {
-            color: '#758696', // Customize horizontal line color
-            width: 1, // Line width
-            style: 0, // Solid line
-            visible: true // Enable visibility
+          horzLines: {
+            color: '#334158'
           }
         },
+        crosshair: {
+          mode: 0
+        },
         priceScale: {
-          position: 'right', // Set price scale to the right
-          borderColor: isDarkMode ? '#CCCCCC' : '#2B2B43', // Border color of price scale
-          autoScale: true // Enable auto-scaling
+          borderColor: '#485c7b'
         },
+        // timeScale: {
+        //   borderColor: '#485c7b'
+        // },
         timeScale: {
-          rightOffset: 10, // Space from the right of the chart
-          barSpacing: 6, // Space between bars
-          fixLeftEdge: true, // Fix the left edge
-          lockVisibleTimeRangeOnResize: true, // Prevent shifting of visible time range on resize
-          timeVisible: true, // Show time labels on the time axis
-          secondsVisible: false, // Hide seconds on the time axis
-          borderColor: isDarkMode ? '#CCCCCC' : '#2B2B43' // Border color for time scale
+          timeVisible: true,
+          secondVisible: false
+          // borderVisible:false
         },
+
+        // priceScale: {
+        //   position: 'right', // Set price scale to the right
+        //   borderColor: isDarkMode ? '#CCCCCC' : '#2B2B43', // Border color of price scale
+        //   autoScale: true // Enable auto-scaling
+        // },
+        // timeScale: {
+        //   rightOffset: 10, // Space from the right of the chart
+        //   barSpacing: 6, // Space between bars
+        //   fixLeftEdge: true, // Fix the left edge
+        //   lockVisibleTimeRangeOnResize: true, // Prevent shifting of visible time range on resize
+        //   timeVisible: true, // Show time labels on the time axis
+        //   secondsVisible: false, // Hide seconds on the time axis
+        //   borderColor: isDarkMode ? '#CCCCCC' : '#2B2B43' // Border color for time scale
+        // },
         handleScroll: {
           vertTouchDrag: true, // Enable vertical touch scroll
           horzTouchDrag: true // Enable horizontal touch scroll
@@ -296,25 +301,25 @@ const CandlestickChart = ({ token }) => {
         handleScale: {
           axisPressedMouseMove: true, // Enable scaling when axis is dragged
           pinch: true // Enable pinch-to-zoom functionality
-        },
-        watermark: {
-          color: 'rgba(255, 255, 255, 0.5)', // Watermark color
-          visible: true, // Show watermark
-          text: 'TradingView', // Watermark text
-          fontSize: 24 // Watermark font size
         }
+        // watermark: {
+        //   color: 'rgba(255, 255, 255, 0.5)', // Watermark color
+        //   visible: true, // Show watermark
+        //   text: 'Investinmind', // Watermark text
+        //   fontSize: 12 // Watermark font size
+        // }
       };
 
       const chart = createChart(chartRef.current, chartOptions);
 
       // Add candlestick series
       const candlestickSeries = chart.addCandlestickSeries({
-        upColor: '#4fff28', // Color for up candles
-        borderUpColor: '#4fff28',
-        downColor: '#ff4976', // Color for down candles
-        borderDownColor: '#ff4976',
-        wickUpColor: '#4fff28', // Wick color for up candles
-        wickDownColor: '#ff4976' // Wick color for down candles
+        upColor: '#26A69A', // Color for up candles
+        borderUpColor: '#26A69A',
+        downColor: '#F05350', // Color for down candles
+        borderDownColor: '#F05350',
+        wickUpColor: '#26A69A', // Wick color for up candles
+        wickDownColor: '#F05350' // Wick color for down candles
       });
 
       const candlestickData = data.map((entry) => ({
