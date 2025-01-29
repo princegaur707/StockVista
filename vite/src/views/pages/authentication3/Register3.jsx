@@ -256,7 +256,7 @@ const Register = () => {
           {/* Link to Login */}
           <Typography variant="body2" sx={{ color: '#ffffff', fontSize: '12px', mt: 2, textAlign: 'center' }}>
             Already have an account?{' '}
-            <Link to="/pages/login/login3" style={{ color: '#00aaff' }}>
+            <Link to="/login" style={{ color: '#00aaff' }}>
               Login
             </Link>
           </Typography>

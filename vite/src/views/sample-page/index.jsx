@@ -302,7 +302,7 @@ const SamplePage = () => (
                           variant="contained"
                           // onClick={() => { window.location.href = 'http://localhost:3000/investinmind/pages/register/register3'; }}
                           onClick={() => {
-                            window.location.href = `/investinmind/pages/register/register3`;
+                            window.location.href = `/investinmind/register`;
                           }}
                           sx={{
                             fontFamily: 'Figtree',

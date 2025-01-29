@@ -310,7 +310,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
                 // fontSize: '0.9rem'
               }}
             >
-              ({pct_change.toFixed(2)})
+              ({pct_change.toFixed(2)}%)
             </Typography>
           </Box>
         );
@@ -408,6 +408,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
           onCellClick={handleCellClick}
           components={{ Toolbar: GridToolbar }}
           pagination
+          hideFooterSelectedRowCount
           initialState={{
             pagination: {
               paginationModel: {

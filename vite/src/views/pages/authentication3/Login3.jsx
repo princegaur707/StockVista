@@ -42,7 +42,7 @@ const Login = () => {
         sessionStorage.setItem('refreshToken', refresh);
 
         // Redirect using useNavigate
-        navigate('/dashboard/default');
+        navigate('/dashboard');
         // console.log("HI");
       } else {
         setError('Invalid Credentials');
@@ -202,7 +202,7 @@ const Login = () => {
             variant="body2"
             sx={{ color: '#ffffff', fontSize: '12px', mt: 2, textAlign: 'center' }}
           >
-            Don't have an account? <Link to="/pages/register/register3" style={{ color: '#00aaff' }}>Sign up</Link>
+            Don't have an account? <Link to="/register" style={{ color: '#00aaff' }}>Sign up</Link>
           </Typography>
         </div>
       </Box>

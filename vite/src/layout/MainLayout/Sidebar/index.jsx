@@ -15,7 +15,7 @@ const Sidebar = () => {
 
     // Redirect logic for specific boxes
     if (index === 0) {
-      navigate('/dashboard/default') // Redirect for the first box
+      navigate('/dashboard') // Redirect for the first box
     } else if (index === 1) {
       navigate('/investor'); // Redirect for the second box
     }  else if (index === 2) {

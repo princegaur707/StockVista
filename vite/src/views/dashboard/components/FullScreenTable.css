@@ -160,10 +160,18 @@
   color: #eeeeee !important;
 }
 
+/* footer of table */
 .market-data .MuiTablePagination-root{
   color: #ffd56b !important;
+  /* overflow: hidden; */
 }
 
+.market-data .MuiDataGrid-withBorderColor {
+  border-color: #1D1E20 !important;
+}
+.market-data .MuiTablePagination-displayedRows {
+  color: #ffd56b !important;
+}
 .market-data .css-m87zkl-MuiInputBase-input-MuiOutlinedInput-input{
   background-color: transparent;
   color: white;

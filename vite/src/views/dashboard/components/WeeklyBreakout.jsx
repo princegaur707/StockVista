@@ -168,12 +168,12 @@ const WeeklyBreakoutTable = ({ setSymbolToken, updateToken, liveMarketData }) =>
   }
   
 
-  const handleCellClick = async (params) => {
-    const symbolToken = await getTokenBySymbol(params.value);
-    console.log(symbolToken);
-    setSymbolToken(symbolToken);
-    if (params.value === 'tradingSymbol') {
-      updateToken(symbolToken);
+  const handleCellClick = (params) => {
+    // console.log(params);
+    // console.log('param', params.row.symbolToken);
+    setSymbolToken(params.row.tradingSymbol);
+    if (params.field === 'tradingSymbol') {
+      updateToken(params.row.tradingSymbol);
     }
   };
   
@@ -339,7 +339,7 @@ const WeeklyBreakoutTable = ({ setSymbolToken, updateToken, liveMarketData }) =>
                 // fontSize: '0.9rem'
               }}
             >
-              ({pct_change.toFixed(2)})
+              ({pct_change.toFixed(2)}%)
             </Typography>
           </Box>
         );

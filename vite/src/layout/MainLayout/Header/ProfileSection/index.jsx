@@ -58,7 +58,7 @@ const ProfileSection = () => {
   const handleLogout = async () => {
     sessionStorage.removeItem('accessToken');
     sessionStorage.removeItem('refreshToken');
-    navigate('/pages/login/login3');
+    navigate('/login');
     // console.log('Logout');
   };
 
@@ -170,12 +170,12 @@ const ProfileSection = () => {
                       }
                     }}
                   >
-                    <ListItemIcon>
+                    <ListItemIcon >
                       <IconLogout stroke={1.5} size="1.5rem" />
                     </ListItemIcon>
                     <ListItemText
                       primary={
-                        <Typography variant="body2" color="#FFFFFF">
+                        <Typography variant="body2" color="#FFFFFF" paddingRight="30px">
                           Logout
                         </Typography>
                       }

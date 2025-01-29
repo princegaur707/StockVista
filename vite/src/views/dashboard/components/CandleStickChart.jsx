@@ -1,190 +1,6 @@
-// import React, { useEffect, useRef, useState } from 'react';
-// import { createChart } from 'lightweight-charts';
-// import { Box, CircularProgress, Typography, FormControl, Select, MenuItem, Switch } from '@mui/material';
-// import './CandleStickChart.css';
-
-// const CandlestickChart = ( {token}) => {
-//   const chartRef = useRef(null);
-//   const [loading, setLoading] = useState(true);
-//   const [data, setData] = useState([]);
-//   const [error, setError] = useState('');
-//   const [selectedStock, setSelectedStock] = useState(token); // Example default stock symbol
-//   const [isDarkMode, setIsDarkMode] = useState(false);
-//   const [tooltipData, setTooltipData] = useState(null);
-//   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
-
-//   const handleStockChange = (event) => {
-//     setSelectedStock(event.target.value); // Update selected stock symbol
-//   };
-
-//   const toggleDarkMode = () => setIsDarkMode((prevMode) => !prevMode);
-
-//   useEffect(() => {
-//     const fetchToken = async () => {
-//       try {
-//         setLoading(true);
-//         const response = await fetch(
-//           `${import.meta.env.VITE_API_URL}/api/service/get-token/?symbol=${selectedStock}`
-//         );
-//         if (!response.ok) throw new Error('Failed to fetch token');
-//         const jsonData = await response.json();
-
-//         if (jsonData.token) {
-//           setNumericalToken(jsonData.token); // Update numerical token
-//         } else {
-//           throw new Error('Token not found');
-//         }
-//       } catch (err) {
-//         setError('Error fetching token: ' + err.message);
-//         setNumericalToken(null);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchToken();
-//   }, [selectedStock]);
-
-//   useEffect(() => {
-//     if (numericalToken) {
-//       const fetchHistoricalData = async () => {
-//         setLoading(true);
-//         try {
-//           const response = await fetch(
-//             `${import.meta.env.VITE_API_URL}/api/service/get-historical-data/?symbol=${selectedStock}`
-//           );
-//           if (!response.ok) throw new Error('Failed to fetch historical data');
-//           const jsonData = await response.json();
-
-//           if (Array.isArray(jsonData) && jsonData.length > 0) {
-//             setData(jsonData);
-//           } else {
-//             throw new Error('Fetched data is not valid');
-//           }
-//         } catch (err) {
-//           setError('Error fetching historical data: ' + err.message);
-//         } finally {
-//           setLoading(false);
-//         }
-//       };
-
-//       fetchHistoricalData();
-//     }
-//   }, [numericalToken]);
-
-//   useEffect(() => {
-//     if (data.length > 0 && chartRef.current) {
-//       const chartOptions = {
-//         width: chartRef.current.clientWidth,
-//         height: chartRef.current.clientHeight,
-//         layout: {
-//           backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF',
-//           textColor: isDarkMode ? '#FFFFFF' : '#000000'
-//         },
-//         grid: {
-//           vertLines: { color: isDarkMode ? '#4A4A4A' : '#E0E0E0' },
-//           horzLines: { color: isDarkMode ? '#4A4A4A' : '#E0E0E0' }
-//         },
-//         crosshair: {
-//           mode: 1
-//         },
-//         priceScale: {
-//           position: 'right'
-//         },
-//         timeScale: {
-//           timeVisible: true,
-//           secondsVisible: false
-//         }
-//       };
-
-//       const chart = createChart(chartRef.current, chartOptions);
-
-//       // Add candlestick series
-//       const candlestickSeries = chart.addCandlestickSeries({
-//         upColor: '#4fff28',
-//         borderUpColor: '#4fff28',
-//         downColor: '#ff4976',
-//         borderDownColor: '#ff4976',
-//         wickUpColor: '#4fff28',
-//         wickDownColor: '#ff4976'
-//       });
-
-//       const candlestickData = data.map((entry) => ({
-//         time: new Date(entry.Date).getTime() / 1000,
-//         open: entry.Open,
-//         high: entry.High,
-//         low: entry.Low,
-//         close: entry.Close
-//       }));
-
-//       candlestickSeries.setData(candlestickData);
-
-//       chart.timeScale().fitContent();
-
-//       // Cleanup on unmount
-//       return () => chart.remove();
-//     }
-//   }, [data, isDarkMode]);
-
-//   if (loading) {
-//     return (
-//       <Box display="flex" alignItems="center" justifyContent="center" height="50vh">
-//         <CircularProgress />
-//       </Box>
-//     );
-//   }
-
-//   if (error) {
-//     return (
-//       <Typography color="error" align="center">
-//         {error}
-//       </Typography>
-//     );
-//   }
-
-//   return (
-//     <Box sx={{ width: '100%', height: '400px', position: 'relative' }}>
-//       <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
-//         <Select value={selectedStock} onChange={handleStockChange}>
-//           <MenuItem value="2min">2min</MenuItem>
-//           <MenuItem value="5min">5min</MenuItem>
-//           <MenuItem value="1Day">1Day</MenuItem>
-//         </Select>
-//       </FormControl>
-
-//       <Switch checked={isDarkMode} onChange={toggleDarkMode} />
-
-//       <div ref={chartRef} style={{ width: '100%', height: '400px' }} />
-
-//       {tooltipData && (
-//         <Box
-//           sx={{
-//             position: 'absolute',
-//             top: tooltipPosition.y - 30,
-//             left: tooltipPosition.x + 10,
-//             backgroundColor: 'rgba(0,0,0,0.7)',
-//             color: '#FFFFFF',
-//             padding: '5px',
-//             borderRadius: '5px',
-//             pointerEvents: 'none',
-//             zIndex: 1000
-//           }}
-//         >
-//           <div>Open: {tooltipData.open}</div>
-//           <div>High: {tooltipData.high}</div>
-//           <div>Low: {tooltipData.low}</div>
-//           <div>Close: {tooltipData.close}</div>
-//         </Box>
-//       )}
-//     </Box>
-//   );
-// };
-
-// export default CandlestickChart;
-
 import React, { useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
-import { Box, CircularProgress, Typography, FormControl, Select, MenuItem, Switch } from '@mui/material';
+import { Box, CircularProgress, Typography, ButtonGroup, Button } from '@mui/material';
 import './CandleStickChart.css';
 
 const CandlestickChart = ({ token }) => {
@@ -193,107 +9,62 @@ const CandlestickChart = ({ token }) => {
   const [data, setData] = useState([]);
   const [error, setError] = useState('');
   const [selectedStock, setSelectedStock] = useState(token);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [timePeriod, setTimePeriod] = useState('1M');
+  const chartInstanceRef = useRef(null);
   const [tooltipData, setTooltipData] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
-  const handleStockChange = (event) => setSelectedStock(event.target.value);
-  const toggleDarkMode = () => setIsDarkMode((prevMode) => !prevMode);
 
-  useEffect(() => {
-    const fetchHistoricalData = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/service/get-historical-data/?symbol=${selectedStock}`);
-        if (!response.ok) throw new Error('Network response was not ok');
-        const jsonData = await response.json();
+  const fetchHistoricalData = async (period) => {
+    setLoading(true);
+    try {
+      let url =
+        period === '1D' || period === '5D'
+          ? `${import.meta.env.VITE_API_URL}/api/service/get-historical-data-minute-wise/?symbol=${selectedStock}`
+          : `${import.meta.env.VITE_API_URL}/api/service/get-historical-data/?symbol=${selectedStock}&period=${period}`;
 
-        if (Array.isArray(jsonData) && jsonData.length > 0) {
-          setData(jsonData);
-        } else {
-          throw new Error('Fetched data is not valid');
-        }
-      } catch (err) {
-        setError('Failed to fetch data: ' + err.message);
-      } finally {
-        setLoading(false);
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Network response was not ok');
+      const jsonData = await response.json();
+
+      if (jsonData.data && Array.isArray(jsonData.data)) {
+        setData(jsonData.data);
+      } else if (Array.isArray(jsonData)) {
+        setData(jsonData);
+      } else {
+        throw new Error('Fetched data is not valid');
       }
-    };
-
-    fetchHistoricalData();
-  }, [selectedStock]);
+    } catch (err) {
+      setError('Failed to fetch data: ' + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
+    fetchHistoricalData(timePeriod);
+  }, [selectedStock, timePeriod]);
+
+  useEffect(() => {
+    if (chartInstanceRef.current) {
+      chartInstanceRef.current.remove();
+      chartInstanceRef.current = null;
+    }
     if (data.length > 0 && chartRef.current) {
-      // const chartOptions = {
-      //   width: chartRef.current.clientWidth,
-      //   height: chartRef.current.clientHeight,
-      //   layout: {
-      //     backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF',
-      //     textColor: isDarkMode ? '#FFFFFF' : '#000000'
-      //   },
-      //   grid: {
-      //     vertLines: { color: isDarkMode ? '#4A4A4A' : '#E0E0E0' },
-      //     horzLines: { color: isDarkMode ? '#4A4A4A' : '#E0E0E0' }
-      //   },
-      //   crosshair: {
-      //     mode: 1 // Enable crosshair
-      //   },
-      //   priceScale: {
-      //     position: 'right'
-      //   },
-      //   timeScale: {
-      //     timeVisible: true,
-      //     secondsVisible: false
-      //   }
-      // };
       const chartOptions = {
-        handleScale: {
-          axisPressedMouseMove: true
-        },
-        width: chartRef.current.clientWidth, // Set chart width dynamically
-        height: chartRef.current.clientHeight, // Set chart height dynamically
+        width: chartRef.current.clientWidth,
+        height: chartRef.current.clientHeight,
         layout: {
-          background: { type: 'solid', color: '#1B1B1B' },
-          textColor: 'rgba(255, 255, 255, 0.9)'
+          background: { type: 'solid', color: '#121212' },
+          textColor: 'rgba(255, 255, 255, 0.9)',
         },
         grid: {
-          vertLines: {
-            color: '#334158'
-          },
-          horzLines: {
-            color: '#334158'
-          }
+          vertLines: { color: '#444' },
+          horzLines: { color: '#444' },
         },
-        crosshair: {
-          mode: 0
-        },
-        priceScale: {
-          borderColor: '#485c7b'
-        },
-        // timeScale: {
-        //   borderColor: '#485c7b'
-        // },
-        timeScale: {
-          timeVisible: true,
-          secondVisible: false
-          // borderVisible:false
-        },
-
-        // priceScale: {
-        //   position: 'right', // Set price scale to the right
-        //   borderColor: isDarkMode ? '#CCCCCC' : '#2B2B43', // Border color of price scale
-        //   autoScale: true // Enable auto-scaling
-        // },
-        // timeScale: {
-        //   rightOffset: 10, // Space from the right of the chart
-        //   barSpacing: 6, // Space between bars
-        //   fixLeftEdge: true, // Fix the left edge
-        //   lockVisibleTimeRangeOnResize: true, // Prevent shifting of visible time range on resize
-        //   timeVisible: true, // Show time labels on the time axis
-        //   secondsVisible: false, // Hide seconds on the time axis
-        //   borderColor: isDarkMode ? '#CCCCCC' : '#2B2B43' // Border color for time scale
-        // },
+        crosshair: { mode: 0 },
+        priceScale: { borderColor: '#485c7b' },
+        timeScale: { timeVisible: true, secondVisible: false },
         handleScroll: {
           vertTouchDrag: true, // Enable vertical touch scroll
           horzTouchDrag: true // Enable horizontal touch scroll
@@ -302,17 +73,10 @@ const CandlestickChart = ({ token }) => {
           axisPressedMouseMove: true, // Enable scaling when axis is dragged
           pinch: true // Enable pinch-to-zoom functionality
         }
-        // watermark: {
-        //   color: 'rgba(255, 255, 255, 0.5)', // Watermark color
-        //   visible: true, // Show watermark
-        //   text: 'Investinmind', // Watermark text
-        //   fontSize: 12 // Watermark font size
-        // }
       };
 
       const chart = createChart(chartRef.current, chartOptions);
-
-      // Add candlestick series
+      chartInstanceRef.current = chart;
       const candlestickSeries = chart.addCandlestickSeries({
         upColor: '#26A69A', // Color for up candles
         borderUpColor: '#26A69A',
@@ -322,97 +86,91 @@ const CandlestickChart = ({ token }) => {
         wickDownColor: '#F05350' // Wick color for down candles
       });
 
-      const candlestickData = data.map((entry) => ({
-        time: new Date(entry.Date).getTime() / 1000, // Time in seconds
+      const filteredData = getTimeFilter(timePeriod);
+      const candlestickData = filteredData.map((entry) => ({
+        time: new Date(entry.Date).getTime() / 1000,
         open: entry.Open,
         high: entry.High,
         low: entry.Low,
-        close: entry.Close
+        close: entry.Close,
       }));
 
       candlestickSeries.setData(candlestickData);
-
-      // Add histogram (bar) series for volume data
+      
       const volumeSeries = chart.addHistogramSeries({
-        priceScaleId: '', // Attach volume to the main price scale
-        priceLineVisible: false, // Hide price line
-        scaleMargins: {
-          top: 0.8, // Reserve most of the space for the candlestick chart
-          bottom: 0 // Align bars with the bottom
-        }
+        priceScaleId: '',
+        priceLineVisible: false,
+        scaleMargins: { top: 0.8, bottom: 0 },
       });
-
-      const volumeData = data.map((entry) => ({
+      
+      const volumeData = filteredData.map((entry) => ({
         time: new Date(entry.Date).getTime() / 1000,
-        value: entry.Volume / 1000000, // Scale volume to millions
-        // Add RGBA colors with reduced opacity for better visibility
-        color: entry.Close >= entry.Open ? '#20605A' : '#853735' // Blue for up, Orange for down with 50% opacity
+        value: entry.Volume / 1000000,
+        color: entry.Close >= entry.Open ? '#20605A' : '#853735',
       }));
+      
 
       volumeSeries.setData(volumeData);
-
+      
       chart.timeScale().fitContent();
 
-      // Subscribe to crosshair move to show tooltips near cursor
-      chart.subscribeCrosshairMove((param) => {
-        if (!param || !param.seriesData || !param.time || !param.point) {
-          setTooltipData(null); // Hide tooltip if no data
-          return;
-        }
-
-        const candlestickPoint = param.seriesData.get(candlestickSeries);
-        if (candlestickPoint) {
-          // Update tooltip data and position
-          setTooltipData({
-            open: candlestickPoint.open,
-            high: candlestickPoint.high,
-            low: candlestickPoint.low,
-            close: candlestickPoint.close
-          });
-          setTooltipPosition({ x: param.point.x, y: param.point.y });
-        }
-      });
-
       const handleResize = () => {
-        chart.resize(chartRef.current.clientWidth, chartRef.current.clientHeight);
+        if (chartInstanceRef.current) {
+          chartInstanceRef.current.resize(chartRef.current.clientWidth, chartRef.current.clientHeight);
+        }
       };
 
       window.addEventListener('resize', handleResize);
-
       return () => {
-        chart.remove();
+        if (chartInstanceRef.current) {
+          chartInstanceRef.current.remove();
+          chartInstanceRef.current = null;
+        }
         window.removeEventListener('resize', handleResize);
       };
     }
-  }, [data, isDarkMode]);
+  }, [data]);
 
-  if (loading) {
-    return (
-      <Box display="flex" alignItems="center" justifyContent="center" height="50vh">
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (error) {
-    return (
-      <Typography color="error" align="center">
-        {error}
-      </Typography>
-    );
-  }
+  const getTimeFilter = (period) => {
+    if (period === '1D' || period === '5D') return data; // No need to filter again
+  
+    const today = new Date();
+    let startDate = new Date();
+  
+    switch (period) {
+      case '5D':
+        startDate.setDate(today.getDate() - 5);
+        break;
+      case '1M':
+        startDate.setMonth(today.getMonth() - 1);
+        break;
+      case '3M':
+        startDate.setMonth(today.getMonth() - 3);
+        break;
+      case '6M':
+        startDate.setMonth(today.getMonth() - 6);
+        break;
+      case '1Y':
+        startDate.setFullYear(today.getFullYear() - 1);
+        break;
+      case '5Y':
+        startDate.setFullYear(today.getFullYear() - 5);
+        break;
+      case 'All':
+        return data;
+      default:
+        return data;
+    }
+  
+    return data.filter((entry) => new Date(entry.Date) >= startDate);
+  };
 
   return (
-    <Box sx={{ width: '100%', height: '400px', position: 'relative' }}>
-      {/* <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
-        <Select value={selectedStock} onChange={handleStockChange}>
-        </Select>
-      </FormControl> */}
-
-      {/* <Switch checked={isDarkMode} onChange={toggleDarkMode} /> */}
-
+    <Box sx={{ width: '100%', height: '455px', position: 'relative', backgroundColor: '#121212', color: '#FFFFFF' }}>
+      {/* <Typography variant="h4" sx={{ textAlign: 'left', padding: '10px', fontWeight: 'bold', color: '#FFD700' }}>
+        {selectedStock}
+      </Typography> */}
       <div ref={chartRef} style={{ width: '100%', height: '400px' }} />
-
       {tooltipData && (
         <Box
           sx={{
@@ -433,6 +191,36 @@ const CandlestickChart = ({ token }) => {
           <div>Close: {tooltipData.close}</div>
         </Box>
       )}
+
+      <ButtonGroup variant="contained" sx={{ display: 'flex', justifyContent: 'left', marginTop: 2 }}>
+        {[
+          { label: '1D', value: '1D' },
+          { label: '5D', value: '5D' },
+          { label: '1M', value: '1M' },
+          { label: '3M', value: '3M' },
+          { label: '6M', value: '6M' },
+          { label: '1Y', value: '1Y' },
+          { label: '5Y', value: '5Y' },
+          { label: 'All', value: 'All' },
+        ].map(({ label, value }) => (
+          <Button
+            key={value}
+            onClick={() => setTimePeriod(value)}
+            sx={{ backgroundColor: timePeriod === value ? '#FFE072' : 'inherit', color: timePeriod === value ? '#000' : '#FFF',
+              fontWeight:'400',
+              borderRadius:'1px',
+              padding:'3px',
+              fontSize:'12px',
+              '&:hover': {
+          backgroundColor: timePeriod === value ? '#FFE072' : 'inherit', // Keep the background color same on hover
+          color: timePeriod === value ? '#333333' : '#FFFFFF', // Keep the text color same on hover
+        }
+             }}
+          >
+            {label}
+          </Button>
+        ))}
+      </ButtonGroup>
     </Box>
   );
 };

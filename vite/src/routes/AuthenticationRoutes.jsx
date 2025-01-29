@@ -22,11 +22,11 @@ const AuthenticationRoutes = {
       element: <LandingPage />
     },
     {
-      path: '/pages/login/login3',
+      path: '/login',
       element: <Login />
     },
     {
-      path: '/pages/register/register3',
+      path: '/register',
       element: <Register />
     },
     

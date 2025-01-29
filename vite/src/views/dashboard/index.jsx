@@ -15,11 +15,13 @@ import CandlestickChart from './components/CandleStickChart';
 import ThirtyDayReportTable from './components/ThirtyDayReport';
 import NinetyDayReportTable from './components/NinetyDayReport';
 import IPOTable from './components/IPO';
-import BreakOutSoonDailyTable from './components/BreakSoonDaily';
+import BreakOutSoonDailyTable from './components/BreakoutSoonDaily';
 import WeeklyBreakoutTable from './components/WeeklyBreakout';
 import RecentBreakOutTable from './components/RecentBreakOut';
 import BigPlayersTable from './components/BigPlayers';
 import { Tabs, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { bgcolor } from '@mui/system';
+import axios from 'axios';
 
 // modal style
 const modalStyle = {
@@ -28,10 +30,11 @@ const modalStyle = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '80%',
-  bgcolor: 'background.paper',
+  // bgcolor: 'background.paper',
+  bgcolor:'#141516',
   boxShadow: 24,
-  p: 4,
-  borderRadius: 2
+  p: 1,
+  borderRadius: 1
 };
 
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
@@ -50,23 +53,6 @@ export default function DashboardDefault() {
     niftyBank: { count: '53391.35', change: -186.35, percentage: -0.35 },
     nifty50: { count: '59292.95', change: 157.55, percentage: 0.27 }
   });
-  // const updateLiveData = (message) => {
-  //   const { Symbol } = message; // Extract the stock symbol from the message
-
-  //   setLiveMarketData((prevData) => {
-  //     // If prevData is indeed an array, this will work
-  //     const stockIndex = prevData.findIndex((stock) => stock.Symbol === Symbol);
-
-  //     // If the stock exists, update the corresponding entry
-  //     if (stockIndex !== -1) {
-  //       // Create a new array with updated stock data
-  //       return prevData.map((stock, index) => (index === stockIndex ? { ...stock, ...message } : stock));
-  //     }
-
-  //     // If the stock doesn't exist, add it to the array
-  //     return [...prevData, message];
-  //   });
-  // };
 
   const updateLiveData = (message) => {
     const { Symbol } = message; // Extract the stock symbol and token from the message
@@ -143,23 +129,63 @@ export default function DashboardDefault() {
     });
   };
 
+  const fetchIndexData = async () => {
+    try {
+      const response = await axios.get(
+        'http://test-deployment.eba-x5nej3t3.ap-south-1.elasticbeanstalk.com/api/service/get-index-data'
+      );
+      const indexData = response.data;
+
+      setData({
+        nifty: {
+          count: indexData["NIFTY 100"]["Current Value"].toFixed(2),
+          change: indexData["NIFTY 100"].Change,
+          percentage: indexData["NIFTY 100"]["Change (%)"]
+        },
+        sensex: {
+          count: indexData.SENSEX["Current Value"].toFixed(2),
+          change: indexData.SENSEX.Change,
+          percentage: indexData.SENSEX["Change (%)"]
+        },
+        niftyBank: {
+          count: indexData["NIFTY BANK"]["Current Value"].toFixed(2),
+          change: indexData["NIFTY BANK"].Change,
+          percentage: indexData["NIFTY BANK"]["Change (%)"]
+        },
+        nifty50: {
+          count: indexData["NIFTY 50"]["Current Value"].toFixed(2),
+          change: indexData["NIFTY 50"].Change,
+          percentage: indexData["NIFTY 50"]["Change (%)"]
+        }
+      });
+    } catch (error) {
+      console.error('Error fetching index data:', error);
+    }
+  };
+
   useEffect(() => {
-    const ws = new WebSocket(`${import.meta.env.VITE_API_URL}/ws/nse-feed/`);
-    // const ws = new WebSocket('ws://localhost:8000/ws/nse-feed/');
-    // const ws = [];
-
-    ws.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      updateData(message); // Existing logic for specific stock updates
-      // console.log(message, 'live4');
-      updateLiveData(message);
-      // setLiveMarketData(message); // New: Set live data for MarketDataTable
-    };
-
-    return () => {
-      ws.close();
-    };
+    fetchIndexData();
+    const interval = setInterval(fetchIndexData, 10000); // Fetch data every 10 seconds
+    return () => clearInterval(interval);
   }, []);
+
+  // useEffect(() => {
+  //   const ws = new WebSocket(`${import.meta.env.VITE_API_URL}/ws/nse-feed/`);
+  //   // const ws = new WebSocket('ws://localhost:8000/ws/nse-feed/');
+  //   // const ws = [];
+
+  //   ws.onmessage = (event) => {
+  //     const message = JSON.parse(event.data);
+  //     updateData(message); // Existing logic for specific stock updates
+  //     // console.log(message, 'live4');
+  //     updateLiveData(message);
+  //     // setLiveMarketData(message); // New: Set live data for MarketDataTable
+  //   };
+
+  //   return () => {
+  //     ws.close();
+  //   };
+  // }, []);
 
   const updateData = (message) => {
     const { Name, LTP, Change, 'Change %': ChangePercentage } = message;
@@ -375,13 +401,31 @@ export default function DashboardDefault() {
       {/* Modal to show the Candlestick Chart */}
       <Modal open={openModal} onClose={handleCloseModal} aria-labelledby="candlestick-chart-modal">
         <Box sx={modalStyle}>
-          <Typography variant="h6" component="h2" gutterBottom>
-            Candlestick Chart
-          </Typography>
+            <Box display={'flex'} justifyContent="space-between" alignItems="center" mb='15px'>
+              <Typography 
+                variant="h3" 
+                sx={{ fontFamily:'figtree', textAlign: 'left', padding: '10px', fontWeight: '300', color: '#FFE072', fontSize:'20px', letterSpacing:'1px' }}>
+                {symbolToken}
+              </Typography>
+              <Button 
+                onClick={handleCloseModal} 
+                variant="outlined" 
+                sx={{
+                  color: '#FFE072', 
+                  borderColor: '#FFE072', 
+                  mt: 1, 
+                  '&:hover': {
+                    borderColor: '#FFD702', 
+                    backgroundColor: '#FFCC19A6',
+                    color:'#000'
+                  },
+                  mr:2,
+                }}
+              >
+                Close
+            </Button>
+            </Box>
           <CandlestickChart token={symbolToken} />
-          <Button onClick={handleCloseModal} variant="contained" sx={{ mt: 2 }}>
-            Close
-          </Button>
         </Box>
       </Modal>
     </Box>
