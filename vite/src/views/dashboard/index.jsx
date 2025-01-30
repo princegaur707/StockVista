@@ -21,7 +21,6 @@ import RecentBreakOutTable from './components/RecentBreakOut';
 import BigPlayersTable from './components/BigPlayers';
 import { Tabs, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { bgcolor } from '@mui/system';
-import axios from 'axios';
 
 // modal style
 const modalStyle = {
@@ -31,7 +30,7 @@ const modalStyle = {
   transform: 'translate(-50%, -50%)',
   width: '80%',
   // bgcolor: 'background.paper',
-  bgcolor:'#141516',
+  bgcolor: '#141516',
   boxShadow: 24,
   p: 1,
   borderRadius: 1
@@ -131,31 +130,34 @@ export default function DashboardDefault() {
 
   const fetchIndexData = async () => {
     try {
-      const response = await axios.get(
-        'http://test-deployment.eba-x5nej3t3.ap-south-1.elasticbeanstalk.com/api/service/get-index-data'
-      );
-      const indexData = response.data;
+      const response = await fetch('http://test-deployment.eba-x5nej3t3.ap-south-1.elasticbeanstalk.com/api/service/get-index-data');
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const indexData = await response.json();
 
       setData({
         nifty: {
-          count: indexData["NIFTY 100"]["Current Value"].toFixed(2),
-          change: indexData["NIFTY 100"].Change,
-          percentage: indexData["NIFTY 100"]["Change (%)"]
+          count: indexData['NIFTY 100']['Current Value'].toFixed(2),
+          change: indexData['NIFTY 100'].Change,
+          percentage: indexData['NIFTY 100']['Change (%)']
         },
         sensex: {
-          count: indexData.SENSEX["Current Value"].toFixed(2),
+          count: indexData.SENSEX['Current Value'].toFixed(2),
           change: indexData.SENSEX.Change,
-          percentage: indexData.SENSEX["Change (%)"]
+          percentage: indexData.SENSEX['Change (%)']
         },
         niftyBank: {
-          count: indexData["NIFTY BANK"]["Current Value"].toFixed(2),
-          change: indexData["NIFTY BANK"].Change,
-          percentage: indexData["NIFTY BANK"]["Change (%)"]
+          count: indexData['NIFTY BANK']['Current Value'].toFixed(2),
+          change: indexData['NIFTY BANK'].Change,
+          percentage: indexData['NIFTY BANK']['Change (%)']
         },
         nifty50: {
-          count: indexData["NIFTY 50"]["Current Value"].toFixed(2),
-          change: indexData["NIFTY 50"].Change,
-          percentage: indexData["NIFTY 50"]["Change (%)"]
+          count: indexData['NIFTY 50']['Current Value'].toFixed(2),
+          change: indexData['NIFTY 50'].Change,
+          percentage: indexData['NIFTY 50']['Change (%)']
         }
       });
     } catch (error) {
@@ -401,30 +403,39 @@ export default function DashboardDefault() {
       {/* Modal to show the Candlestick Chart */}
       <Modal open={openModal} onClose={handleCloseModal} aria-labelledby="candlestick-chart-modal">
         <Box sx={modalStyle}>
-            <Box display={'flex'} justifyContent="space-between" alignItems="center" mb='15px'>
-              <Typography 
-                variant="h3" 
-                sx={{ fontFamily:'figtree', textAlign: 'left', padding: '10px', fontWeight: '300', color: '#FFE072', fontSize:'20px', letterSpacing:'1px' }}>
-                {symbolToken}
-              </Typography>
-              <Button 
-                onClick={handleCloseModal} 
-                variant="outlined" 
-                sx={{
-                  color: '#FFE072', 
-                  borderColor: '#FFE072', 
-                  mt: 1, 
-                  '&:hover': {
-                    borderColor: '#FFD702', 
-                    backgroundColor: '#FFCC19A6',
-                    color:'#000'
-                  },
-                  mr:2,
-                }}
-              >
-                Close
+          <Box display={'flex'} justifyContent="space-between" alignItems="center" mb="15px">
+            <Typography
+              variant="h3"
+              sx={{
+                fontFamily: 'figtree',
+                textAlign: 'left',
+                padding: '10px',
+                fontWeight: '300',
+                color: '#FFE072',
+                fontSize: '20px',
+                letterSpacing: '1px'
+              }}
+            >
+              {symbolToken}
+            </Typography>
+            <Button
+              onClick={handleCloseModal}
+              variant="outlined"
+              sx={{
+                color: '#FFE072',
+                borderColor: '#FFE072',
+                mt: 1,
+                '&:hover': {
+                  borderColor: '#FFD702',
+                  backgroundColor: '#FFCC19A6',
+                  color: '#000'
+                },
+                mr: 2
+              }}
+            >
+              Close
             </Button>
-            </Box>
+          </Box>
           <CandlestickChart token={symbolToken} />
         </Box>
       </Modal>

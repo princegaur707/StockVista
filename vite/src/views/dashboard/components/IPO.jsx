@@ -13,22 +13,21 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
   const [error, setError] = useState('');
   const [searchText, setSearchText] = useState('');
   const [isSearchActive, setIsSearchActive] = useState(false);
-  
 
   const fetchReportData = async (retries = 3, delay = 1000) => {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/service/ipo-data/`);
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-  
+
       const result = await response.json();
       const reportData = result['data'];
-  
+
       if (!Array.isArray(reportData)) {
         console.error('Expected reportData to be an array:', reportData);
         setError('Invalid data structure received from the 30-day report API.');
         return;
       }
-  
+
       // Map the fetched report data to the initial table data
       const initialData = reportData.map((item) => ({
         tradingSymbol: item.symbol.replace('.NS', ''),
@@ -39,7 +38,7 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
         price_rating: item.price_rating,
         earning_rating: null,
         investo_rating: null,
-        symbolToken: item.token,
+        symbolToken: item.token
       }));
       // console.log(initialData,"initial data output")
       setData(initialData);
@@ -56,7 +55,6 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
       setLoading(false);
     }
   };
-  
 
   useEffect(() => {
     fetchReportData();
@@ -67,14 +65,10 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
     if (searchValue.trim() === '') {
       setFilteredData(data); // Show the whole table if the search is cleared
     } else {
-      const filtered = data.filter((row) =>
-        row.tradingSymbol.toLowerCase().includes(searchValue.toLowerCase())
-      );
+      const filtered = data.filter((row) => row.tradingSymbol.toLowerCase().includes(searchValue.toLowerCase()));
       setFilteredData(filtered);
     }
   };
-  
-
 
   // utils/numberFormatter.js
   const formatMarketValue = (value) => {
@@ -95,14 +89,11 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
     }
     return value.toFixed(2).toString(); // For values less than 1,000,000
   };
-  
-
 
   const handleSearchIconClick = (event) => {
     event.stopPropagation(); // Prevent DataGrid column sorting
     setIsSearchActive(true);
   };
-  
 
   const handleSearchClose = (event) => {
     event.stopPropagation();
@@ -110,13 +101,12 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
     setSearchText('');
     setFilteredData(data); // Reset the table to show all rows
   };
-  
 
   function standardizeSymbol(symbol) {
     return symbol
       .replace(/-EQ$/, '') // Remove "-EQ" if present
-      .replace('.NS', '')  // Remove ".NS" if present
-      .toUpperCase();      // Ensure uppercase
+      .replace('.NS', '') // Remove ".NS" if present
+      .toUpperCase(); // Ensure uppercase
   }
 
   useEffect(() => {
@@ -124,26 +114,24 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
       setData((prevData) =>
         prevData.map((item) => {
           // Find matching live market data for the current item
-          
+
           const liveData = liveMarketData.find(
             (liveItem) => standardizeSymbol(liveItem.tradingSymbol) === standardizeSymbol(item.tradingSymbol)
           );
-  
+
           // If a match is found and ltp exists, update the item
-          return liveData && liveData.ltp
-            ? { ...item, ltp: liveData.ltp }
-            : item;
+          return liveData && liveData.ltp ? { ...item, ltp: liveData.ltp } : item;
         })
       );
     }
   }, [liveMarketData]);
-  
+
   // Function to get token by symbol
   async function getTokenBySymbol(symbol) {
     try {
       // Making the API call to get the scrip data
       const response = await fetch('https://margincalculator.angelbroking.com/OpenAPI_File/files/OpenAPIScripMaster.json');
-      
+
       // Check if the response is OK (status code 200)
       if (!response.ok) {
         throw new Error('Failed to fetch data');
@@ -156,7 +144,7 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
       const formattedSymbol = symbol.replace('.NS', '-EQ');
 
       // Search the API response for the matching symbol
-      const result = data.find(item => item.symbol === formattedSymbol);
+      const result = data.find((item) => item.symbol === formattedSymbol);
 
       // If a match is found, return the token, otherwise return null or appropriate error message
       return result ? result.token : null;
@@ -165,7 +153,6 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
       return null;
     }
   }
-  
 
   const handleCellClick = (params) => {
     // console.log(params);
@@ -175,27 +162,27 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
       updateToken(params.row.tradingSymbol);
     }
   };
-  
+
   if (loading) {
     return (
       <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'absolute',
+          top: 150,
+          left: 0,
+          width: '100%',
+          height: '100%'
+          // backgroundColor: 'rgba(255, 255, 255, 0.8)', // Optional: add a translucent background
+        }}
+      >
+        <CircularProgress
           sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'absolute',
-            top: 150,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            // backgroundColor: 'rgba(255, 255, 255, 0.8)', // Optional: add a translucent background
+            color: '#FFC42B'
           }}
-        >
-          <CircularProgress
-            sx={{
-              color: '#FFC42B',
-            }}
-          />
+        />
       </Box>
     );
   }
@@ -221,42 +208,41 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
         <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
           {isSearchActive ? (
             <TextField
-            autoFocus
-            placeholder="Search..."
-            variant="outlined"
-            value={searchText}
-            onChange={(e) => handleSearch(e.target.value)}
-            InputProps={{
-              style: {
-                backgroundColor: '#1d1e20',
-                color: '#EEEEEE',
-                borderRadius: '1px',
-                padding: '1px 1px',
-              },
-              endAdornment: (
-                <IconButton
-                  onClick={handleSearchClose}
-                  sx={{
-                    '&:focus': {
-                      outline: 'none',  // Remove the focus outline here
-                    }
-                  }}
-                >
-                  <CloseIcon style={{ color: '#EEEEEE' }} />
-                </IconButton>
-              ),
-            }}
-            fullWidth
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                '&.Mui-focused': {
-                  outline: 'none', // Remove the outline for the TextField
-                  borderColor: 'transparent', // Remove the border color on focus
+              autoFocus
+              placeholder="Search..."
+              variant="outlined"
+              value={searchText}
+              onChange={(e) => handleSearch(e.target.value)}
+              InputProps={{
+                style: {
+                  backgroundColor: '#1d1e20',
+                  color: '#EEEEEE',
+                  borderRadius: '1px',
+                  padding: '1px 1px'
                 },
-              },
-            }}
-          />
-          
+                endAdornment: (
+                  <IconButton
+                    onClick={handleSearchClose}
+                    sx={{
+                      '&:focus': {
+                        outline: 'none' // Remove the focus outline here
+                      }
+                    }}
+                  >
+                    <CloseIcon style={{ color: '#EEEEEE' }} />
+                  </IconButton>
+                )
+              }}
+              fullWidth
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '&.Mui-focused': {
+                    outline: 'none', // Remove the outline for the TextField
+                    borderColor: 'transparent' // Remove the border color on focus
+                  }
+                }
+              }}
+            />
           ) : (
             <Box display="flex" alignItems="center">
               <IconButton onClick={handleSearchIconClick}>
@@ -280,9 +266,9 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
           </svg>
           <Typography ml={1}>{params.value}</Typography>
         </Box>
-      ),
+      )
     },
-    
+
     {
       field: 'ltp',
       headerName: 'Price',
@@ -308,31 +294,35 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
         const pct_change = params.row.pct_change; // Accessing pct_change from the row
         // Handle case where either value might be missing
         if (change == null || pct_change == null) {
-          return <Typography align="left" color="error">N/A</Typography>;
+          return (
+            <Typography align="left" color="error">
+              N/A
+            </Typography>
+          );
         }
-    
+
         // Define colors based on values
         const changeColor = change > 0 ? '#00EFC8' : change < 0 ? '#FF5966' : '#EEEEEE';
         const pctChangeColor = pct_change > 0 ? '#00EFC8' : pct_change < 0 ? '#FF5966' : '#EEEEEE';
-    
+
         return (
           <Box display="flex" alignItems="center" height="100%">
             {/* Render change */}
             <Typography
-            align="left"
+              align="left"
               sx={{
-                color: changeColor,
+                color: changeColor
                 // fontWeight: 'bold',
                 // marginRight: 1
               }}
             >
               {change.toFixed(2)} {/* Format the number */}
             </Typography>
-            
+
             {/* Render pct_change */}
             <Typography
               sx={{
-                color: pctChangeColor,
+                color: pctChangeColor
                 // fontWeight: 'bold',
                 // marginLeft: 1,
                 // fontSize: '0.9rem'
@@ -342,49 +332,44 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
             </Typography>
           </Box>
         );
-      },
-    },
-        
-    { 
-      field: 'market_cap', 
-      headerName: 'Market Cap',
-      flex: 1.3,
-      headerAlign: 'left', 
-      type: 'number',
-      renderCell: (params) => (
-        <Box display="flex" alignItems="center" height="100%">
-          <Typography align="left">
-            {formatMarketValue(params.value)}</Typography>
-        </Box>
-      ),
+      }
     },
 
-    { 
-      field: 'price_rating',
-      headerName: 'Price Rating', 
-      flex: .8, 
+    {
+      field: 'market_cap',
+      headerName: 'Market Cap',
+      flex: 1.3,
       headerAlign: 'left',
       type: 'number',
       renderCell: (params) => (
         <Box display="flex" alignItems="center" height="100%">
-          <Typography align="center">
-            {params?.value ? params.value.toFixed(2) : 'N/A'}
-          </Typography>
+          <Typography align="left">{formatMarketValue(params.value)}</Typography>
         </Box>
       )
     },
-    
+
     {
-      field: 'earning_rating',
-      headerName: 'Earning Rating',
-      flex: .8,
+      field: 'price_rating',
+      headerName: 'Price Rating',
+      flex: 0.8,
       headerAlign: 'left',
       type: 'number',
       renderCell: (params) => (
         <Box display="flex" alignItems="center" height="100%">
-          <Typography align="center">
-            {params?.value ? params.value.toFixed(2) : 'N/A'}
-          </Typography>
+          <Typography align="center">{params?.value ? params.value.toFixed(2) : 'N/A'}</Typography>
+        </Box>
+      )
+    },
+
+    {
+      field: 'earning_rating',
+      headerName: 'Earning Rating',
+      flex: 0.8,
+      headerAlign: 'left',
+      type: 'number',
+      renderCell: (params) => (
+        <Box display="flex" alignItems="center" height="100%">
+          <Typography align="center">{params?.value ? params.value.toFixed(2) : 'N/A'}</Typography>
         </Box>
       )
     },
@@ -392,17 +377,15 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
     {
       field: 'investo_rating',
       headerName: 'Investo Rating',
-      flex: .8,
+      flex: 0.8,
       headerAlign: 'left',
       type: 'number',
       renderCell: (params) => (
         <Box display="flex" alignItems="center" height="100%">
-          <Typography align="center">
-            {params?.value ? params.value.toFixed(2) : 'N/A'}
-          </Typography>
+          <Typography align="center">{params?.value ? params.value.toFixed(2) : 'N/A'}</Typography>
         </Box>
       )
-    },
+    }
   ];
 
   const rows = (filteredData.length > 0 ? filteredData : data).map((row, index) => ({
@@ -414,9 +397,8 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
     market_cap: row.market_cap,
     price_rating: row.price_rating,
     earning_rating: row.earning_rating,
-    investo_rating: row.investo_rating,
+    investo_rating: row.investo_rating
   }));
-  
 
   return (
     <Box
@@ -424,12 +406,13 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
       sx={{
         mt: 0,
         width: '100%',
-        '&::-webkit-scrollbar': { display: 'none' },
+        '&::-webkit-scrollbar': { display: 'none' }
       }}
     >
       <Box sx={{ height: '86vh', width: '90vw' }}>
         <DataGrid
           rows={rows}
+          hideFooterSelectedRowCount
           columns={columns}
           pageSize={10}
           rowsPerPageOptions={[10]}
@@ -439,9 +422,9 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
           initialState={{
             pagination: {
               paginationModel: {
-                pageSize: 10,
-              },
-            },
+                pageSize: 10
+              }
+            }
           }}
         />
       </Box>
