@@ -101,7 +101,7 @@ const ProfileSection = () => {
           borderColor: theme.palette.primary.dark,
           backgroundColor: theme.palette.primary.main,
           '&[aria-controls="menu-list-grow"], &:hover': {
-            borderColor: theme.palette.primary.main,
+            borderColor: '#ffc32b',
             background: `${theme.palette.primary.dark}!important`,
             color: theme.palette.primary.light,
             '& svg': {
@@ -164,18 +164,18 @@ const ProfileSection = () => {
                     onClick={handleLogout}
                     sx={{
                       color: '#FFFFFF', // Default text color
-                      padding: '0.5rem',
+                      padding: '10px 25px',
                       '&:hover': {
-                        backgroundColor: '#141516' // Custom color on hover
+                        backgroundColor: '#141516', // Custom color on hover
                       }
                     }}
                   >
                     <ListItemIcon >
-                      <IconLogout stroke={1.5} size="1.5rem" />
+                      <IconLogout size="1.5rem" />
                     </ListItemIcon>
                     <ListItemText
                       primary={
-                        <Typography variant="body2" color="#FFFFFF" paddingRight="30px">
+                        <Typography variant="body2" color="#FFFFFF">
                           Logout
                         </Typography>
                       }

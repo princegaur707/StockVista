@@ -21,11 +21,11 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null); // Reset error
-    setErrorFontSize('5px');
+    // setErrorFontSize('5px');
 
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
-      setErrorFontSize('12px');
+      // setErrorFontSize('12px');
       return;
     }
 
@@ -39,12 +39,19 @@ const Register = () => {
       });
 
       const data = await response.json();
+      
+      if (!response.ok) {
+        // If response is not ok (e.g., 400 Bad Request), throw an error
+        throw new Error(data.detail || 'Signup failed! Please try again.');
+      }
+
       // Redirect on successful signup
       navigate('/pages/login/login3');
-    } catch (err) {
+    } 
+    catch (err) {
       console.error('Signup error:', err.response?.data || err.message);
-      setError(err.response?.data?.detail || 'Signup failed.');
-      setErrorFontSize('12px');
+      setError(err.response?.data?.detail || 'Signup failed !');
+      // setErrorFontSize('12px');
     }
   };
 
@@ -71,11 +78,11 @@ const Register = () => {
           border: '1px solid #313437'
         }}
       >
-        <div className="SignupPage">
+        <Box className="Signup-heading">
           <Typography variant="h4" sx={{ color: '#ffffff', mb: 4, textAlign: 'left' }}>
             Sign up
           </Typography>
-        </div>
+        </Box>
 
         <form onSubmit={handleSubmit} className="FormInput">
           {/* Username Input */}
@@ -217,7 +224,7 @@ const Register = () => {
         </form>
 
         {/* Divider with "OR" text */}
-        {/* <div
+        <div
           className="DividerContainer"
           style={{
             display: 'flex',
@@ -230,10 +237,10 @@ const Register = () => {
           <Divider
             sx={{ color: '#777C81', my: 3, borderColor: '#777C81', flex: 1 }}
           />
-        </div> */}
+        </div>
 
         {/* Google Signup Button */}
-        {/* <Button
+        <Button
           fullWidth
           variant="outlined"
           sx={{
@@ -248,19 +255,20 @@ const Register = () => {
               color: '#1e1e1e'
             }
           }}
+          onClick={() => navigate('/login')}
         >
-          SIGN UP USING GOOGLE ACCOUNT
-        </Button> */}
+          Login
+        </Button>
 
-        <div className="Signuplogin">
-          {/* Link to Login */}
+        {/* Link to Login */}
+        {/* <div className="Signuplogin">
           <Typography variant="body2" sx={{ color: '#ffffff', fontSize: '12px', mt: 2, textAlign: 'center' }}>
             Already have an account?{' '}
             <Link to="/login" style={{ color: '#00aaff' }}>
               Login
             </Link>
           </Typography>
-        </div>
+        </div> */}
       </Box>
     </Box>
   );

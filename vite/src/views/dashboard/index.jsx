@@ -16,7 +16,7 @@ import ThirtyDayReportTable from './components/ThirtyDayReport';
 import NinetyDayReportTable from './components/NinetyDayReport';
 import IPOTable from './components/IPO';
 import BreakOutSoonDailyTable from './components/BreakoutSoonDaily';
-import WeeklyBreakoutTable from './components/WeeklyBreakout';
+import WeeklyBreakoutTable from './components/BreakoutSoonWeekly';
 import RecentBreakOutTable from './components/RecentBreakOut';
 import BigPlayersTable from './components/BigPlayers';
 import { Tabs, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
@@ -24,6 +24,8 @@ import { bgcolor } from '@mui/system';
 
 // modal style
 const modalStyle = {
+  outline: 'none',
+  border: 'none',
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -47,10 +49,10 @@ export default function DashboardDefault() {
   const [liveMarketData, setLiveMarketData] = useState([]); // State for live WebSocket data
 
   const [data, setData] = useState({
-    nifty: { count: '24618.8', change: 31.75, percentage: 0.13 },
+    nifty50: { count: '24618.8', change: 31.75, percentage: 0.13 },
     sensex: { count: '81526.14', change: 16.09, percentage: 0.02 },
     niftyBank: { count: '53391.35', change: -186.35, percentage: -0.35 },
-    nifty50: { count: '59292.95', change: 157.55, percentage: 0.27 }
+    nifty100: { count: '59292.95', change: 157.55, percentage: 0.27 }
   });
 
   const updateLiveData = (message) => {
@@ -139,10 +141,10 @@ export default function DashboardDefault() {
       const indexData = await response.json();
 
       setData({
-        nifty: {
-          count: indexData['NIFTY 100']['Current Value'].toFixed(2),
-          change: indexData['NIFTY 100'].Change,
-          percentage: indexData['NIFTY 100']['Change (%)']
+        nifty50: {
+          count: indexData['NIFTY 50']['Current Value'].toFixed(2),
+          change: indexData['NIFTY 50'].Change,
+          percentage: indexData['NIFTY 50']['Change (%)']
         },
         sensex: {
           count: indexData.SENSEX['Current Value'].toFixed(2),
@@ -154,10 +156,10 @@ export default function DashboardDefault() {
           change: indexData['NIFTY BANK'].Change,
           percentage: indexData['NIFTY BANK']['Change (%)']
         },
-        nifty50: {
-          count: indexData['NIFTY 50']['Current Value'].toFixed(2),
-          change: indexData['NIFTY 50'].Change,
-          percentage: indexData['NIFTY 50']['Change (%)']
+        nifty100: {
+          count: indexData['NIFTY 100']['Current Value'].toFixed(2),
+          change: indexData['NIFTY 100'].Change,
+          percentage: indexData['NIFTY 100']['Change (%)']
         }
       });
     } catch (error) {
@@ -189,49 +191,52 @@ export default function DashboardDefault() {
   //   };
   // }, []);
 
-  const updateData = (message) => {
-    const { Name, LTP, Change, 'Change %': ChangePercentage } = message;
+  // const updateData = (message) => {
+  //   const { Name, LTP, Change, 'Change %': ChangePercentage } = message;
 
-    // console.log(Name, LTP, Change, ChangePercentage, 'here');
+  //   // console.log(Name, LTP, Change, ChangePercentage, 'here');
 
-    switch (Name) {
-      case 'NIFTY':
-        setData((prevData) => ({
-          ...prevData,
-          nifty: { count: `${parseFloat(LTP).toFixed(2)}`, change: parseFloat(Change), percentage: parseFloat(ChangePercentage) }
-        }));
-        break;
-      case 'SENSEX':
-        setData((prevData) => ({
-          ...prevData,
-          sensex: { count: `${parseFloat(LTP).toFixed(2)}`, change: parseFloat(Change), percentage: parseFloat(ChangePercentage) }
-        }));
-        break;
-      case 'NIFTY MIDCAP':
-        setData((prevData) => ({
-          ...prevData,
-          nifty50: { count: `${parseFloat(LTP).toFixed(2)}`, change: parseFloat(Change), percentage: parseFloat(ChangePercentage) }
-        }));
-        break;
-      case 'BANKNIFTY':
-        setData((prevData) => ({
-          ...prevData,
-          niftyBank: { count: `${parseFloat(LTP).toFixed(2)}`, change: parseFloat(Change), percentage: parseFloat(ChangePercentage) }
-        }));
-        break;
-      default:
-        break;
-    }
-  };
+  //   switch (Name) {
+  //     case 'NIFTY':
+  //       setData((prevData) => ({
+  //         ...prevData,
+  //         nifty: { count: `${parseFloat(LTP).toFixed(2)}`, change: parseFloat(Change), percentage: parseFloat(ChangePercentage) }
+  //       }));
+  //       break;
+  //     case 'SENSEX':
+  //       setData((prevData) => ({
+  //         ...prevData,
+  //         sensex: { count: `${parseFloat(LTP).toFixed(2)}`, change: parseFloat(Change), percentage: parseFloat(ChangePercentage) }
+  //       }));
+  //       break;
+  //     case 'NIFTY MIDCAP':
+  //       setData((prevData) => ({
+  //         ...prevData,
+  //         nifty50: { count: `${parseFloat(LTP).toFixed(2)}`, change: parseFloat(Change), percentage: parseFloat(ChangePercentage) }
+  //       }));
+  //       break;
+  //     case 'BANKNIFTY':
+  //       setData((prevData) => ({
+  //         ...prevData,
+  //         niftyBank: { count: `${parseFloat(LTP).toFixed(2)}`, change: parseFloat(Change), percentage: parseFloat(ChangePercentage) }
+  //       }));
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
 
-  const updateToken = (_token) => {
-    setToken(_token);
-    setIsHomePage(false);
-    setSelected('tabular');
-  };
+  // const updateToken = (_token) => {
+  //   setToken(_token);
+  //   setIsHomePage(false);
+  //   setSelected('tabular');
+  // };
 
   const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
+  const handleCloseModal = () => {
+    setSymbolToken('');
+    setOpenModal(false);
+  }
 
   const handleChange1 = (event) => {
     setSelected(event.target.value);
@@ -262,10 +267,10 @@ export default function DashboardDefault() {
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <div className="Analyticbox">
             <AnalyticEcommerce
-              title="NIFTY"
-              count={data.nifty.count}
-              change={data.nifty.change}
-              percentage={data.nifty.percentage}
+              title="NIFTY 50"
+              count={data.nifty50.count}
+              change={data.nifty50.change}
+              percentage={data.nifty50.percentage}
               // isLoss={data.nifty.percentage < 0}
             />
           </div>
@@ -295,10 +300,10 @@ export default function DashboardDefault() {
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <div className="Analyticbox">
             <AnalyticEcommerce
-              title="NIFTY 50"
-              count={data.nifty50.count}
-              change={data.nifty50.change}
-              percentage={data.nifty50.percentage}
+              title="NIFTY 100"
+              count={data.nifty100.count}
+              change={data.nifty100.change}
+              percentage={data.nifty100.percentage}
               // isLoss={data.nifty50.percentage < 0}
             />
           </div>
@@ -324,7 +329,6 @@ export default function DashboardDefault() {
             <TabPanel value="1">
               <Box>
                 <ThirtyDayReportTable
-                  updateToken={updateToken}
                   setSymbolToken={setSymbolToken}
                   liveMarketData={liveMarketData} // New prop for live WebSocket data
                 />
@@ -333,7 +337,6 @@ export default function DashboardDefault() {
             <TabPanel value="2">
               <Box>
                 <NinetyDayReportTable
-                  updateToken={updateToken}
                   displayTopGainers={true} // or false depending on the case
                   displayTopLosers={false} // or true depending on the case
                   setSymbolToken={setSymbolToken}
@@ -344,7 +347,6 @@ export default function DashboardDefault() {
             <TabPanel value="3">
               <Box>
                 <IPOTable
-                  updateToken={updateToken}
                   displayTopGainers={true} // or false depending on the case
                   displayTopLosers={false} // or true depending on the case
                   setSymbolToken={setSymbolToken}
@@ -355,7 +357,6 @@ export default function DashboardDefault() {
             <TabPanel value="4">
               <Box>
                 <BreakOutSoonDailyTable
-                  updateToken={updateToken}
                   displayTopGainers={true} // or false depending on the case
                   displayTopLosers={false} // or true depending on the case
                   setSymbolToken={setSymbolToken}
@@ -366,7 +367,6 @@ export default function DashboardDefault() {
             <TabPanel value="5">
               <Box>
                 <WeeklyBreakoutTable
-                  updateToken={updateToken}
                   displayTopGainers={true} // or false depending on the case
                   displayTopLosers={false} // or true depending on the case
                   setSymbolToken={setSymbolToken}
@@ -377,7 +377,6 @@ export default function DashboardDefault() {
             <TabPanel value="6">
               <Box>
                 <RecentBreakOutTable
-                  updateToken={updateToken}
                   displayTopGainers={true} // or false depending on the case
                   displayTopLosers={false} // or true depending on the case
                   setSymbolToken={setSymbolToken}
@@ -388,7 +387,6 @@ export default function DashboardDefault() {
             <TabPanel value="7">
               <Box>
                 <BigPlayersTable
-                  updateToken={updateToken}
                   displayTopGainers={true} // or false depending on the case
                   displayTopLosers={false} // or true depending on the case
                   setSymbolToken={setSymbolToken}
@@ -427,8 +425,7 @@ export default function DashboardDefault() {
                 mt: 1,
                 '&:hover': {
                   borderColor: '#FFD702',
-                  backgroundColor: '#FFCC19A6',
-                  color: '#000'
+                  backgroundColor: '#241e13',
                 },
                 mr: 2
               }}

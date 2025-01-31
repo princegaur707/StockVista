@@ -56,9 +56,9 @@ const Sidebar = () => {
             justifyContent: 'center', // Centers horizontally
             height: '50vh', // Ensures full viewport height
             cursor: 'pointer', // Changes cursor on hover
-            border: activeBox ? '1px solid #FFD56B' : 'none', // Active border color
-            borderRadius: '50%', // Make the border rounded if desired
-            backgroundColor: activeBox ? '#f0f0f0' : 'transparent', // Change background on active
+            // border: activeBox ? '1px solid #FFD56B' : 'none', // Active border color
+            // borderRadius: '50%', // Make the border rounded if desired
+            // backgroundColor: activeBox ? '#f0f0f0' : 'transparent', // Change background on active
             padding: '0px', // Add some padding for better appearance
             transition: 'all 0.3s ease', // Smooth transition for changes
             
@@ -71,7 +71,7 @@ const Sidebar = () => {
           style={{
             width: '75px',
             height: '95px',
-            filter: activeBox ? 'brightness(1.2)' : 'none', // Add a brightness effect when active
+            // filter: activeBox ? 'brightness(1.2)' : 'none', // Add a brightness effect when active
           }}
         />
       </Box>
@@ -216,7 +216,7 @@ const Sidebar = () => {
         </svg>
       </Box> */}
 
-      <Box sx={{ flexGrow: 0.8 }} />
+      {/* <Box sx={{ flexGrow: 0.8 }} /> */}
 
       {/* Bottom Boxes */}
       {/* {[0, 1].map((index) => (

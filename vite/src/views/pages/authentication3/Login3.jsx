@@ -44,13 +44,15 @@ const Login = () => {
         // Redirect using useNavigate
         navigate('/dashboard');
         // console.log("HI");
-      } else {
+      } 
+      else {
         setError('Invalid Credentials');
         setErrorFontSize('5px');
       }
-    } catch (err) {
+    } 
+    catch (err) {
       console.error('Login error:', err.response?.data || err.message);
-      setError(err.response?.data?.detail || 'Login failed.');
+      setError(err.response?.data?.detail || 'Login failed !');
       setErrorFontSize('5px');
     }
   };
@@ -79,9 +81,11 @@ const Login = () => {
           border: '1px solid #313437' // Border color
         }}
       >
-        <Typography variant="h4" sx={{ color: '#ffffff', mb: 6, textAlign: 'left' }}>
-          Login
-        </Typography>
+        <Box className="login-heading">
+          <Typography variant="h4" sx={{ color: '#ffffff', mb: 6, textAlign: 'left' }}>
+            Login
+          </Typography>
+        </Box>
 
         <form onSubmit={handleSubmit} className="FormInput">
           {/* Username Input */}
@@ -98,7 +102,7 @@ const Login = () => {
                 color: '#ffffff',
                 backgroundColor: '#141516', // Explicitly set background color
                 '& fieldset': {
-                  borderColor: '#777C81'
+                  borderColor: '#F5F5DC'
                 },
                 '&:hover fieldset': {
                   borderColor: '#ffffff'
@@ -126,7 +130,7 @@ const Login = () => {
                 color: '#ffffff',
                 backgroundColor: '#141516',
                 '& fieldset': {
-                  borderColor: '#777C81'
+                  borderColor: '#F5F5DC',
                 },
                 '&:hover fieldset': {
                   borderColor: '#ffffff'
@@ -164,7 +168,7 @@ const Login = () => {
         </form>
 
         {/* Divider with "OR" text */}
-        {/* <div
+        <div
           className="DividerContainer"
           style={{
             display: 'flex',
@@ -177,8 +181,8 @@ const Login = () => {
           <Divider sx={{ color: '#777C81', my: 3, borderColor: '#777C81', flex: 1 }} />
         </div>
 
-        {/* Google Login Button */}
-        {/* <Button
+        {/* Sign Up Button */}
+        <Button
           fullWidth
           variant="outlined"
           sx={{
@@ -193,18 +197,20 @@ const Login = () => {
               color: '#1e1e1e'
             }
           }}
+          onClick={() => navigate('/register')}
         >
-          SIGN IN USING GOOGLE ACCOUNT
-        </Button> */}
-        <div className='Signuplogin'>
-          {/* Link to Login */}
+          SIGN UP 
+        </Button>
+
+        {/* Link to Signup */}
+        {/* <div className='Signuplogin'>
           <Typography
             variant="body2"
             sx={{ color: '#ffffff', fontSize: '12px', mt: 2, textAlign: 'center' }}
           >
             Don't have an account? <Link to="/register" style={{ color: '#00aaff' }}>Sign up</Link>
           </Typography>
-        </div>
+        </div> */}
       </Box>
     </Box>
   );

@@ -256,7 +256,14 @@ const RecentBreakOutTable = ({ setSymbolToken, updateToken, liveMarketData }) =>
         </Box>
       ),
       renderCell: (params) => (
-        <Box display="flex" alignItems="center" height="100%" mt={0.2}>
+        <Box
+          display="flex"
+          alignItems="center"
+          height="100%"
+          mt={0.2}
+          sx={{ cursor: 'pointer' }} // Add pointer cursor for hover effect
+          onMouseEnter={() => handleCellClick(params)}
+        >
           <svg width="46" height="28" viewBox="0 0 46 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="46" height="28" fill="#26282B" />
             <path

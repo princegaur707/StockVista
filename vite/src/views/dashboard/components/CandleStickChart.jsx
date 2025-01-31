@@ -9,11 +9,10 @@ const CandlestickChart = ({ token }) => {
   const [data, setData] = useState([]);
   const [error, setError] = useState('');
   const [selectedStock, setSelectedStock] = useState(token);
-  const [timePeriod, setTimePeriod] = useState('1M');
+  const [timePeriod, setTimePeriod] = useState('1Y');
   const chartInstanceRef = useRef(null);
   const [tooltipData, setTooltipData] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
-
 
   const fetchHistoricalData = async (period) => {
     setLoading(true);
@@ -56,15 +55,92 @@ const CandlestickChart = ({ token }) => {
         height: chartRef.current.clientHeight,
         layout: {
           background: { type: 'solid', color: '#121212' },
-          textColor: 'rgba(255, 255, 255, 0.9)',
+          textColor: 'rgba(255, 255, 255, 0.9)'
         },
         grid: {
           vertLines: { color: '#444' },
-          horzLines: { color: '#444' },
+          horzLines: { color: '#444' }
         },
         crosshair: { mode: 0 },
         priceScale: { borderColor: '#485c7b' },
-        timeScale: { timeVisible: true, secondVisible: false },
+        timeScale:
+          timePeriod === '1D'
+            ? {
+                timeVisible: true,
+                secondVisible: false,
+                tickMarkFormatter: (() => {
+                  let lastDate = null; // Store the last processed date
+                
+                  return (time) => {
+                    const date = new Date(time * 1000);
+                
+                    // Extract date and time separately
+                    const formattedDate = date.toLocaleDateString('en-GB', {
+                      timeZone: 'Asia/Kolkata',
+                      day: '2-digit',
+                      month: 'short' // Include month to make date changes clear
+                    });
+                
+                    const formattedTime = date.toLocaleTimeString('en-GB', {
+                      timeZone: 'Asia/Kolkata',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: false
+                    });
+                
+                    if (formattedDate !== lastDate) {
+                      // If the date has changed, show it along with the time
+                      lastDate = formattedDate;
+                      return `${formattedDate} ${formattedTime}`;
+                    } else {
+                      // Otherwise, show only the time
+                      return formattedTime;
+                    }
+                  };
+                })()
+                
+                
+              }
+            : timePeriod === '5D'
+              ? {
+                  timeVisible: true,
+                  secondVisible: false,
+                  tickMarkFormatter: (() => {
+                    let lastDate = null; // Store the last processed date
+                  
+                    return (time) => {
+                      const date = new Date(time * 1000);
+                  
+                      // Extract date and time separately
+                      const formattedDate = date.toLocaleDateString('en-GB', {
+                        timeZone: 'Asia/Kolkata',
+                        day: '2-digit',
+                        month: 'short' // Include month to make date changes clear
+                      });
+                  
+                      const formattedTime = date.toLocaleTimeString('en-GB', {
+                        timeZone: 'Asia/Kolkata',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false
+                      });
+                  
+                      if (formattedDate !== lastDate) {
+                        // If the date has changed, show it along with the time
+                        lastDate = formattedDate;
+                        return `${formattedDate} ${formattedTime}`;
+                      } else {
+                        // Otherwise, show only the time
+                        return formattedTime;
+                      }
+                    };
+                  })()
+                  
+                }
+              : {
+                  timeVisible: true,
+                  secondVisible: false
+                },
         handleScroll: {
           vertTouchDrag: true, // Enable vertical touch scroll
           horzTouchDrag: true // Enable horizontal touch scroll
@@ -77,6 +153,32 @@ const CandlestickChart = ({ token }) => {
 
       const chart = createChart(chartRef.current, chartOptions);
       chartInstanceRef.current = chart;
+
+      const filteredData = getTimeFilter(timePeriod);
+      const candlestickData = filteredData.map((entry) => ({
+        time: new Date(entry.Date).getTime() / 1000,
+        open: entry.Open,
+        high: entry.High,
+        low: entry.Low,
+        close: entry.Close
+      }));
+
+      //Add histogram series with a unique priceScaleId
+      const volumeSeries = chart.addHistogramSeries({
+        priceScaleId: 'volume',
+        priceLineVisible: false,
+        scaleMargins: { top: 0.85, bottom: 0 }
+      });
+
+      const volumeData = filteredData.map((entry) => ({
+        time: new Date(entry.Date).getTime() / 1000,
+        value: entry.Volume / 10000,
+        color: entry.Close >= entry.Open ? '#20605A' : '#853735',
+      }));
+
+      volumeSeries.setData(volumeData);
+
+      //Add candlestick chart
       const candlestickSeries = chart.addCandlestickSeries({
         upColor: '#26A69A', // Color for up candles
         borderUpColor: '#26A69A',
@@ -86,33 +188,65 @@ const CandlestickChart = ({ token }) => {
         wickDownColor: '#F05350' // Wick color for down candles
       });
 
-      const filteredData = getTimeFilter(timePeriod);
-      const candlestickData = filteredData.map((entry) => ({
-        time: new Date(entry.Date).getTime() / 1000,
-        open: entry.Open,
-        high: entry.High,
-        low: entry.Low,
-        close: entry.Close,
-      }));
 
       candlestickSeries.setData(candlestickData);
-      
-      const volumeSeries = chart.addHistogramSeries({
-        priceScaleId: '',
-        priceLineVisible: false,
-        scaleMargins: { top: 0.8, bottom: 0 },
-      });
-      
-      const volumeData = filteredData.map((entry) => ({
-        time: new Date(entry.Date).getTime() / 1000,
-        value: entry.Volume / 1000000,
-        color: entry.Close >= entry.Open ? '#20605A' : '#853735',
-      }));
+
+      // Set the time scale visibility range based on the time period
+      const setVisibleRange = (rangeFrom, rangeTo) => {
+        chart.timeScale().setVisibleRange({ from: rangeFrom, to: rangeTo });
+      };
+
+      if (timePeriod === '1D') {
+        const lastDayTimestamp = Math.max(...candlestickData.map(entry => entry.time));
+        const oneDayAgoTimestamp = lastDayTimestamp - 24 * 60 * 60; // Subtract one day in seconds
+        setVisibleRange(oneDayAgoTimestamp, lastDayTimestamp);
+      } else if (timePeriod === '5D') {
+        const lastDayTimestamp = Math.max(...candlestickData.map(entry => entry.time));
+        const fiveDaysAgoTimestamp = lastDayTimestamp - 5 * 24 * 60 * 60; // Subtract five days in seconds
+        setVisibleRange(fiveDaysAgoTimestamp, lastDayTimestamp);
+      } else if (timePeriod === '1M') {
+        const lastDayTimestamp = Math.max(...candlestickData.map(entry => entry.time));
+        const oneMonthAgoTimestamp = lastDayTimestamp - 30 * 24 * 60 * 60; // Subtract one month in seconds
+        setVisibleRange(oneMonthAgoTimestamp, lastDayTimestamp);
+      } else if (timePeriod === '3M') {
+        const lastDayTimestamp = Math.max(...candlestickData.map(entry => entry.time));
+        const threeMonthsAgoTimestamp = lastDayTimestamp - 90 * 24 * 60 * 60; // Subtract three months in seconds
+        setVisibleRange(threeMonthsAgoTimestamp, lastDayTimestamp);
+      } else if (timePeriod === '6M') {
+        const lastDayTimestamp = Math.max(...candlestickData.map(entry => entry.time));
+        const sixMonthsAgoTimestamp = lastDayTimestamp - 180 * 24 * 60 * 60; // Subtract six months in seconds
+        setVisibleRange(sixMonthsAgoTimestamp, lastDayTimestamp);
+      } else if (timePeriod === '1Y') {
+        const lastDayTimestamp = Math.max(...candlestickData.map(entry => entry.time));
+        const oneYearAgoTimestamp = lastDayTimestamp - 365 * 24 * 60 * 60; // Subtract one year in seconds
+        setVisibleRange(oneYearAgoTimestamp, lastDayTimestamp);
+      } else if (timePeriod === '5Y') {
+        const lastDayTimestamp = Math.max(...candlestickData.map(entry => entry.time));
+        const fiveYearsAgoTimestamp = lastDayTimestamp - 5 * 365 * 24 * 60 * 60; // Subtract five years in seconds
+        setVisibleRange(fiveYearsAgoTimestamp, lastDayTimestamp);
+      } else {
+        chart.timeScale().fitContent(); // Default for 'All'
+      }
       
 
-      volumeSeries.setData(volumeData);
-      
-      chart.timeScale().fitContent();
+      // Subscribe to crosshair move to show tooltips near cursor
+      chart.subscribeCrosshairMove((param) => {
+        if (!param || !param.seriesData || !param.time || !param.point) {
+          setTooltipData(null); // Hide tooltip if no data
+          return;
+        }
+        const candlestickPoint = param.seriesData.get(candlestickSeries);
+        if (candlestickPoint) {
+          // Update tooltip data and position
+          setTooltipData({
+            open: candlestickPoint.open.toFixed(2),
+            high: candlestickPoint.high.toFixed(2),
+            low: candlestickPoint.low.toFixed(2),
+            close: candlestickPoint.close.toFixed(2)
+          });
+          setTooltipPosition({ x: param.point.x, y: param.point.y });
+        }
+      });
 
       const handleResize = () => {
         if (chartInstanceRef.current) {
@@ -132,39 +266,8 @@ const CandlestickChart = ({ token }) => {
   }, [data]);
 
   const getTimeFilter = (period) => {
-    if (period === '1D' || period === '5D') return data; // No need to filter again
-  
-    const today = new Date();
-    let startDate = new Date();
-  
-    switch (period) {
-      case '5D':
-        startDate.setDate(today.getDate() - 5);
-        break;
-      case '1M':
-        startDate.setMonth(today.getMonth() - 1);
-        break;
-      case '3M':
-        startDate.setMonth(today.getMonth() - 3);
-        break;
-      case '6M':
-        startDate.setMonth(today.getMonth() - 6);
-        break;
-      case '1Y':
-        startDate.setFullYear(today.getFullYear() - 1);
-        break;
-      case '5Y':
-        startDate.setFullYear(today.getFullYear() - 5);
-        break;
-      case 'All':
-        return data;
-      default:
-        return data;
-    }
-  
-    return data.filter((entry) => new Date(entry.Date) >= startDate);
+    return data; // No need to filter, just return full data
   };
-
   return (
     <Box sx={{ width: '100%', height: '455px', position: 'relative', backgroundColor: '#121212', color: '#FFFFFF' }}>
       {/* <Typography variant="h4" sx={{ textAlign: 'left', padding: '10px', fontWeight: 'bold', color: '#FFD700' }}>
@@ -201,21 +304,23 @@ const CandlestickChart = ({ token }) => {
           { label: '6M', value: '6M' },
           { label: '1Y', value: '1Y' },
           { label: '5Y', value: '5Y' },
-          { label: 'All', value: 'All' },
+          { label: 'All', value: 'All' }
         ].map(({ label, value }) => (
           <Button
             key={value}
             onClick={() => setTimePeriod(value)}
-            sx={{ backgroundColor: timePeriod === value ? '#FFE072' : 'inherit', color: timePeriod === value ? '#000' : '#FFF',
-              fontWeight:'400',
-              borderRadius:'1px',
-              padding:'3px',
-              fontSize:'12px',
+            sx={{
+              backgroundColor: timePeriod === value ? '#FFE072' : 'inherit',
+              color: timePeriod === value ? '#000' : '#FFF',
+              fontWeight: '400',
+              borderRadius: '1px',
+              padding: '3px',
+              fontSize: '12px',
               '&:hover': {
-          backgroundColor: timePeriod === value ? '#FFE072' : 'inherit', // Keep the background color same on hover
-          color: timePeriod === value ? '#333333' : '#FFFFFF', // Keep the text color same on hover
-        }
-             }}
+                backgroundColor: timePeriod === value ? '#FFE072' : 'inherit', // Keep the background color same on hover
+                color: timePeriod === value ? '#333333' : '#FFFFFF' // Keep the text color same on hover
+              }
+            }}
           >
             {label}
           </Button>
