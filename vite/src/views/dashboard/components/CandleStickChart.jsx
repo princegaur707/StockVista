@@ -13,6 +13,9 @@ const CandlestickChart = ({ token }) => {
   const chartInstanceRef = useRef(null);
   const [tooltipData, setTooltipData] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const [volume, setVolume] = useState(null); // New state for volume
+  const [currentTime, setCurrentTime] = useState('');
+  const lastDate = null;
 
   const fetchHistoricalData = async (period) => {
     setLoading(true);
@@ -45,6 +48,30 @@ const CandlestickChart = ({ token }) => {
   }, [selectedStock, timePeriod]);
 
   useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const options = {
+        timeZone: 'Asia/Kolkata',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+      };
+      const formattedTime = now.toLocaleTimeString('en-IN', options);
+      setCurrentTime(formattedTime);
+    };
+  
+    // Update time immediately and every second
+    updateTime();
+    const intervalId = setInterval(updateTime, 1000);
+  
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
+
+  
+
+  useEffect(() => {
     if (chartInstanceRef.current) {
       chartInstanceRef.current.remove();
       chartInstanceRef.current = null;
@@ -70,24 +97,24 @@ const CandlestickChart = ({ token }) => {
                 secondVisible: false,
                 tickMarkFormatter: (() => {
                   let lastDate = null; // Store the last processed date
-                
+
                   return (time) => {
                     const date = new Date(time * 1000);
-                
+
                     // Extract date and time separately
-                    const formattedDate = date.toLocaleDateString('en-GB', {
+                    const formattedDate = date.toLocaleDateString('en-IN', {
                       timeZone: 'Asia/Kolkata',
                       day: '2-digit',
                       month: 'short' // Include month to make date changes clear
                     });
-                
-                    const formattedTime = date.toLocaleTimeString('en-GB', {
+
+                    const formattedTime = date.toLocaleTimeString('en-IN', {
                       timeZone: 'Asia/Kolkata',
                       hour: '2-digit',
                       minute: '2-digit',
                       hour12: false
                     });
-                
+
                     if (formattedDate !== lastDate) {
                       // If the date has changed, show it along with the time
                       lastDate = formattedDate;
@@ -98,8 +125,6 @@ const CandlestickChart = ({ token }) => {
                     }
                   };
                 })()
-                
-                
               }
             : timePeriod === '5D'
               ? {
@@ -107,24 +132,24 @@ const CandlestickChart = ({ token }) => {
                   secondVisible: false,
                   tickMarkFormatter: (() => {
                     let lastDate = null; // Store the last processed date
-                  
+
                     return (time) => {
                       const date = new Date(time * 1000);
-                  
+
                       // Extract date and time separately
-                      const formattedDate = date.toLocaleDateString('en-GB', {
+                      const formattedDate = date.toLocaleDateString('en-IN', {
                         timeZone: 'Asia/Kolkata',
                         day: '2-digit',
                         month: 'short' // Include month to make date changes clear
                       });
-                  
-                      const formattedTime = date.toLocaleTimeString('en-GB', {
+
+                      const formattedTime = date.toLocaleTimeString('en-IN', {
                         timeZone: 'Asia/Kolkata',
                         hour: '2-digit',
                         minute: '2-digit',
                         hour12: false
                       });
-                  
+
                       if (formattedDate !== lastDate) {
                         // If the date has changed, show it along with the time
                         lastDate = formattedDate;
@@ -135,7 +160,6 @@ const CandlestickChart = ({ token }) => {
                       }
                     };
                   })()
-                  
                 }
               : {
                   timeVisible: true,
@@ -150,6 +174,7 @@ const CandlestickChart = ({ token }) => {
           pinch: true // Enable pinch-to-zoom functionality
         }
       };
+
 
       const chart = createChart(chartRef.current, chartOptions);
       chartInstanceRef.current = chart;
@@ -173,7 +198,7 @@ const CandlestickChart = ({ token }) => {
       const volumeData = filteredData.map((entry) => ({
         time: new Date(entry.Date).getTime() / 1000,
         value: entry.Volume / 10000,
-        color: entry.Close >= entry.Open ? '#20605A' : '#853735',
+        color: entry.Close >= entry.Open ? '#20605A' : '#853735'
       }));
 
       volumeSeries.setData(volumeData);
@@ -188,7 +213,6 @@ const CandlestickChart = ({ token }) => {
         wickDownColor: '#F05350' // Wick color for down candles
       });
 
-
       candlestickSeries.setData(candlestickData);
 
       // Set the time scale visibility range based on the time period
@@ -197,45 +221,46 @@ const CandlestickChart = ({ token }) => {
       };
 
       if (timePeriod === '1D') {
-        const lastDayTimestamp = Math.max(...candlestickData.map(entry => entry.time));
+        const lastDayTimestamp = Math.max(...candlestickData.map((entry) => entry.time));
         const oneDayAgoTimestamp = lastDayTimestamp - 24 * 60 * 60; // Subtract one day in seconds
         setVisibleRange(oneDayAgoTimestamp, lastDayTimestamp);
       } else if (timePeriod === '5D') {
-        const lastDayTimestamp = Math.max(...candlestickData.map(entry => entry.time));
+        const lastDayTimestamp = Math.max(...candlestickData.map((entry) => entry.time));
         const fiveDaysAgoTimestamp = lastDayTimestamp - 5 * 24 * 60 * 60; // Subtract five days in seconds
         setVisibleRange(fiveDaysAgoTimestamp, lastDayTimestamp);
       } else if (timePeriod === '1M') {
-        const lastDayTimestamp = Math.max(...candlestickData.map(entry => entry.time));
+        const lastDayTimestamp = Math.max(...candlestickData.map((entry) => entry.time));
         const oneMonthAgoTimestamp = lastDayTimestamp - 30 * 24 * 60 * 60; // Subtract one month in seconds
         setVisibleRange(oneMonthAgoTimestamp, lastDayTimestamp);
       } else if (timePeriod === '3M') {
-        const lastDayTimestamp = Math.max(...candlestickData.map(entry => entry.time));
+        const lastDayTimestamp = Math.max(...candlestickData.map((entry) => entry.time));
         const threeMonthsAgoTimestamp = lastDayTimestamp - 90 * 24 * 60 * 60; // Subtract three months in seconds
         setVisibleRange(threeMonthsAgoTimestamp, lastDayTimestamp);
       } else if (timePeriod === '6M') {
-        const lastDayTimestamp = Math.max(...candlestickData.map(entry => entry.time));
+        const lastDayTimestamp = Math.max(...candlestickData.map((entry) => entry.time));
         const sixMonthsAgoTimestamp = lastDayTimestamp - 180 * 24 * 60 * 60; // Subtract six months in seconds
         setVisibleRange(sixMonthsAgoTimestamp, lastDayTimestamp);
       } else if (timePeriod === '1Y') {
-        const lastDayTimestamp = Math.max(...candlestickData.map(entry => entry.time));
+        const lastDayTimestamp = Math.max(...candlestickData.map((entry) => entry.time));
         const oneYearAgoTimestamp = lastDayTimestamp - 365 * 24 * 60 * 60; // Subtract one year in seconds
         setVisibleRange(oneYearAgoTimestamp, lastDayTimestamp);
       } else if (timePeriod === '5Y') {
-        const lastDayTimestamp = Math.max(...candlestickData.map(entry => entry.time));
+        const lastDayTimestamp = Math.max(...candlestickData.map((entry) => entry.time));
         const fiveYearsAgoTimestamp = lastDayTimestamp - 5 * 365 * 24 * 60 * 60; // Subtract five years in seconds
         setVisibleRange(fiveYearsAgoTimestamp, lastDayTimestamp);
       } else {
         chart.timeScale().fitContent(); // Default for 'All'
       }
-      
 
       // Subscribe to crosshair move to show tooltips near cursor
       chart.subscribeCrosshairMove((param) => {
         if (!param || !param.seriesData || !param.time || !param.point) {
           setTooltipData(null); // Hide tooltip if no data
+          setVolume(null); // Hide volume if no data
           return;
         }
         const candlestickPoint = param.seriesData.get(candlestickSeries);
+        const volumePoint = param.seriesData.get(volumeSeries);
         if (candlestickPoint) {
           // Update tooltip data and position
           setTooltipData({
@@ -245,6 +270,11 @@ const CandlestickChart = ({ token }) => {
             close: candlestickPoint.close.toFixed(2)
           });
           setTooltipPosition({ x: param.point.x, y: param.point.y });
+          // Update volume data (divide by 1000 and append 'k')
+          const volumeInK = ((volumePoint.value * 10000) / 1000).toFixed(1); // Convert to thousands and round to 1 decimal place
+          setVolume(`${volumeInK} K`); // Append 'k' to the value
+        } else {
+          setVolume(null); // Hide volume if no data
         }
       });
 
@@ -273,6 +303,24 @@ const CandlestickChart = ({ token }) => {
       {/* <Typography variant="h4" sx={{ textAlign: 'left', padding: '10px', fontWeight: 'bold', color: '#FFD700' }}>
         {selectedStock}
       </Typography> */}
+      {/* Volume display at the top-left corner */}
+      {volume && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 10, // Position at the top
+            left: 10, // Position at the left
+            backgroundColor: '#141516',
+            color: '#FFFFFF',
+            padding: '5px',
+            borderRadius: '5px',
+            pointerEvents: 'none', // Ensure the box does not interfere with cursor events
+            zIndex: 1000
+          }}
+        >
+          Volume: {volume}
+        </Box>
+      )}
       <div ref={chartRef} style={{ width: '100%', height: '400px' }} />
       {tooltipData && (
         <Box
@@ -294,6 +342,24 @@ const CandlestickChart = ({ token }) => {
           <div>Close: {tooltipData.close}</div>
         </Box>
       )}
+
+      {/* Indian Time Watch at the bottom-right corner */}
+  <Box
+    sx={{
+      position: 'absolute',
+      bottom: 10, // Position at the bottom
+      right: 10, // Position at the right
+      // backgroundColor: '#141516',
+      color: '#FFFFFF',
+      padding: '5px',
+      borderRadius: '5px',
+      pointerEvents: 'none', // Ensure the box does not interfere with cursor events
+      zIndex: 1000,
+      mb: '5px'
+    }}
+  >
+   {currentTime} IST
+  </Box>
 
       <ButtonGroup variant="contained" sx={{ display: 'flex', justifyContent: 'left', marginTop: 2 }}>
         {[
