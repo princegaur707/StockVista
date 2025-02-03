@@ -318,7 +318,8 @@ const SamplePage = () => (
                             mt: '10px',
                             '&:hover': {
                               backgroundColor: 'rgba(255, 196, 43, 0.1)',
-                              borderImage: 'linear-gradient(93.4deg, #FFC42B 100%, #FFD567 100%, #FFC42B 100%)'
+                              borderImage: 'linear-gradient(93.4deg, #FFC42B 100%, #FFD567 100%, #FFC42B 100%)',
+                              border: 'none'
                             }
                           }}
                         >

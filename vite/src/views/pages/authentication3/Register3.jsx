@@ -14,18 +14,46 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState(null);
-  const [errorFontSize, setErrorFontSize] = useState('5px');
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  // Validation functions
+  const validateUsername = (name) => {
+    if (name.length < 3) return 'Username must be at least 3 characters long.';
+    if (!/^\w+$/.test(name)) return 'Username can only contain letters, numbers, and underscores.';
+    return '';
+  };
+
+  const validateEmail = (email) => {
+    if (!/^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(email)) return 'Enter a valid email address.';
+    return '';
+  };
+
+  const validatePassword = (password) => {
+    if (password.length < 8) return 'Password must be at least 8 characters long.';
+    if (!/[A-Z]/.test(password)) return 'Password must contain at least one uppercase letter.';
+    if (!/\d/.test(password)) return 'Password must contain at least one number.';
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) return 'Password must contain at least one special character.';
+    return '';
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); // Reset error
-    // setErrorFontSize('5px');
+    const newErrors = {};
 
-    if (password !== confirmPassword) {
-      setError('Passwords do not match.');
-      // setErrorFontSize('12px');
+    //Validate inputs
+    newErrors.username = validateUsername(username);
+    newErrors.email = validateEmail(email);
+    newErrors.password = validatePassword(password);
+    newErrors.confirmPassword = password !== confirmPassword ? 'Passwords do not match.' : '';
+
+    // Remove empty errors
+    Object.keys(newErrors).forEach((key) => {
+      if (!newErrors[key]) delete newErrors[key];
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
@@ -39,19 +67,16 @@ const Register = () => {
       });
 
       const data = await response.json();
-      
+
       if (!response.ok) {
-        // If response is not ok (e.g., 400 Bad Request), throw an error
-        throw new Error(data.detail || 'Signup failed! Please try again.');
+        const errorData = await response.json().catch(() => null); // Handle invalid JSON response
+        throw new Error(errorData?.detail || 'Signup failed! Please try again.');
       }
 
       // Redirect on successful signup
       navigate('/pages/login/login3');
-    } 
-    catch (err) {
-      console.error('Signup error:', err.response?.data || err.message);
-      setError(err.response?.data?.detail || 'Signup failed !');
-      // setErrorFontSize('12px');
+    } catch (err) {
+      setErrors({ api: err.message || 'Signup failed!' });
     }
   };
 
@@ -91,6 +116,7 @@ const Register = () => {
             variant="outlined"
             placeholder="Username"
             value={username}
+            onBlur={() => setErrors((prev) => ({ ...prev, username: validateUsername(username) }))}
             onChange={(e) => setUsername(e.target.value)}
             sx={{
               mb: 1,
@@ -111,6 +137,7 @@ const Register = () => {
               input: { color: '#ffffff' }
             }}
           />
+          {errors.username && <Typography sx={{ color: 'red', fontSize: '12px', textAlign: 'left', mb: 1 }}>{errors.username}</Typography>}
 
           {/* Email Input */}
           <TextField
@@ -119,6 +146,7 @@ const Register = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            onBlur={() => setErrors({ ...errors, email: validateEmail(email) })}
             sx={{
               mb: 2,
               backgroundColor: '#141516',
@@ -138,6 +166,7 @@ const Register = () => {
               input: { color: '#ffffff' }
             }}
           />
+          {errors.email && <Typography sx={{ color: 'red', fontSize: '12px', textAlign: 'left', mb: 1 }}>{errors.email}</Typography>}
 
           {/* Password Input */}
           <TextField
@@ -147,6 +176,7 @@ const Register = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onBlur={() => setErrors({ ...errors, password: validatePassword(password) })}
             sx={{
               mb: 2,
               backgroundColor: '#141516',
@@ -166,6 +196,7 @@ const Register = () => {
               input: { color: '#ffffff' }
             }}
           />
+          {errors.password && <Typography sx={{ color: 'red', fontSize: '12px', textAlign: 'left', mb: 1 }}>{errors.password}</Typography>}
 
           {/* Confirm Password Input */}
           <TextField
@@ -175,6 +206,7 @@ const Register = () => {
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            onBlur={() => setErrors({ ...errors, confirmPassword: password !== confirmPassword ? 'Passwords do not match.' : '' })}
             sx={{
               mb: 3,
               backgroundColor: '#141516',
@@ -195,12 +227,11 @@ const Register = () => {
             }}
           />
 
-          {/* Error Message */}
-          {error && (
-            <Typography variant="body2" sx={{ color: 'red', mb: 2, textAlign: 'left', fontSize: errorFontSize }}>
-              {error}
-            </Typography>
+          {errors.confirmPassword && (
+            <Typography sx={{ color: 'red', fontSize: '12px', textAlign: 'left', mb: 2 }}>{errors.confirmPassword}</Typography>
           )}
+
+          {errors.api && <Typography sx={{ color: 'red', fontSize: '12px', mb: 2 }}>{errors.api}</Typography>}
 
           {/* Signup Button */}
           <Button
@@ -234,12 +265,10 @@ const Register = () => {
         >
           <Divider sx={{ color: '#777C81', my: 3, borderColor: '#777C81', flex: 1 }} />
           <span style={{ margin: '0 10px', color: '#ffffff' }}>OR</span>
-          <Divider
-            sx={{ color: '#777C81', my: 3, borderColor: '#777C81', flex: 1 }}
-          />
+          <Divider sx={{ color: '#777C81', my: 3, borderColor: '#777C81', flex: 1 }} />
         </div>
 
-        {/* Google Signup Button */}
+        {/* Login Button */}
         <Button
           fullWidth
           variant="outlined"
@@ -249,7 +278,7 @@ const Register = () => {
             mt: 3,
             fontFamily: 'figtree',
             fontSize: '14px',
-            mb: 1,
+            mb: '1px',
             '&:hover': {
               backgroundColor: '#ffffff',
               color: '#1e1e1e'

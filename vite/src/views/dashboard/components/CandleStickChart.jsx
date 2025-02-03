@@ -16,6 +16,12 @@ const CandlestickChart = ({ token }) => {
   const [volume, setVolume] = useState(null); // New state for volume
   const [currentTime, setCurrentTime] = useState('');
   const lastDate = null;
+  
+
+  const toIST = (timestamp) => {
+    const date = new Date(timestamp);
+    return Math.floor(new Date(date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })).getTime() / 1000);
+  };
 
   const fetchHistoricalData = async (period) => {
     setLoading(true);
@@ -55,21 +61,19 @@ const CandlestickChart = ({ token }) => {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-        hour12: false,
+        hour12: false
       };
       const formattedTime = now.toLocaleTimeString('en-IN', options);
       setCurrentTime(formattedTime);
     };
-  
+
     // Update time immediately and every second
     updateTime();
     const intervalId = setInterval(updateTime, 1000);
-  
+
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
-
-  
 
   useEffect(() => {
     if (chartInstanceRef.current) {
@@ -88,27 +92,71 @@ const CandlestickChart = ({ token }) => {
           vertLines: { color: '#444' },
           horzLines: { color: '#444' }
         },
-        crosshair: { mode: 0 },
+        crosshair: {
+          mode: 0,
+          vertLine: {
+            color: '#FFE072', // Change vertical line color
+            labelBackgroundColor: '#FFE072', // Background color of the crosshair tooltip
+          },
+          horzLine: {
+            color: '#FFE072', // Change horizontal line color
+            labelBackgroundColor: '#FFE072', // Background color of the crosshair tooltip
+          },
+        },
         priceScale: { borderColor: '#485c7b' },
+        
+        handleScroll: {
+          vertTouchDrag: true, // Enable vertical touch scroll
+          horzTouchDrag: true // Enable horizontal touch scroll
+        },
+        handleScale: {
+          axisPressedMouseMove: true, // Enable scaling when axis is dragged
+          pinch: true // Enable pinch-to-zoom functionality
+        },
+        localization: {
+          timeFormatter: (time) => {
+            const date = new Date(time * 1000);
+            const istDate = new Date(date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+      
+            const formattedDate = istDate.toLocaleDateString('en-IN', {
+              timeZone: 'Asia/Kolkata',
+              day: '2-digit',
+              month: 'short',
+              // year: 'numeric',
+            });
+      
+            const formattedTime = istDate.toLocaleTimeString('en-IN', {
+              timeZone: 'Asia/Kolkata',
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+              hour12: false,
+            });
+      
+            return `${formattedDate} ${formattedTime}`;
+          },
+        },
         timeScale:
-          timePeriod === '1D'
+          timePeriod === '1D' || timePeriod === '5D'
             ? {
                 timeVisible: true,
                 secondVisible: false,
+                timezone: 'Asia/Kolkata', // Set the timezone to IST
                 tickMarkFormatter: (() => {
                   let lastDate = null; // Store the last processed date
 
                   return (time) => {
                     const date = new Date(time * 1000);
+                    const istDate = new Date(date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
 
                     // Extract date and time separately
-                    const formattedDate = date.toLocaleDateString('en-IN', {
+                    const formattedDate = istDate.toLocaleDateString('en-IN', {
                       timeZone: 'Asia/Kolkata',
                       day: '2-digit',
-                      month: 'short' // Include month to make date changes clear
+                      month: '2-digit' // Include month to make date changes clear
                     });
 
-                    const formattedTime = date.toLocaleTimeString('en-IN', {
+                    const formattedTime = istDate.toLocaleTimeString('en-IN', {
                       timeZone: 'Asia/Kolkata',
                       hour: '2-digit',
                       minute: '2-digit',
@@ -119,6 +167,7 @@ const CandlestickChart = ({ token }) => {
                       // If the date has changed, show it along with the time
                       lastDate = formattedDate;
                       return `${formattedDate} ${formattedTime}`;
+                      // return formattedTime
                     } else {
                       // Otherwise, show only the time
                       return formattedTime;
@@ -126,62 +175,19 @@ const CandlestickChart = ({ token }) => {
                   };
                 })()
               }
-            : timePeriod === '5D'
-              ? {
-                  timeVisible: true,
-                  secondVisible: false,
-                  tickMarkFormatter: (() => {
-                    let lastDate = null; // Store the last processed date
-
-                    return (time) => {
-                      const date = new Date(time * 1000);
-
-                      // Extract date and time separately
-                      const formattedDate = date.toLocaleDateString('en-IN', {
-                        timeZone: 'Asia/Kolkata',
-                        day: '2-digit',
-                        month: 'short' // Include month to make date changes clear
-                      });
-
-                      const formattedTime = date.toLocaleTimeString('en-IN', {
-                        timeZone: 'Asia/Kolkata',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false
-                      });
-
-                      if (formattedDate !== lastDate) {
-                        // If the date has changed, show it along with the time
-                        lastDate = formattedDate;
-                        return `${formattedDate} ${formattedTime}`;
-                      } else {
-                        // Otherwise, show only the time
-                        return formattedTime;
-                      }
-                    };
-                  })()
-                }
-              : {
-                  timeVisible: true,
-                  secondVisible: false
-                },
-        handleScroll: {
-          vertTouchDrag: true, // Enable vertical touch scroll
-          horzTouchDrag: true // Enable horizontal touch scroll
-        },
-        handleScale: {
-          axisPressedMouseMove: true, // Enable scaling when axis is dragged
-          pinch: true // Enable pinch-to-zoom functionality
-        }
+            : {
+                timeVisible: true,
+                secondVisible: false,
+                timezone: 'Asia/Kolkata', // Set the timezone to IST
+              },
       };
-
 
       const chart = createChart(chartRef.current, chartOptions);
       chartInstanceRef.current = chart;
 
       const filteredData = getTimeFilter(timePeriod);
       const candlestickData = filteredData.map((entry) => ({
-        time: new Date(entry.Date).getTime() / 1000,
+        time: toIST(entry.Date), // Convert to IST before using it in the chart
         open: entry.Open,
         high: entry.High,
         low: entry.Low,
@@ -196,7 +202,7 @@ const CandlestickChart = ({ token }) => {
       });
 
       const volumeData = filteredData.map((entry) => ({
-        time: new Date(entry.Date).getTime() / 1000,
+        time: toIST(entry.Date),
         value: entry.Volume / 10000,
         color: entry.Close >= entry.Open ? '#20605A' : '#853735'
       }));
@@ -259,17 +265,32 @@ const CandlestickChart = ({ token }) => {
           setVolume(null); // Hide volume if no data
           return;
         }
+      
         const candlestickPoint = param.seriesData.get(candlestickSeries);
         const volumePoint = param.seriesData.get(volumeSeries);
+      
         if (candlestickPoint) {
+          // Convert the UTC time to IST
+          const time = new Date(param.time * 1000); // UTC to JavaScript Date
+          const istTime = new Date(time.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+          const formattedTime = istTime.toLocaleTimeString('en-IN', {
+            timeZone: 'Asia/Kolkata',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false,
+          });
+      
           // Update tooltip data and position
           setTooltipData({
             open: candlestickPoint.open.toFixed(2),
             high: candlestickPoint.high.toFixed(2),
             low: candlestickPoint.low.toFixed(2),
-            close: candlestickPoint.close.toFixed(2)
+            close: candlestickPoint.close.toFixed(2),
+            time: formattedTime, // Add the formatted time to the tooltip
           });
           setTooltipPosition({ x: param.point.x, y: param.point.y });
+      
           // Update volume data (divide by 1000 and append 'k')
           const volumeInK = ((volumePoint.value * 10000) / 1000).toFixed(1); // Convert to thousands and round to 1 decimal place
           setVolume(`${volumeInK} K`); // Append 'k' to the value
@@ -277,7 +298,7 @@ const CandlestickChart = ({ token }) => {
           setVolume(null); // Hide volume if no data
         }
       });
-
+      
       const handleResize = () => {
         if (chartInstanceRef.current) {
           chartInstanceRef.current.resize(chartRef.current.clientWidth, chartRef.current.clientHeight);
@@ -344,22 +365,22 @@ const CandlestickChart = ({ token }) => {
       )}
 
       {/* Indian Time Watch at the bottom-right corner */}
-  <Box
-    sx={{
-      position: 'absolute',
-      bottom: 10, // Position at the bottom
-      right: 10, // Position at the right
-      // backgroundColor: '#141516',
-      color: '#FFFFFF',
-      padding: '5px',
-      borderRadius: '5px',
-      pointerEvents: 'none', // Ensure the box does not interfere with cursor events
-      zIndex: 1000,
-      mb: '5px'
-    }}
-  >
-   {currentTime} IST
-  </Box>
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 10, // Position at the bottom
+          right: 10, // Position at the right
+          // backgroundColor: '#141516',
+          color: '#FFFFFF',
+          padding: '5px',
+          borderRadius: '5px',
+          pointerEvents: 'none', // Ensure the box does not interfere with cursor events
+          zIndex: 1000,
+          mb: '5px'
+        }}
+      >
+        {currentTime} IST
+      </Box>
 
       <ButtonGroup variant="contained" sx={{ display: 'flex', justifyContent: 'left', marginTop: 2 }}>
         {[

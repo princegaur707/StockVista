@@ -424,7 +424,7 @@ export default function DashboardDefault() {
                 borderColor: '#FFE072',
                 mt: 1,
                 '&:hover': {
-                  borderColor: '#FFD702',
+                  border: 'none',
                   backgroundColor: '#241e13',
                 },
                 mr: 2
