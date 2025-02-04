@@ -199,7 +199,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
             onChange={(e) => handleSearch(e.target.value)}
             InputProps={{
               style: {
-                backgroundColor: '#1d1e20',
+                backgroundColor: '#1d1e20 !important',
                 color: '#EEEEEE',
                 borderRadius: '1px',
                 padding: '1px 1px',
@@ -223,6 +223,9 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
                 '&.Mui-focused': {
                   outline: 'none', // Remove the outline for the TextField
                   borderColor: 'transparent', // Remove the border color on focus
+                },
+                '& fieldset': {
+                    borderColor: 'red !important', // Adjust border color
                 },
               },
             }}
@@ -415,11 +418,20 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
           components={{ Toolbar: GridToolbar }}
           pagination
           hideFooterSelectedRowCount
+
           initialState={{
             pagination: {
               paginationModel: {
                 pageSize: 10,
               },
+            },
+            sorting: {
+              sortModel: [
+                {
+                  field: 'price_rating', // Column to sort by
+                  sort: 'desc', // Sort order (desc for descending)
+                },
+              ],
             },
           }}
         />

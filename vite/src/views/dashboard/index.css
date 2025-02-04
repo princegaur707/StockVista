@@ -62,3 +62,7 @@
   border:1px solid;   /* border of selected tab */
   /* border-color: #FFD56B; */
 }
+.market-data .MuiTablePagination-root {
+  color: #ffd56b !important;
+  overflow: hidden;
+}

@@ -185,3 +185,8 @@
 .market-data .MuiDataGrid-columnHeader[data-field="name"] {
   padding-right: 20px; /* Add right padding to the "Name" column header */
 }
+
+
+.market-data input {
+  background-color: #1d1e20 !important;
+}

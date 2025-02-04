@@ -431,7 +431,15 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
               paginationModel: {
                 pageSize: 10
               }
-            }
+            },
+            sorting: {
+              sortModel: [
+                {
+                  field: 'price_rating', // Column to sort by
+                  sort: 'desc', // Sort order (desc for descending)
+                },
+              ],
+            },
           }}
         />
       </Box>
