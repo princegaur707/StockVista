@@ -309,7 +309,6 @@ const SamplePage = () => (
                             width: '13rem',
                             height: '3.2rem',
                             backgroundColor: '#231E13',
-                            border: 'none',
                             borderWidth: '2px',
                             borderStyle: 'solid',
                             borderImage: 'linear-gradient(93.4deg, #FFC42B 0%, #FFD567 50%, #FFC42B 100%)',

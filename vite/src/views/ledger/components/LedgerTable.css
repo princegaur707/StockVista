@@ -1,4 +1,4 @@
-.market-data .MuiDataGrid-root {
+.ledger-data .MuiDataGrid-root {
   background-color: #141516; /* Dark background for the table */
   color: #eeeeee; /* Light grey text color */
   border: none; /* Remove outer border */
@@ -78,35 +78,35 @@
 /* Main Scrollbar hidden */
 &::-webkit-scrollbar { display: none; }
 
-.market-data .MuiDataGrid-scrollbarFiller-filler{
+.ledger-data .MuiDataGrid-scrollbarFiller-filler{
   display: none;
 }
 
-.market-data .MuiDataGrid-scrollbar{
+.ledger-data .MuiDataGrid-scrollbar{
   width: 0px;;
 }
-.market-data MuiDataGrid-cell {
+.ledger-data MuiDataGrid-cell {
   border: 'none';
 }
 
-.market-data .MuiDataGrid-columnSeparator {
+.ledger-data .MuiDataGrid-columnSeparator {
   display: none !important;
 }
 
-.market-data{
+.ledger-data{
   width: 89vw;
   /* max-width: 100%; */
   overflow-x: auto;
 }
 
 /* Columns Filters row */
-.market-data .MuiDataGrid-toolbarContainer {
+.ledger-data .MuiDataGrid-toolbarContainer {
   color: #eeeeee; /* Light color for toolbar text */
   font-size: 2px;
 }
 
 /* Columns Filters text color */
-.market-data .MuiButtonBase-root {
+.ledger-data .MuiButtonBase-root {
   color: #ffd56b;
 }
 
@@ -114,7 +114,7 @@
   background-color: #1d1e20;
 }
 
-.market-data .MuiDataGrid-columnHeaders {
+.ledger-data .MuiDataGrid-columnHeaders {
   color: #db2727; /* Not getting applied */
   /* White header text */
   font-weight: bold;
@@ -122,38 +122,41 @@
 }
 
 /* Symbol Price Change insider Header */
-.market-data .MuiDataGrid-columnHeaderTitle {
+.ledger-data .MuiDataGrid-columnHeaderTitle {
   color: #d9d9d9; /* Light grey color for header text */
   font-size: 14px;
   /* border: none; */
   /* background-color: #00ff00 !important; */
 }
 
-.market-data .MuiDataGrid-cell {
+.ledger-data .MuiDataGrid-cell {
   /* border-bottom: 1px solid #1D1E20;  */
   /* Light border between rows */
   border: 0px solid rgb(92, 92, 95); /* Remove border between rows */
+  align-items: 'center';
+  justify-content: 'center';
+  font-size: 0.875rem;
 }
 
-.market-data .MuiDataGrid-row.Mui-selected {
+.ledger-data .MuiDataGrid-row.Mui-selected {
   background-color: #313437 !important; /* Keep row selected background similar */
 }
 
-.market-data .MuiDataGrid-cell--number {
+.ledger-data .MuiDataGrid-cell--number {
   color: #ffcc19; /* Yellow for numerical values */
   background-color: red;
 }
 
-.market-data .MuiDataGrid-cell--buy {
+.ledger-data .MuiDataGrid-cell--buy {
   color: #00ff00; /* Green color for Buy data */
 }
 
-.market-data .MuiDataGrid-cell--sell {
+.ledger-data .MuiDataGrid-cell--sell {
   color: #161414; /* Red color for Sell data */
 }
 
 /* Customize pagination style */
-.market-data .MuiDataGrid-footerContainer {
+.ledger-data .MuiDataGrid-footerContainer {
   background-color: #1D1E20 !important;
   /* Darker footer background */
   margin-right:40px !important;
@@ -161,33 +164,52 @@
 }
 
 /* footer of table */
-.market-data .MuiTablePagination-root{
+.ledger-data .MuiTablePagination-root{
   color: #ffd56b !important;
   /* overflow: hidden; */
 }
 
-.market-data .MuiDataGrid-withBorderColor {
+.ledger-data .MuiDataGrid-withBorderColor {
   border-color: #1D1E20 !important;
 }
-.market-data .MuiTablePagination-displayedRows {
+.ledger-data .MuiTablePagination-displayedRows {
   color: #ffd56b !important;
 }
-.market-data .css-m87zkl-MuiInputBase-input-MuiOutlinedInput-input{
+.ledger-data .css-m87zkl-MuiInputBase-input-MuiOutlinedInput-input{
   background-color: transparent;
   color: white;
   border: none;
 }
 
-.market-data .MuiOutlinedInput-root{
+.ledger-data .MuiOutlinedInput-root{
   border:none !important;
 }
 
-.market-data .MuiDataGrid-columnHeader[data-field="name"] {
+.ledger-data .MuiDataGrid-columnHeader[data-field="name"] {
   padding-right: 20px; /* Add right padding to the "Name" column header */
 }
 
 
-.market-data input {
+.ledger-data input {
   background-color: #1d1e20 !important;
   color: #FFFFFF !important;
+}
+
+.ledger-data .MuiDataGrid-cell {
+  font-size: 0.875rem;
+  padding: 8px;
+}
+
+.ledger-data .MuiDataGrid-columnHeaders,
+.ledger-data .MuiDataGrid-footerContainer {
+  font-size: 0.875rem;
+}
+
+.cell-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.875rem;
+  width: 100%;
+  text-align: left;
 }

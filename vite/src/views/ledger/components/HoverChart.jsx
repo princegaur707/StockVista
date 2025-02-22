@@ -3,13 +3,13 @@ import { createChart } from 'lightweight-charts';
 import { Box, CircularProgress, Typography, ButtonGroup, Button } from '@mui/material';
 import './CandleStickChart.css';
 
-const CandlestickChart = ({ token }) => {
+const HoverChart = ({ token }) => {
   const chartRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [error, setError] = useState('');
   const [selectedStock, setSelectedStock] = useState(token);
-  const [timePeriod, setTimePeriod] = useState('1Y');
+  const [timePeriod, setTimePeriod] = useState('1M');
   const chartInstanceRef = useRef(null);
   const [tooltipData, setTooltipData] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
@@ -157,7 +157,7 @@ const CandlestickChart = ({ token }) => {
                     const formattedDate = istDate.toLocaleDateString('en-IN', {
                       timeZone: 'Asia/Kolkata',
                       day: '2-digit',
-                      month: '2-digit' // Include month to make date changes clear
+                      // month: '2-digit' // Include month to make date changes clear
                     });
 
                     const formattedTime = istDate.toLocaleTimeString('en-IN', {
@@ -273,6 +273,12 @@ const CandlestickChart = ({ token }) => {
         const candlestickPoint = param.seriesData.get(candlestickSeries);
         const volumePoint = param.seriesData.get(volumeSeries);
 
+        if (!candlestickPoint) {
+          setTooltipData(null);
+          setVolume(null);
+          return;
+        }
+        
         if (candlestickPoint) {
           // Convert the UTC time to IST
           const time = new Date(param.time * 1000); // UTC to JavaScript Date
@@ -369,7 +375,7 @@ const CandlestickChart = ({ token }) => {
       )}
 
       {/* Indian Time Watch at the bottom-right corner */}
-      <Box
+      {/* <Box
         sx={{
           position: 'absolute',
           bottom: 10, // Position at the bottom
@@ -384,9 +390,9 @@ const CandlestickChart = ({ token }) => {
         }}
       >
         {currentTime} IST
-      </Box>
+      </Box> */}
 
-      <ButtonGroup variant="contained" sx={{ display: 'flex', justifyContent: 'left', marginTop: 2 }}>
+      <ButtonGroup variant="contained" sx={{ display: 'flex', justifyContent: 'left', marginTop: 2, marginLeft:0.5}}>
         {[
           { label: '1D', value: '1D' },
           { label: '5D', value: '5D' },
@@ -405,7 +411,7 @@ const CandlestickChart = ({ token }) => {
               color: timePeriod === value ? '#000' : '#FFF',
               fontWeight: '400',
               borderRadius: '1px',
-              padding: '3px',
+              padding: '1px',
               fontSize: '12px',
               '&:hover': {
                 backgroundColor: timePeriod === value ? '#FFE072' : 'inherit', // Keep the background color same on hover
@@ -421,4 +427,4 @@ const CandlestickChart = ({ token }) => {
   );
 };
 
-export default CandlestickChart;
+export default HoverChart;

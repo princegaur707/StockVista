@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; 
 const apiUrl = import.meta.env.VITE_API_URL;
-import crownIcon from 'assets/images/dashboard/crownicon.svg';
+import crownIcon from 'assets/images/sidebar/crownicon.svg';
+import ledgerIcon from 'assets/images/sidebar/ledgerIcon.svg'
 
 const Sidebar = () => {
   // State to track the active box
@@ -17,9 +18,9 @@ const Sidebar = () => {
     if (index === 0) {
       navigate('/dashboard') // Redirect for the first box
     } else if (index === 1) {
-      navigate('/investor'); // Redirect for the second box
+      navigate('/ledger'); // Redirect for the second box
     }  else if (index === 2) {
-      navigate('/intraday'); // Redirect for the second box
+      navigate('/marketdepth'); // Redirect for the second box
     } else if (index === 3) {
       navigate('/sector'); // Redirect for the second box
     } else if (index === 4) {
@@ -38,14 +39,13 @@ const Sidebar = () => {
   return (
     <Box
       sx={{
-        top: '30px',
-        width: 70,
+        top: '75px',
+        width: '75px',
         height: '100vh',
         bgcolor: '#1D1E20',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        paddingTop: '51px',
         position: 'fixed',
       }}
     >
@@ -54,70 +54,65 @@ const Sidebar = () => {
           sx={{
             display: 'flex',
             justifyContent: 'center', // Centers horizontally
-            height: '50vh', // Ensures full viewport height
+            height: '45px', 
+            width: '45x',
+            backgroundColor: activeBox === 0? '#26282B' : 'none',
             cursor: 'pointer', // Changes cursor on hover
-            // border: activeBox ? '1px solid #FFD56B' : 'none', // Active border color
-            // borderRadius: '50%', // Make the border rounded if desired
-            // backgroundColor: activeBox ? '#f0f0f0' : 'transparent', // Change background on active
             padding: '0px', // Add some padding for better appearance
             transition: 'all 0.3s ease', // Smooth transition for changes
-            
+            marginTop: '30px',
+            marginBottom: '25px'
           }}
-          onClick={handleClick} // Toggle active state on click
+          onClick={() => handleClick(0)} // Toggle active state on click
         >
         <img
           src={crownIcon}
           alt="crownIcon"
           style={{
-            width: '75px',
-            height: '95px',
-            // filter: activeBox ? 'brightness(1.2)' : 'none', // Add a brightness effect when active
+            width: '45px',
+            height: '45px',
+            border: activeBox === 0 ? '1px solid #FFD56B' : 'none', // Dynamic border
+            borderRadius: '7px',
+            padding: '5px'
           }}
         />
       </Box>
 
       {/* Box 2 */}
-      {/* <Box
-        onClick={() => handleClick(1)} // Click handler for second box
-        sx={{
-          width: 40,
-          height: 40,
-          borderRadius: 1,
-          marginBottom: '33px',
-          cursor: 'pointer', // Pointer cursor for clickable effect
-        }}
-      >
-        <svg
-          width="40"
-          height="40"
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+      <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center', // Centers horizontally
+            height: '50px', 
+            width: '50px',
+            // backgroundColor: activeBox === 1? '#26282B' : 'none',
+            cursor: 'pointer', // Changes cursor on hover
+            padding: '0px', // Add some padding for better appearance
+            transition: 'all 0.3s ease', // Smooth transition for changes
+          }}
+          onClick={() => handleClick(1)} // Toggle active state on click
+        >
+        <img
+          src={ledgerIcon}
+          alt="ledgerIcon"
           style={{
+            width: '45px',
+            height: '45px',
             border: activeBox === 1 ? '1px solid #FFD56B' : 'none', // Dynamic border
             borderRadius: '7px',
+            padding: '5px'
           }}
-        >
-          <rect
-            x="1"
-            y="1"
-            width="38"
-            height="38"
-            rx="7"
-            fill="#26282B"
-            stroke={activeBox === 1 ? '#FFD56B' : 'none'}
-            strokeWidth="2"
-          />
-        </svg>
-      </Box> */}
+        />
+      </Box>
 
       {/* Box 3 */}
-      {/* <Box
+      <Box
         onClick={() => handleClick(2)} // Click handler for second box
         sx={{
           width: 40,
           height: 40,
           borderRadius: 1,
+          marginTop: '20px',
           marginBottom: '33px',
           cursor: 'pointer', // Pointer cursor for clickable effect
         }}
@@ -144,7 +139,7 @@ const Sidebar = () => {
             strokeWidth="2"
           />
         </svg>
-      </Box> */}
+      </Box>
 
       {/* Box 4 */}
       {/* <Box

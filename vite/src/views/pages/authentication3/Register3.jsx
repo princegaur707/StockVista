@@ -74,7 +74,7 @@ const Register = () => {
       }
 
       // Redirect on successful signup
-      navigate('/pages/login/login3');
+      navigate('/login');
     } catch (err) {
       setErrors({ api: err.message || 'Signup failed!' });
     }

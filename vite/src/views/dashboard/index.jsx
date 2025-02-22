@@ -19,7 +19,6 @@ import BreakOutSoonDailyTable from './components/BreakoutSoonDaily';
 import WeeklyBreakoutTable from './components/BreakoutSoonWeekly';
 import RecentBreakOutTable from './components/RecentBreakOut';
 import BigPlayersTable from './components/BigPlayers';
-import { Tabs, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { bgcolor } from '@mui/system';
 
 // modal style
@@ -132,7 +131,7 @@ export default function DashboardDefault() {
 
   const fetchIndexData = async () => {
     try {
-      const response = await fetch('http://test-deployment.eba-x5nej3t3.ap-south-1.elasticbeanstalk.com/api/service/get-index-data');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/service/get-index-data`);
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);

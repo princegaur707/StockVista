@@ -1,0 +1,222 @@
+import React, { useState, useRef } from 'react';
+import { TextField, Box, MenuItem, Button, IconButton } from '@mui/material';
+import { RiResetRightFill } from "react-icons/ri";
+import './filters.css';
+
+function Filters({ onFilterChange }) {
+  const defaultFilters = {
+    symbol: '',
+    strategy: '',
+    mistake: '',
+    position: '',
+    durationFrom: '',
+    durationTo: '',
+    result: ''
+  };
+
+  const [filters, setFilters] = useState(defaultFilters);
+  const fromDateRef = useRef(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleApply = () => {
+    onFilterChange(filters);
+  };
+
+  const handleReset = () => {
+    setFilters(defaultFilters);
+    onFilterChange(defaultFilters);
+  };
+
+  // Common styling for TextFields and Selects
+  const textFieldStyles = {
+    '& .MuiOutlinedInput-root': {
+      backgroundColor: '#141516',
+      color: 'white',
+      '& fieldset': {
+        border: 'none' // removes the white border, regardless of focus
+      }
+    },
+    '& .MuiOutlinedInput-input::placeholder': {
+      color: "white",
+      opacity: 1,
+    },
+    '& .MuiInputLabel-root': { 
+      color: '#FFFFFF' 
+    },
+    '& .MuiSelect-select': { 
+      color: 'white' 
+    },
+    '& .MuiSelect-icon': { 
+      color: '#FFFFFF' // dropdown icon color
+    },
+    '& .MuiSvgIcon-root': { 
+      color: '#FFFFFF' // calendar icon color (if present)
+    }
+  };
+
+  const menuItemStyle = { color: "#FFFFFF" };
+
+  return (
+    <Box
+      sx={{ 
+        display: 'flex', 
+        flexWrap: 'wrap', 
+        alignItems: 'center', 
+        width: '85vw',
+        backgroundColor: '#26282A', 
+        p: 1, 
+        borderRadius: 1, 
+        gap: 0.5,
+        m: 3,  
+      }}
+    >
+      {/* Symbol */}
+      <TextField
+        label="Symbol"
+        name="symbol"
+        value={filters.symbol}
+        onChange={handleChange}
+        size="small"
+        sx={{ flex: 0.8, minWidth: "150px", ...textFieldStyles }}
+        variant="outlined"
+      />
+
+      {/* Strategy */}
+      <TextField
+        select
+        label="Strategy"
+        name="strategy"
+        value={filters.strategy}
+        onChange={handleChange}
+        size="small"
+        InputLabelProps={{ shrink: true }}  // always show the label
+        sx={{ flex: 0.8, minWidth: "150px", ...textFieldStyles }}
+        variant="outlined"
+      >
+        <MenuItem value="" style={menuItemStyle}>All</MenuItem>
+        <MenuItem value="30Day" style={menuItemStyle}>30 Day</MenuItem>
+        <MenuItem value="90Day" style={menuItemStyle}>90 Day</MenuItem>
+        <MenuItem value="IPO" style={menuItemStyle}>IPO</MenuItem>
+        <MenuItem value="BreakoutDaily" style={menuItemStyle}>Breakout Soon Daily</MenuItem>
+        <MenuItem value="BreakoutWeekly" style={menuItemStyle}>Breakout Soon Weekly</MenuItem>
+        <MenuItem value="RecentBreakout" style={menuItemStyle}>Recent Breakout</MenuItem>
+        <MenuItem value="BigPlayers" style={menuItemStyle}>Big Players Money Flow</MenuItem>
+      </TextField>
+
+      {/* Mistake */}
+      <TextField
+        select
+        label="Mistake"
+        name="mistake"
+        value={filters.mistake}
+        onChange={handleChange}
+        size="small"
+        sx={{ flex: 0.5, minWidth: "150px", ...textFieldStyles }}
+        variant="outlined"
+      >
+        <MenuItem value="" style={menuItemStyle}>All</MenuItem>
+        <MenuItem value="1" style={menuItemStyle}>1</MenuItem>
+        <MenuItem value="2" style={menuItemStyle}>2</MenuItem>
+        <MenuItem value="3" style={menuItemStyle}>3</MenuItem>
+      </TextField>
+
+      {/* Position */}
+      <TextField
+        select
+        label="Position"
+        name="position"
+        value={filters.position}
+        onChange={handleChange}
+        size="small"
+        sx={{ flex: 0.3, minWidth: "150px", ...textFieldStyles }}
+        variant="outlined"
+      >
+        <MenuItem value="" style={menuItemStyle}>All</MenuItem>
+        <MenuItem value="LONG" style={menuItemStyle}>Long</MenuItem>
+        <MenuItem value="SHORT" style={menuItemStyle}>Short</MenuItem>
+      </TextField>
+
+      {/* Duration: Combined "From" & "To" in one box */}
+      <Box sx={{ display: 'flex', flex: 1, minWidth: "150px", gap: 1 }}>
+        <TextField
+          variant="outlined"
+          type="date"
+          label="from"
+          name="durationFrom"
+          inputRef={fromDateRef}
+          onClick={() => fromDateRef.current?.showPicker()}
+          value={filters.durationFrom || ""}
+          onChange={handleChange}
+          size="small"
+          InputLabelProps={{ shrink: true }}
+          sx={{ flex: 1.5, ...textFieldStyles }}
+        />
+        <TextField
+          variant="outlined"
+          type="date"
+          name="durationTo"
+          inputRef={fromDateRef}
+          onClick={() => fromDateRef.current?.showPicker()}
+          label="to"
+          value={filters.durationTo || ""}
+          onChange={handleChange}
+          size="small"
+          InputLabelProps={{ shrink: true }}
+          sx={{ flex: 1.5, ...textFieldStyles }}
+        />
+      </Box>
+
+      {/* Result */}
+      <TextField
+        select
+        label="Result"
+        name="result"
+        value={filters.result}
+        onChange={handleChange}
+        size="small"
+        sx={{ flex: 0.5, minWidth: "80px", ...textFieldStyles }}
+        variant="outlined"
+      >
+        <MenuItem value="" style={menuItemStyle}>All</MenuItem>
+        <MenuItem value="profit" style={menuItemStyle}>Profit</MenuItem>
+        <MenuItem value="loss" style={menuItemStyle}>Loss</MenuItem>
+      </TextField>
+
+      {/* Apply Filter Button */}
+      <Button
+        variant="outlined"
+        onClick={handleApply}
+        size="small"
+        sx={{
+          fontFamily: 'Figtree',
+          width: '7rem',
+          height: '40px', // set to match TextField height
+          border: '1px solid',
+          fontSize: '14px',
+          borderImage: 'linear-gradient(93.4deg, #FFC42B 0%, #FFD567 50%, #FFC42B 100%)',
+          borderImageSlice: 1,
+          color: '#FFC42B',
+          backgroundColor: '#231E13',
+          '&:hover': {
+            backgroundColor: 'rgba(255, 196, 43, 0.1)',
+            borderImage: 'linear-gradient(93.4deg, #FFC42B 100%, #FFD567 100%, #FFC42B 100%)',
+            border: 'none'
+          }
+        }}
+      >
+        Apply Filter
+      </Button>
+
+      {/* Reset Icon Button */}
+      <IconButton onClick={handleReset} color="primary" aria-label="reset filters">
+        <RiResetRightFill style={{ fontSize: '25px', color: '#FFC42B' }} />
+      </IconButton>
+    </Box>
+  );
+}
+
+export default Filters;

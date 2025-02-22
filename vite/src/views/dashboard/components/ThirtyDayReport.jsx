@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { Box, IconButton, TextField, InputAdornment, CircularProgress, Typography } from '@mui/material';
+import { Box, IconButton, TextField, InputAdornment, CircularProgress, Typography, Popper } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import './FullScreenTable.css';
-import { ForkLeft } from '@mui/icons-material';
+import HoverChart from './HoverChart';
 
 const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
   const [data, setData] = useState([]);
@@ -13,22 +13,25 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
   const [error, setError] = useState('');
   const [searchText, setSearchText] = useState('');
   const [isSearchActive, setIsSearchActive] = useState(false);
-  
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [hoveredSymbol, setHoveredSymbol] = useState(null);
+  const [isHoveringPopper, setIsHoveringPopper] = useState(false);
+  const timeoutRef = useRef(null);
 
   const fetchReportData = async (retries = 3, delay = 1000) => {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/service/report/30-day-report/`);
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-  
+
       const result = await response.json();
       const reportData = result['data'];
-  
+
       if (!Array.isArray(reportData)) {
         console.error('Expected reportData to be an array:', reportData);
         setError('Invalid data structure received from the 30-day report API.');
         return;
       }
-  
+
       // Map the fetched report data to the initial table data
       const initialData = reportData.map((item) => ({
         tradingSymbol: item.symbol.replace('.NS', ''),
@@ -39,7 +42,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
         price_rating: item.price_rating,
         earning_rating: null,
         investo_rating: null,
-        symbolToken: item.token,
+        symbolToken: item.token
       }));
       // console.log(initialData,"initial data output")
       setData(initialData);
@@ -56,7 +59,6 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
       setLoading(false);
     }
   };
-  
 
   useEffect(() => {
     fetchReportData();
@@ -67,14 +69,32 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
     if (searchValue.trim() === '') {
       setFilteredData(data); // Show the whole table if the search is cleared
     } else {
-      const filtered = data.filter((row) =>
-        row.tradingSymbol.toLowerCase().includes(searchValue.toLowerCase())
-      );
+      const filtered = data.filter((row) => row.tradingSymbol.toLowerCase().includes(searchValue.toLowerCase()));
       setFilteredData(filtered);
     }
   };
-  
+  const handleMouseEnter = (event, symbol) => {
+    setAnchorEl(event.currentTarget);
+    setHoveredSymbol(symbol);
+  };
 
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      if (!isHoveringPopper) {
+        setAnchorEl(null);
+        setHoveredSymbol(null);
+      }
+    }, 300); // Small delay to allow transition to popper
+  };
+
+  // Clear timeout on component unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   // utils/numberFormatter.js
   const formatMarketValue = (value) => {
@@ -95,14 +115,11 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
     }
     return value.toFixed(2).toString(); // For values less than 1,000,000
   };
-  
-
 
   const handleSearchIconClick = (event) => {
     event.stopPropagation(); // Prevent DataGrid column sorting
     setIsSearchActive(true);
   };
-  
 
   const handleSearchClose = (event) => {
     event.stopPropagation();
@@ -110,13 +127,12 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
     setSearchText('');
     setFilteredData(data); // Reset the table to show all rows
   };
-  
 
   function standardizeSymbol(symbol) {
     return symbol
       .replace(/-EQ$/, '') // Remove "-EQ" if present
-      .replace('.NS', '')  // Remove ".NS" if present
-      .toUpperCase();      // Ensure uppercase
+      .replace('.NS', '') // Remove ".NS" if present
+      .toUpperCase(); // Ensure uppercase
   }
 
   useEffect(() => {
@@ -124,15 +140,13 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
       setData((prevData) =>
         prevData.map((item) => {
           // Find matching live market data for the current item
-          
+
           const liveData = liveMarketData.find(
             (liveItem) => standardizeSymbol(liveItem.tradingSymbol) === standardizeSymbol(item.tradingSymbol)
           );
-  
+
           // If a match is found and ltp exists, update the item
-          return liveData && liveData.ltp
-            ? { ...item, ltp: liveData.ltp }
-            : item;
+          return liveData && liveData.ltp ? { ...item, ltp: liveData.ltp } : item;
         })
       );
     }
@@ -146,27 +160,26 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
     // }
   };
 
-  
   if (loading) {
     return (
       <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'absolute',
+          top: 150,
+          left: 0,
+          width: '100%',
+          height: '100%'
+          // backgroundColor: 'rgba(255, 255, 255, 0.8)', // Optional: add a translucent background
+        }}
+      >
+        <CircularProgress
           sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'absolute',
-            top: 150,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            // backgroundColor: 'rgba(255, 255, 255, 0.8)', // Optional: add a translucent background
+            color: '#FFC42B'
           }}
-        >
-          <CircularProgress
-            sx={{
-              color: '#FFC42B',
-            }}
-          />
+        />
       </Box>
     );
   }
@@ -192,45 +205,44 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
         <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
           {isSearchActive ? (
             <TextField
-            autoFocus
-            placeholder="Search..."
-            variant="outlined"
-            value={searchText}
-            onChange={(e) => handleSearch(e.target.value)}
-            InputProps={{
-              style: {
-                backgroundColor: '#1d1e20 !important',
-                color: '#EEEEEE',
-                borderRadius: '1px',
-                padding: '1px 1px',
-              },
-              endAdornment: (
-                <IconButton
-                  onClick={handleSearchClose}
-                  sx={{
-                    '&:focus': {
-                      outline: 'none',  // Remove the focus outline here
-                    }
-                  }}
-                >
-                  <CloseIcon style={{ color: '#EEEEEE' }} />
-                </IconButton>
-              ),
-            }}
-            fullWidth
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                '&.Mui-focused': {
-                  outline: 'none', // Remove the outline for the TextField
-                  borderColor: 'transparent', // Remove the border color on focus
+              autoFocus
+              placeholder="Search..."
+              variant="outlined"
+              value={searchText}
+              onChange={(e) => handleSearch(e.target.value)}
+              InputProps={{
+                style: {
+                  backgroundColor: '#1d1e20 !important',
+                  color: '#EEEEEE',
+                  borderRadius: '1px',
+                  padding: '1px 1px'
                 },
-                '& fieldset': {
-                    borderColor: 'red !important', // Adjust border color
-                },
-              },
-            }}
-          />
-          
+                endAdornment: (
+                  <IconButton
+                    onClick={handleSearchClose}
+                    sx={{
+                      '&:focus': {
+                        outline: 'none' // Remove the focus outline here
+                      }
+                    }}
+                  >
+                    <CloseIcon style={{ color: '#EEEEEE' }} />
+                  </IconButton>
+                )
+              }}
+              fullWidth
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '&.Mui-focused': {
+                    outline: 'none', // Remove the outline for the TextField
+                    borderColor: 'transparent' // Remove the border color on focus
+                  },
+                  '& fieldset': {
+                    borderColor: 'red !important' // Adjust border color
+                  }
+                }
+              }}
+            />
           ) : (
             <Box display="flex" alignItems="center">
               <IconButton onClick={handleSearchIconClick}>
@@ -244,13 +256,14 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
         </Box>
       ),
       renderCell: (params) => (
-        <Box 
-        display="flex" 
-        alignItems="center" 
-        height="100%" 
-        mt={0.2}
-        sx={{ cursor: 'pointer' }} // Add pointer cursor for hover effect
-        onMouseEnter={() => handleCellClick(params)}
+        <Box
+          display="flex"
+          alignItems="center"
+          height="100%"
+          mt={0.2}
+          sx={{ cursor: 'pointer' }} // Add pointer cursor for hover effect
+          onMouseEnter={(e) => handleMouseEnter(e, params.value)}
+          onMouseLeave={handleMouseLeave}
         >
           <svg width="46" height="28" viewBox="0 0 46 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="46" height="28" fill="#26282B" />
@@ -261,9 +274,9 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
           </svg>
           <Typography ml={1}>{params.value}</Typography>
         </Box>
-      ),
+      )
     },
-    
+
     {
       field: 'ltp',
       headerName: 'Price',
@@ -289,31 +302,35 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
         const pct_change = params.row.pct_change; // Accessing pct_change from the row
         // Handle case where either value might be missing
         if (change == null || pct_change == null) {
-          return <Typography align="left" color="error">N/A</Typography>;
+          return (
+            <Typography align="left" color="error">
+              N/A
+            </Typography>
+          );
         }
-    
+
         // Define colors based on values
         const changeColor = change > 0 ? '#00EFC8' : change < 0 ? '#FF5966' : '#EEEEEE';
         const pctChangeColor = pct_change > 0 ? '#00EFC8' : pct_change < 0 ? '#FF5966' : '#EEEEEE';
-    
+
         return (
           <Box display="flex" alignItems="center" height="100%">
             {/* Render change */}
             <Typography
-            align="left"
+              align="left"
               sx={{
-                color: changeColor,
+                color: changeColor
                 // fontWeight: 'bold',
                 // marginRight: 1
               }}
             >
               {change.toFixed(2)} {/* Format the number */}
             </Typography>
-            
+
             {/* Render pct_change */}
             <Typography
               sx={{
-                color: pctChangeColor,
+                color: pctChangeColor
                 // fontWeight: 'bold',
                 // marginLeft: 1,
                 // fontSize: '0.9rem'
@@ -323,49 +340,44 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
             </Typography>
           </Box>
         );
-      },
-    },
-        
-    { 
-      field: 'market_cap', 
-      headerName: 'Market Cap',
-      flex: 1.3,
-      headerAlign: 'left', 
-      type: 'number',
-      renderCell: (params) => (
-        <Box display="flex" alignItems="center" height="100%">
-          <Typography align="left">
-            {formatMarketValue(params.value)}</Typography>
-        </Box>
-      ),
+      }
     },
 
-    { 
-      field: 'price_rating',
-      headerName: 'Price Rating', 
-      flex: .8, 
+    {
+      field: 'market_cap',
+      headerName: 'Market Cap',
+      flex: 1.3,
       headerAlign: 'left',
       type: 'number',
       renderCell: (params) => (
         <Box display="flex" alignItems="center" height="100%">
-          <Typography align="center">
-            {params?.value ? params.value.toFixed(2) : 'N/A'}
-          </Typography>
+          <Typography align="left">{formatMarketValue(params.value)}</Typography>
         </Box>
       )
     },
-    
+
     {
-      field: 'earning_rating',
-      headerName: 'Earning Rating',
-      flex: .8,
+      field: 'price_rating',
+      headerName: 'Price Rating',
+      flex: 0.8,
       headerAlign: 'left',
       type: 'number',
       renderCell: (params) => (
         <Box display="flex" alignItems="center" height="100%">
-          <Typography align="center">
-            {params?.value ? params.value.toFixed(2) : 'N/A'}
-          </Typography>
+          <Typography align="center">{params?.value ? params.value.toFixed(2) : 'N/A'}</Typography>
+        </Box>
+      )
+    },
+
+    {
+      field: 'earning_rating',
+      headerName: 'Earning Rating',
+      flex: 0.8,
+      headerAlign: 'left',
+      type: 'number',
+      renderCell: (params) => (
+        <Box display="flex" alignItems="center" height="100%">
+          <Typography align="center">{params?.value ? params.value.toFixed(2) : 'N/A'}</Typography>
         </Box>
       )
     },
@@ -373,17 +385,15 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
     {
       field: 'investo_rating',
       headerName: 'Investo Rating',
-      flex: .8,
+      flex: 0.8,
       headerAlign: 'left',
       type: 'number',
       renderCell: (params) => (
         <Box display="flex" alignItems="center" height="100%">
-          <Typography align="center">
-            {params?.value ? params.value.toFixed(2) : 'N/A'}
-          </Typography>
+          <Typography align="center">{params?.value ? params.value.toFixed(2) : 'N/A'}</Typography>
         </Box>
       )
-    },
+    }
   ];
 
   const rows = (filteredData.length > 0 ? filteredData : data).map((row, index) => ({
@@ -395,9 +405,8 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
     market_cap: row.market_cap,
     price_rating: row.price_rating,
     earning_rating: row.earning_rating,
-    investo_rating: row.investo_rating,
+    investo_rating: row.investo_rating
   }));
-  
 
   return (
     <Box
@@ -405,7 +414,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
       sx={{
         mt: 0,
         width: '100%',
-        '&::-webkit-scrollbar': { display: 'none' },
+        '&::-webkit-scrollbar': { display: 'none' }
       }}
     >
       <Box sx={{ height: '86vh', width: '90vw' }}>
@@ -418,24 +427,48 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
           components={{ Toolbar: GridToolbar }}
           pagination
           hideFooterSelectedRowCount
-
           initialState={{
             pagination: {
               paginationModel: {
-                pageSize: 10,
-              },
+                pageSize: 10
+              }
             },
             sorting: {
               sortModel: [
                 {
                   field: 'price_rating', // Column to sort by
-                  sort: 'desc', // Sort order (desc for descending)
-                },
-              ],
-            },
+                  sort: 'desc' // Sort order (desc for descending)
+                }
+              ]
+            }
           }}
         />
       </Box>
+      <Popper open={Boolean(anchorEl)} anchorEl={anchorEl} placement="top-start">
+        {hoveredSymbol && (
+          <Box
+            sx={{ bgcolor: '#141516', p: 0, boxShadow: 0, border: '0px solid #FFE072' }}
+            onMouseEnter={() => {
+              setIsHoveringPopper(true)
+              if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+                timeoutRef.current = null;
+              }
+            }}
+            onMouseLeave={() => {
+              setIsHoveringPopper(false);
+              // Set a new timeout when leaving the Popper
+              timeoutRef.current = setTimeout(() => {
+                setAnchorEl(null);
+                // setHoveredSymbol(null);
+              }, 300);
+
+            }}
+          >
+            <HoverChart token={hoveredSymbol} />
+          </Box>
+        )}
+      </Popper>
     </Box>
   );
 };
