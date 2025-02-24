@@ -61,7 +61,7 @@
   background-color: #1d1e20 !important;
   color: #EEEEEE !important;
   border-radius: 0px !important;
-  padding: 1px 1px !important;
+  padding: 0px 1px !important;
 }
 
 /* Additional custom styles for the IconButton */
@@ -119,6 +119,7 @@
   /* White header text */
   font-weight: bold;
   border: 0px solid #1d1e20; /* Getting applied:Border between header and rows */
+  padding: 0px;
 }
 
 /* Symbol Price Change insider Header */
@@ -147,20 +148,12 @@
   background-color: red;
 }
 
-.ledger-data .MuiDataGrid-cell--buy {
-  color: #00ff00; /* Green color for Buy data */
-}
-
-.ledger-data .MuiDataGrid-cell--sell {
-  color: #161414; /* Red color for Sell data */
-}
-
 /* Customize pagination style */
 .ledger-data .MuiDataGrid-footerContainer {
   background-color: #1D1E20 !important;
   /* Darker footer background */
   margin-right:40px !important;
-  color: #eeeeee !important;
+  width: 100%;
 }
 
 /* footer of table */

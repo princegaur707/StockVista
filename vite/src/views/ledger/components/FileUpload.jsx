@@ -31,7 +31,7 @@ function FileUpload({ onDataLoaded }) {
         
         // Convert the entire sheet into an array of arrays.
         const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
-        console.log("All rows:", rows);
+        // console.log("All rows:", rows);
 
         // Define a list of expected header names (at least a few must be present).
         const expectedHeaders = [
@@ -69,9 +69,9 @@ function FileUpload({ onDataLoaded }) {
           return;
         }
         
-        console.log("Detected header row index:", headerRowIndex);
+        // console.log("Detected header row index:", headerRowIndex);
         const headerRow = rows[headerRowIndex];
-        console.log("Header row:", headerRow);
+        // console.log("Header row:", headerRow);
         
         // Build JSON objects for all rows after the header row.
         const dataRows = rows.slice(headerRowIndex + 1);
@@ -111,7 +111,7 @@ function FileUpload({ onDataLoaded }) {
             height: '2.5rem',
             border: '1px solid',
             fontSize: '14px',
-            marginRight: '10px',
+            // marginRight: '0px',
             borderImage: 'linear-gradient(93.4deg, #FFC42B 0%, #FFD567 50%, #FFC42B 100%)',
             borderImageSlice: 1,
             color: '#FFC42B',

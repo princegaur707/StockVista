@@ -132,7 +132,8 @@
 .market-data .MuiDataGrid-cell {
   /* border-bottom: 1px solid #1D1E20;  */
   /* Light border between rows */
-  border: 0px solid rgb(92, 92, 95); /* Remove border between rows */
+  border: 0px solid rgb(92, 92, 95); 
+  /* Remove border between rows */
 }
 
 .market-data .MuiDataGrid-row.Mui-selected {
@@ -156,7 +157,7 @@
 .market-data .MuiDataGrid-footerContainer {
   background-color: #1D1E20 !important;
   /* Darker footer background */
-  margin-right:40px !important;
+  /* margin-right:500px !important; */
   color: #eeeeee !important;
 }
 

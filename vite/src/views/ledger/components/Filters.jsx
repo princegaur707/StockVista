@@ -11,6 +11,7 @@ function Filters({ onFilterChange }) {
     position: '',
     durationFrom: '',
     durationTo: '',
+    status:'',
     result: ''
   };
 
@@ -66,12 +67,11 @@ function Filters({ onFilterChange }) {
         display: 'flex', 
         flexWrap: 'wrap', 
         alignItems: 'center', 
-        width: '85vw',
+        width: '90vw',
         backgroundColor: '#26282A', 
         p: 1, 
         borderRadius: 1, 
         gap: 0.5,
-        m: 3,  
       }}
     >
       {/* Symbol */}
@@ -93,7 +93,7 @@ function Filters({ onFilterChange }) {
         value={filters.strategy}
         onChange={handleChange}
         size="small"
-        InputLabelProps={{ shrink: true }}  // always show the label
+        // InputLabelProps={{ shrink: true }}  // always show the label
         sx={{ flex: 0.8, minWidth: "150px", ...textFieldStyles }}
         variant="outlined"
       >
@@ -141,7 +141,7 @@ function Filters({ onFilterChange }) {
       </TextField>
 
       {/* Duration: Combined "From" & "To" in one box */}
-      <Box sx={{ display: 'flex', flex: 1, minWidth: "150px", gap: 1 }}>
+      <Box sx={{ display: 'flex', flex: 1.2, minWidth: "150px", gap: 1 }}>
         <TextField
           variant="outlined"
           type="date"
@@ -170,6 +170,22 @@ function Filters({ onFilterChange }) {
         />
       </Box>
 
+      {/* Mistake */}
+      <TextField
+        select
+        label="Status"
+        name="status"
+        value={filters.status}
+        onChange={handleChange}
+        size="small"
+        sx={{ flex: 0.5, minWidth: "150px", ...textFieldStyles }}
+        variant="outlined"
+      >
+        <MenuItem value="" style={menuItemStyle}>All</MenuItem>
+        <MenuItem value="Open" style={menuItemStyle}>Open</MenuItem>
+        <MenuItem value="Close" style={menuItemStyle}>Close</MenuItem>
+      </TextField>
+
       {/* Result */}
       <TextField
         select
@@ -197,14 +213,18 @@ function Filters({ onFilterChange }) {
           height: '40px', // set to match TextField height
           border: '1px solid',
           fontSize: '14px',
-          borderImage: 'linear-gradient(93.4deg, #FFC42B 0%, #FFD567 50%, #FFC42B 100%)',
+          // borderImage: 'linear-gradient(93.4deg, #FFC42B 0%, #FFD567 50%, #FFC42B 100%)',
           borderImageSlice: 1,
-          color: '#FFC42B',
-          backgroundColor: '#231E13',
+          // color: '#FFC42B',
+          color: '#FFFFFF',
+          // backgroundColor: '#231E13',
+          backgroundColor: '#1d1e20',
           '&:hover': {
-            backgroundColor: 'rgba(255, 196, 43, 0.1)',
-            borderImage: 'linear-gradient(93.4deg, #FFC42B 100%, #FFD567 100%, #FFC42B 100%)',
-            border: 'none'
+            backgroundColor: '#ffffff',
+            color: '#1e1e1e'
+            // backgroundColor: 'rgba(255, 196, 43, 0.1)',
+            // borderImage: 'linear-gradient(93.4deg, #FFC42B 100%, #FFD567 100%, #FFC42B 100%)',
+            // border: 'none'
           }
         }}
       >
@@ -213,7 +233,8 @@ function Filters({ onFilterChange }) {
 
       {/* Reset Icon Button */}
       <IconButton onClick={handleReset} color="primary" aria-label="reset filters">
-        <RiResetRightFill style={{ fontSize: '25px', color: '#FFC42B' }} />
+        {/* <RiResetRightFill style={{ fontSize: '25px', color: '#FFC42B' }} /> */}
+        <RiResetRightFill style={{ fontSize: '25px', color: '#FFFFFF' }} />
       </IconButton>
     </Box>
   );

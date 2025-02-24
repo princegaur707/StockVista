@@ -5,9 +5,10 @@ import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 
 // dashboard routing
+import ProtectedRoute from 'views/pages/authentication3/ProtectedRoute.jsx';
 const Dashboard = Loadable(lazy(() => import('views/dashboard')));
 const Ledger = Loadable(lazy(() => import('views/ledger')));
-import ProtectedRoute from 'views/pages/authentication3/ProtectedRoute.jsx';
+const MarketDepth = Loadable(lazy(() => import('views/MarketDepth')))
 // utilities routing
 const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
 const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
@@ -51,15 +52,19 @@ const MainRoutes = {
         }
       ]
     },
-    // {
-    //   path: 'utils',
-    //   children: [
-    //     {
-    //       path: 'util-color',
-    //       element: <UtilsColor />
-    //     }
-    //   ]
-    // },
+    {
+      path: 'market',
+      children: [
+        {
+          path: '',
+          element: (
+            <ProtectedRoute>
+              <MarketDepth />
+            </ProtectedRoute>
+          ),
+        }
+      ]
+    },
     // {
     //   path: 'utils',
     //   children: [

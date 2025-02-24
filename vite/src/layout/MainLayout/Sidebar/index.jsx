@@ -20,7 +20,7 @@ const Sidebar = () => {
     } else if (index === 1) {
       navigate('/ledger'); // Redirect for the second box
     }  else if (index === 2) {
-      navigate('/marketdepth'); // Redirect for the second box
+      navigate('/market'); // Redirect for the second box
     } else if (index === 3) {
       navigate('/sector'); // Redirect for the second box
     } else if (index === 4) {
