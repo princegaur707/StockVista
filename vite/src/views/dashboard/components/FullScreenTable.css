@@ -4,7 +4,7 @@
   border: none; /* Remove outer border */
   font-size: 12px; /* Enteries of rows */
   --DataGrid-rowBorderColor: #1d1e20;
-  --DataGrid-containerBackground: #1D1E20;
+  --DataGrid-containerBackground: #1d1e20;
   /* For border b/w rows */
 }
 
@@ -55,35 +55,35 @@
   box-shadow: none !important; /* Remove the box-shadow */
 }
 
-
 /* Additional custom styles for the TextField input field */
 .MuiInputBase-root {
   background-color: #1d1e20 !important;
-  color: #EEEEEE !important;
+  color: #eeeeee !important;
   border-radius: 0px !important;
   padding: 1px 1px !important;
 }
 
 /* Additional custom styles for the IconButton */
 .MuiIconButton-root {
-  color: #EEEEEE !important;
+  color: #eeeeee !important;
 }
 
 /* Optional: For the search icon (just for styling the SVG icon) */
 .MuiSvgIcon-root {
-  color: #EEEEEE !important;
+  color: #eeeeee !important;
 }
 
-
 /* Main Scrollbar hidden */
-&::-webkit-scrollbar { display: none; }
-
-.market-data .MuiDataGrid-scrollbarFiller-filler{
+&::-webkit-scrollbar {
   display: none;
 }
 
-.market-data .MuiDataGrid-scrollbar{
-  width: 0px;;
+.market-data .MuiDataGrid-scrollbarFiller-filler {
+  display: none;
+}
+
+.market-data .MuiDataGrid-scrollbar {
+  width: 0px;
 }
 .market-data MuiDataGrid-cell {
   border: 'none';
@@ -93,7 +93,7 @@
   display: none !important;
 }
 
-.market-data{
+.market-data {
   width: 89vw;
   /* max-width: 100%; */
   overflow-x: auto;
@@ -155,40 +155,39 @@
 
 /* Customize pagination style */
 .market-data .MuiDataGrid-footerContainer {
-  background-color: #1D1E20 !important;
+  background-color: #1d1e20 !important;
   /* Darker footer background */
-  /* margin-right:500px !important; */
+  margin-right: 40px !important;
   color: #eeeeee !important;
 }
 
 /* footer of table */
-.market-data .MuiTablePagination-root{
+.market-data .MuiTablePagination-root {
   color: #ffd56b !important;
   /* overflow: hidden; */
 }
 
 .market-data .MuiDataGrid-withBorderColor {
-  border-color: #1D1E20 !important;
+  border-color: #1d1e20 !important;
 }
 .market-data .MuiTablePagination-displayedRows {
   color: #ffd56b !important;
 }
-.market-data .css-m87zkl-MuiInputBase-input-MuiOutlinedInput-input{
+.market-data .css-m87zkl-MuiInputBase-input-MuiOutlinedInput-input {
   background-color: transparent;
   color: white;
   border: none;
 }
 
-.market-data .MuiOutlinedInput-root{
-  border:none !important;
+.market-data .MuiOutlinedInput-root {
+  border: none !important;
 }
 
-.market-data .MuiDataGrid-columnHeader[data-field="name"] {
+.market-data .MuiDataGrid-columnHeader[data-field='name'] {
   padding-right: 20px; /* Add right padding to the "Name" column header */
 }
 
-
 .market-data input {
   background-color: #1d1e20 !important;
-  color: #FFFFFF !important;
+  color: #eeeeee;
 }

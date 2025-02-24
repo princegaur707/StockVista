@@ -16,7 +16,7 @@ const BreakOutSoonDailyTable = ({ setSymbolToken, updateToken, liveMarketData })
 
   const fetchReportData = async (retries = 3, delay = 1000) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/service/breakout-soon-data/`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/service/breakout-daily-data/`);
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
       const result = await response.json();
@@ -436,10 +436,10 @@ const BreakOutSoonDailyTable = ({ setSymbolToken, updateToken, liveMarketData })
               sortModel: [
                 {
                   field: 'price_rating', // Column to sort by
-                  sort: 'desc', // Sort order (desc for descending)
-                },
-              ],
-            },
+                  sort: 'desc' // Sort order (desc for descending)
+                }
+              ]
+            }
           }}
         />
       </Box>

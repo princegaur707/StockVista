@@ -131,7 +131,7 @@ export default function DashboardDefault() {
 
   const fetchIndexData = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/service/get-index-data`);
+      const response = await fetch('http://investo-prod.eba-hd3mpw2a.ap-south-1.elasticbeanstalk.com/api/service/get-index-data');
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -235,7 +235,7 @@ export default function DashboardDefault() {
   const handleCloseModal = () => {
     setSymbolToken('');
     setOpenModal(false);
-  }
+  };
 
   const handleChange1 = (event) => {
     setSelected(event.target.value);
@@ -424,7 +424,7 @@ export default function DashboardDefault() {
                 mt: 1,
                 '&:hover': {
                   border: 'none',
-                  backgroundColor: '#241e13',
+                  backgroundColor: '#241e13'
                 },
                 mr: 2
               }}
