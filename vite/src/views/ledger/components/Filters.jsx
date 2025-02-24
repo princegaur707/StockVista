@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { TextField, Box, MenuItem, Button, IconButton } from '@mui/material';
-import { RiResetRightFill } from "react-icons/ri";
 import './filters.css';
+// import RestartAltOutlinedIcon from '@mui/icons-material/RestartAltOutlined';
 
 function Filters({ onFilterChange }) {
   const defaultFilters = {
@@ -11,7 +11,7 @@ function Filters({ onFilterChange }) {
     position: '',
     durationFrom: '',
     durationTo: '',
-    status:'',
+    status: '',
     result: ''
   };
 
@@ -42,36 +42,36 @@ function Filters({ onFilterChange }) {
       }
     },
     '& .MuiOutlinedInput-input::placeholder': {
-      color: "white",
-      opacity: 1,
+      color: 'white',
+      opacity: 1
     },
-    '& .MuiInputLabel-root': { 
-      color: '#FFFFFF' 
+    '& .MuiInputLabel-root': {
+      color: '#FFFFFF'
     },
-    '& .MuiSelect-select': { 
-      color: 'white' 
+    '& .MuiSelect-select': {
+      color: 'white'
     },
-    '& .MuiSelect-icon': { 
+    '& .MuiSelect-icon': {
       color: '#FFFFFF' // dropdown icon color
     },
-    '& .MuiSvgIcon-root': { 
+    '& .MuiSvgIcon-root': {
       color: '#FFFFFF' // calendar icon color (if present)
     }
   };
 
-  const menuItemStyle = { color: "#FFFFFF" };
+  const menuItemStyle = { color: '#FFFFFF' };
 
   return (
     <Box
-      sx={{ 
-        display: 'flex', 
-        flexWrap: 'wrap', 
-        alignItems: 'center', 
+      sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
         width: '90vw',
-        backgroundColor: '#26282A', 
-        p: 1, 
-        borderRadius: 1, 
-        gap: 0.5,
+        backgroundColor: '#26282A',
+        p: 1,
+        borderRadius: 1,
+        gap: 0.5
       }}
     >
       {/* Symbol */}
@@ -81,7 +81,7 @@ function Filters({ onFilterChange }) {
         value={filters.symbol}
         onChange={handleChange}
         size="small"
-        sx={{ flex: 0.8, minWidth: "150px", ...textFieldStyles }}
+        sx={{ flex: 0.8, minWidth: '150px', ...textFieldStyles }}
         variant="outlined"
       />
 
@@ -94,17 +94,33 @@ function Filters({ onFilterChange }) {
         onChange={handleChange}
         size="small"
         // InputLabelProps={{ shrink: true }}  // always show the label
-        sx={{ flex: 0.8, minWidth: "150px", ...textFieldStyles }}
+        sx={{ flex: 0.8, minWidth: '150px', ...textFieldStyles }}
         variant="outlined"
       >
-        <MenuItem value="" style={menuItemStyle}>All</MenuItem>
-        <MenuItem value="30Day" style={menuItemStyle}>30 Day</MenuItem>
-        <MenuItem value="90Day" style={menuItemStyle}>90 Day</MenuItem>
-        <MenuItem value="IPO" style={menuItemStyle}>IPO</MenuItem>
-        <MenuItem value="BreakoutDaily" style={menuItemStyle}>Breakout Soon Daily</MenuItem>
-        <MenuItem value="BreakoutWeekly" style={menuItemStyle}>Breakout Soon Weekly</MenuItem>
-        <MenuItem value="RecentBreakout" style={menuItemStyle}>Recent Breakout</MenuItem>
-        <MenuItem value="BigPlayers" style={menuItemStyle}>Big Players Money Flow</MenuItem>
+        <MenuItem value="" style={menuItemStyle}>
+          All
+        </MenuItem>
+        <MenuItem value="30Day" style={menuItemStyle}>
+          30 Day
+        </MenuItem>
+        <MenuItem value="90Day" style={menuItemStyle}>
+          90 Day
+        </MenuItem>
+        <MenuItem value="IPO" style={menuItemStyle}>
+          IPO
+        </MenuItem>
+        <MenuItem value="BreakoutDaily" style={menuItemStyle}>
+          Breakout Soon Daily
+        </MenuItem>
+        <MenuItem value="BreakoutWeekly" style={menuItemStyle}>
+          Breakout Soon Weekly
+        </MenuItem>
+        <MenuItem value="RecentBreakout" style={menuItemStyle}>
+          Recent Breakout
+        </MenuItem>
+        <MenuItem value="BigPlayers" style={menuItemStyle}>
+          Big Players Money Flow
+        </MenuItem>
       </TextField>
 
       {/* Mistake */}
@@ -115,13 +131,21 @@ function Filters({ onFilterChange }) {
         value={filters.mistake}
         onChange={handleChange}
         size="small"
-        sx={{ flex: 0.5, minWidth: "150px", ...textFieldStyles }}
+        sx={{ flex: 0.5, minWidth: '150px', ...textFieldStyles }}
         variant="outlined"
       >
-        <MenuItem value="" style={menuItemStyle}>All</MenuItem>
-        <MenuItem value="1" style={menuItemStyle}>1</MenuItem>
-        <MenuItem value="2" style={menuItemStyle}>2</MenuItem>
-        <MenuItem value="3" style={menuItemStyle}>3</MenuItem>
+        <MenuItem value="" style={menuItemStyle}>
+          All
+        </MenuItem>
+        <MenuItem value="1" style={menuItemStyle}>
+          1
+        </MenuItem>
+        <MenuItem value="2" style={menuItemStyle}>
+          2
+        </MenuItem>
+        <MenuItem value="3" style={menuItemStyle}>
+          3
+        </MenuItem>
       </TextField>
 
       {/* Position */}
@@ -132,16 +156,22 @@ function Filters({ onFilterChange }) {
         value={filters.position}
         onChange={handleChange}
         size="small"
-        sx={{ flex: 0.3, minWidth: "150px", ...textFieldStyles }}
+        sx={{ flex: 0.3, minWidth: '150px', ...textFieldStyles }}
         variant="outlined"
       >
-        <MenuItem value="" style={menuItemStyle}>All</MenuItem>
-        <MenuItem value="LONG" style={menuItemStyle}>Long</MenuItem>
-        <MenuItem value="SHORT" style={menuItemStyle}>Short</MenuItem>
+        <MenuItem value="" style={menuItemStyle}>
+          All
+        </MenuItem>
+        <MenuItem value="LONG" style={menuItemStyle}>
+          Long
+        </MenuItem>
+        <MenuItem value="SHORT" style={menuItemStyle}>
+          Short
+        </MenuItem>
       </TextField>
 
       {/* Duration: Combined "From" & "To" in one box */}
-      <Box sx={{ display: 'flex', flex: 1.2, minWidth: "150px", gap: 1 }}>
+      <Box sx={{ display: 'flex', flex: 1.2, minWidth: '150px', gap: 1 }}>
         <TextField
           variant="outlined"
           type="date"
@@ -149,7 +179,7 @@ function Filters({ onFilterChange }) {
           name="durationFrom"
           inputRef={fromDateRef}
           onClick={() => fromDateRef.current?.showPicker()}
-          value={filters.durationFrom || ""}
+          value={filters.durationFrom || ''}
           onChange={handleChange}
           size="small"
           InputLabelProps={{ shrink: true }}
@@ -162,7 +192,7 @@ function Filters({ onFilterChange }) {
           inputRef={fromDateRef}
           onClick={() => fromDateRef.current?.showPicker()}
           label="to"
-          value={filters.durationTo || ""}
+          value={filters.durationTo || ''}
           onChange={handleChange}
           size="small"
           InputLabelProps={{ shrink: true }}
@@ -178,12 +208,18 @@ function Filters({ onFilterChange }) {
         value={filters.status}
         onChange={handleChange}
         size="small"
-        sx={{ flex: 0.5, minWidth: "150px", ...textFieldStyles }}
+        sx={{ flex: 0.5, minWidth: '150px', ...textFieldStyles }}
         variant="outlined"
       >
-        <MenuItem value="" style={menuItemStyle}>All</MenuItem>
-        <MenuItem value="Open" style={menuItemStyle}>Open</MenuItem>
-        <MenuItem value="Close" style={menuItemStyle}>Close</MenuItem>
+        <MenuItem value="" style={menuItemStyle}>
+          All
+        </MenuItem>
+        <MenuItem value="Open" style={menuItemStyle}>
+          Open
+        </MenuItem>
+        <MenuItem value="Close" style={menuItemStyle}>
+          Close
+        </MenuItem>
       </TextField>
 
       {/* Result */}
@@ -194,12 +230,18 @@ function Filters({ onFilterChange }) {
         value={filters.result}
         onChange={handleChange}
         size="small"
-        sx={{ flex: 0.5, minWidth: "80px", ...textFieldStyles }}
+        sx={{ flex: 0.5, minWidth: '80px', ...textFieldStyles }}
         variant="outlined"
       >
-        <MenuItem value="" style={menuItemStyle}>All</MenuItem>
-        <MenuItem value="profit" style={menuItemStyle}>Profit</MenuItem>
-        <MenuItem value="loss" style={menuItemStyle}>Loss</MenuItem>
+        <MenuItem value="" style={menuItemStyle}>
+          All
+        </MenuItem>
+        <MenuItem value="profit" style={menuItemStyle}>
+          Profit
+        </MenuItem>
+        <MenuItem value="loss" style={menuItemStyle}>
+          Loss
+        </MenuItem>
       </TextField>
 
       {/* Apply Filter Button */}
@@ -233,8 +275,34 @@ function Filters({ onFilterChange }) {
 
       {/* Reset Icon Button */}
       <IconButton onClick={handleReset} color="primary" aria-label="reset filters">
-        {/* <RiResetRightFill style={{ fontSize: '25px', color: '#FFC42B' }} /> */}
-        <RiResetRightFill style={{ fontSize: '25px', color: '#FFFFFF' }} />
+        <Button
+          variant="outlined"
+          onClick={handleApply}
+          size="small"
+          sx={{
+            fontFamily: 'Figtree',
+            width: '4rem',
+            height: '40px', // set to match TextField height
+            border: '1px solid',
+            fontSize: '14px',
+            // borderImage: 'linear-gradient(93.4deg, #FFC42B 0%, #FFD567 50%, #FFC42B 100%)',
+            borderImageSlice: 1,
+            // color: '#FFC42B',
+            color: '#FFFFFF',
+            // backgroundColor: '#231E13',
+            backgroundColor: '#1d1e20',
+            '&:hover': {
+              backgroundColor: '#ffffff',
+              color: '#1e1e1e'
+              // backgroundColor: 'rgba(255, 196, 43, 0.1)',
+              // borderImage: 'linear-gradient(93.4deg, #FFC42B 100%, #FFD567 100%, #FFC42B 100%)',
+              // border: 'none'
+            }
+          }}
+        >
+          Reset
+        </Button>
+        {/* <RestartAltOutlinedIcon style={{ fontSize: '25px', color: '#FFFFFF' }} /> */}
       </IconButton>
     </Box>
   );
