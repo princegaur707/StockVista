@@ -77,7 +77,7 @@ const Tables = ({ trades, onTradeUpdate }) => {
               padding: '4px 8px', // Optional: Add padding for better visibility
               textAlign: 'center',
               marginRight: '10px',
-              borderRadius: '4px',
+              borderRadius: '4px'
             }}
           >
             {params.value}
@@ -119,7 +119,7 @@ const Tables = ({ trades, onTradeUpdate }) => {
       minWidth: 60,
       renderCell: (params) => {
         const color = params.value === 'CLOSE' ? '#b59ef3' : '#04b5d4'; // Set color based on whether value is 'Close'
-      
+
         return (
           <Typography
             className="cell-text"
@@ -128,7 +128,6 @@ const Tables = ({ trades, onTradeUpdate }) => {
               padding: '4px 8px',
               color: '#FFFFFF', // Text color remains white
               border: `2px solid ${color}`, // Border color based on the condition
-              padding: '4px 8px', // Add padding for better readability
               borderRadius: '4px', // Optional: Add border radius for rounded corners
               textAlign: 'center'
             }}
@@ -137,7 +136,6 @@ const Tables = ({ trades, onTradeUpdate }) => {
           </Typography>
         );
       }
-           
     },
     {
       field: 'totalQuantity',
@@ -166,11 +164,11 @@ const Tables = ({ trades, onTradeUpdate }) => {
         const formattedValue = parseFloat(params.value).toFixed(2); // Round the number to 2 decimal places
         const isPositive = parseFloat(params.value) >= 0; // Check if value is positive or negative
         const color = isPositive ? '#00EFC8' : '#FF5966'; // Choose the color based on positivity or negativity
-        
+
         // Lighter shade of the color for the background
         const backgroundColor = isPositive ? '#00EFC8' : '#FF5966';
         const lighterShade = isPositive ? '#80E7D6' : '#FF8A8A'; // Lighter tones of the colors
-      
+
         return (
           <Typography
             className="cell-text"
@@ -187,8 +185,6 @@ const Tables = ({ trades, onTradeUpdate }) => {
           </Typography>
         );
       }
-      
-      
     },
     {
       field: 'strategy',

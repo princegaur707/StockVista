@@ -4,7 +4,7 @@
   border: none; /* Remove outer border */
   font-size: 12px; /* Enteries of rows */
   --DataGrid-rowBorderColor: #1d1e20;
-  --DataGrid-containerBackground: #1D1E20;
+  --DataGrid-containerBackground: #1d1e20;
   /* For border b/w rows */
 }
 
@@ -55,35 +55,35 @@
   box-shadow: none !important; /* Remove the box-shadow */
 }
 
-
 /* Additional custom styles for the TextField input field */
 .MuiInputBase-root {
   background-color: #1d1e20 !important;
-  color: #EEEEEE !important;
+  color: #eeeeee !important;
   border-radius: 0px !important;
   padding: 0px 1px !important;
 }
 
 /* Additional custom styles for the IconButton */
 .MuiIconButton-root {
-  color: #EEEEEE !important;
+  color: #eeeeee !important;
 }
 
 /* Optional: For the search icon (just for styling the SVG icon) */
 .MuiSvgIcon-root {
-  color: #EEEEEE !important;
+  color: #eeeeee !important;
 }
 
-
 /* Main Scrollbar hidden */
-&::-webkit-scrollbar { display: none; }
-
-.ledger-data .MuiDataGrid-scrollbarFiller-filler{
+&::-webkit-scrollbar {
   display: none;
 }
 
-.ledger-data .MuiDataGrid-scrollbar{
-  width: 0px;;
+.ledger-data .MuiDataGrid-scrollbarFiller-filler {
+  display: none;
+}
+
+.ledger-data .MuiDataGrid-scrollbar {
+  width: 0px;
 }
 .ledger-data MuiDataGrid-cell {
   border: 'none';
@@ -93,7 +93,7 @@
   display: none !important;
 }
 
-.ledger-data{
+.ledger-data {
   width: 89vw;
   /* max-width: 100%; */
   overflow-x: auto;
@@ -150,41 +150,40 @@
 
 /* Customize pagination style */
 .ledger-data .MuiDataGrid-footerContainer {
-  background-color: #1D1E20 !important;
+  background-color: #1d1e20 !important;
   /* Darker footer background */
   width: 100%;
 }
 
 /* footer of table */
-.ledger-data .MuiTablePagination-root{
+.ledger-data .MuiTablePagination-root {
   color: #ffd56b !important;
   /* overflow: hidden; */
 }
 
 .ledger-data .MuiDataGrid-withBorderColor {
-  border-color: #1D1E20 !important;
+  border-color: #1d1e20 !important;
 }
 .ledger-data .MuiTablePagination-displayedRows {
   color: #ffd56b !important;
 }
-.ledger-data .css-m87zkl-MuiInputBase-input-MuiOutlinedInput-input{
+.ledger-data .css-m87zkl-MuiInputBase-input-MuiOutlinedInput-input {
   background-color: transparent;
   color: white;
   border: none;
 }
 
-.ledger-data .MuiOutlinedInput-root{
-  border:none !important;
+.ledger-data .MuiOutlinedInput-root {
+  border: none !important;
 }
 
-.ledger-data .MuiDataGrid-columnHeader[data-field="name"] {
+.ledger-data .MuiDataGrid-columnHeader[data-field='name'] {
   padding-right: 20px; /* Add right padding to the "Name" column header */
 }
 
-
 .ledger-data input {
   background-color: #1d1e20 !important;
-  color: #FFFFFF !important;
+  color: #ffffff !important;
 }
 
 .ledger-data .MuiDataGrid-cell {
@@ -206,7 +205,6 @@
   text-align: left;
 }
 
-
 /* all pagination text is #ffcc19 */
 .ledger-data .MuiTablePagination-root,
 .ledger-data .MuiTablePagination-toolbar,
@@ -215,12 +213,12 @@
 .ledger-data .MuiTablePagination-select,
 .ledger-data .MuiInputBase-input,
 .ledger-data .MuiSelect-icon {
-  color: #FFE072 !important;
+  color: #ffe072 !important;
 }
 
 /* Give extra right padding so "100" and arrow icon don't overlap */
 .ledger-data .MuiTablePagination-select {
-  padding-right: 15px !important; /* Adjust as needed */
+  padding-right: 28px !important; /* Adjust as needed */
 }
 
 /* Optionally, nudge the icon to ensure it doesn't overlap the text */
@@ -246,8 +244,7 @@
   box-shadow: none !important;
 }
 
-
 /* Make pagination arrows #FFE072 */
 .ledger-data .MuiTablePagination-actions .MuiSvgIcon-root {
-  color: #FFE072 !important;
+  color: #ffe072 !important;
 }
