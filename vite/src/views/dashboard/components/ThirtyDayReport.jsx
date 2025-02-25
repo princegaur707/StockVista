@@ -1,6 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { Box, IconButton, TextField, CircularProgress, Typography, Popover } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  TextField,
+  CircularProgress,
+  Typography,
+  Popper
+} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import './FullScreenTable.css';
@@ -15,7 +22,9 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [hoveredSymbol, setHoveredSymbol] = useState(null);
-  const [isHoveringPopover, setIsHoveringPopover] = useState(false);
+  
+  // Ref for the popper content so we can check where the mouse is
+  const popperRef = useRef(null);
   const timeoutRef = useRef(null);
 
   const fetchReportData = async (retries = 3, delay = 1000) => {
@@ -40,8 +49,8 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
         change: item.change,
         pct_change: item.pct_change,
         price_rating: item.price_rating,
-        earning_rating: item.earning_rating,
-        investo_rating: item.investo_rating,
+        earning_rating: null,
+        investo_rating: null,
         symbolToken: item.token
       }));
       setData(initialData);
@@ -75,30 +84,57 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
     }
   };
 
-  // We now attach the mouse events to the Typography element so the anchor is just the symbol text.
-  const handleMouseEnter = (event, symbol) => {
+  // --- Handlers for Symbol Hover ---
+  const handleSymbolMouseEnter = (event, symbol) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    // Update anchor to the element (the symbol text) and set the hovered symbol
     setAnchorEl(event.currentTarget);
     setHoveredSymbol(symbol);
   };
 
-  const handleMouseLeave = () => {
+  const handleSymbolMouseLeave = (event) => {
+    const related = event.relatedTarget;
+    // If the mouse moves into the popper content, do not close
+    if (popperRef.current && related && popperRef.current.contains(related)) {
+      return;
+    }
     timeoutRef.current = setTimeout(() => {
-      if (!isHoveringPopover) {
-        setAnchorEl(null);
-        setHoveredSymbol(null);
-      }
+      setAnchorEl(null);
+      setHoveredSymbol(null);
     }, 300);
   };
 
+  // --- Handlers for Popper Content Hover ---
+  const handlePopperMouseEnter = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  };
+
+  const handlePopperMouseLeave = (event) => {
+    const related = event.relatedTarget;
+    // If the mouse moves back into the symbol element, do not close
+    if (anchorEl && related && anchorEl.contains(related)) {
+      return;
+    }
+    timeoutRef.current = setTimeout(() => {
+      setAnchorEl(null);
+      setHoveredSymbol(null);
+    }, 300);
+  };
+
+  // Clear timeout on unmount
   useEffect(() => {
     return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, []);
 
-  // Number formatter remains unchanged.
+  // utils/numberFormatter.js
   const formatMarketValue = (value) => {
     if (value == null) return 'N/A';
     if (value >= 1_000_000_0) {
@@ -177,6 +213,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
     return <Typography align="center">No Data Available</Typography>;
   }
 
+  // Define the DataGrid columns.
   const columns = [
     {
       field: 'tradingSymbol',
@@ -224,6 +261,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
           )}
         </Box>
       ),
+      // Attach the hover events to the symbol text.
       renderCell: (params) => (
         <Box display="flex" alignItems="center" height="100%" mt={0.2} sx={{ cursor: 'pointer' }}>
           <svg width="46" height="28" viewBox="0 0 46 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -237,8 +275,8 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
           </svg>
           <Typography
             ml={1}
-            onMouseEnter={(e) => handleMouseEnter(e, params.value)}
-            onMouseLeave={handleMouseLeave}
+            onMouseEnter={(e) => handleSymbolMouseEnter(e, params.value)}
+            onMouseLeave={handleSymbolMouseLeave}
           >
             {params.value}
           </Typography>
@@ -249,7 +287,6 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
       field: 'ltp',
       headerName: 'Price',
       headerAlign: 'left',
-      headerClassName: 'header-name',
       flex: 1,
       type: 'number',
       renderCell: (params) => (
@@ -265,25 +302,16 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
       headerAlign: 'left',
       type: 'number',
       renderCell: (params) => {
-        const change = params.row.change;
-        const pct_change = params.row.pct_change;
+        const { change, pct_change } = params.row;
         if (change == null || pct_change == null) {
-          return (
-            <Typography align="left" color="error">
-              N/A
-            </Typography>
-          );
+          return <Typography align="left" color="error">N/A</Typography>;
         }
         const changeColor = change > 0 ? '#00EFC8' : change < 0 ? '#FF5966' : '#EEEEEE';
         const pctChangeColor = pct_change > 0 ? '#00EFC8' : pct_change < 0 ? '#FF5966' : '#EEEEEE';
         return (
           <Box display="flex" alignItems="center" height="100%">
-            <Typography align="left" sx={{ color: changeColor }}>
-              {change.toFixed(2)}
-            </Typography>
-            <Typography sx={{ color: pctChangeColor }}>
-              ({pct_change.toFixed(2)}%)
-            </Typography>
+            <Typography align="left" sx={{ color: changeColor }}>{change.toFixed(2)}</Typography>
+            <Typography sx={{ color: pctChangeColor }}>({pct_change.toFixed(2)}%)</Typography>
           </Box>
         );
       }
@@ -353,11 +381,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
   return (
     <Box
       className="market-data"
-      sx={{
-        mt: 0,
-        width: '100%',
-        '&::-webkit-scrollbar': { display: 'none' }
-      }}
+      sx={{ mt: 0, width: '100%', '&::-webkit-scrollbar': { display: 'none' } }}
     >
       <Box sx={{ height: '86vh', width: '90vw' }}>
         <DataGrid
@@ -375,50 +399,24 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
           }}
         />
       </Box>
-      <Popover
-        open={Boolean(anchorEl)}
-        anchorEl={anchorEl}
-        onClose={() => setAnchorEl(null)}
-        disableRestoreFocus
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left'
-        }}
-        PaperProps={{
-          style: {
-            width: '400px',
-            height: '400px',
-            scrollbarWidth:'0px',
-            backgroundColor: '#141516',
-            boxShadow: 'none',
-            border: '0px solid #FFE072'
-          }
-        }}
-      >
+      <Popper open={Boolean(anchorEl)} anchorEl={anchorEl} placement="right-start">
         {hoveredSymbol && (
           <Box
-            onMouseEnter={() => {
-              setIsHoveringPopover(true);
-              if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current);
-                timeoutRef.current = null;
-              }
+            ref={popperRef}
+            sx={{
+              bgcolor: '#141516',
+              width: '520px',
+            height: '335px',
+              border: '5px solid #313437'
             }}
-            onMouseLeave={() => {
-              setIsHoveringPopover(false);
-              timeoutRef.current = setTimeout(() => {
-                setAnchorEl(null);
-              }, 300);
-            }}
+            
+            onMouseEnter={handlePopperMouseEnter}
+            onMouseLeave={handlePopperMouseLeave}
           >
             <HoverChart token={hoveredSymbol} />
           </Box>
         )}
-      </Popover>
+      </Popper>
     </Box>
   );
 };

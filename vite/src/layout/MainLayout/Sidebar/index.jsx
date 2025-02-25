@@ -1,39 +1,157 @@
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import { Box } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; 
-const apiUrl = import.meta.env.VITE_API_URL;
+import { useNavigate, useLocation } from 'react-router-dom';
 import crownIcon from 'assets/images/sidebar/crownicon.svg';
-import ledgerIcon from 'assets/images/sidebar/ledgerIcon.svg'
+import ledgerIcon from 'assets/images/sidebar/ledgerIcon.svg';
+import marketIcon from 'assets/images/sidebar/marketIcon.svg';
+// Central mapping of sidebar items.
+// This array makes it easy to add, remove, or change items.
+const sidebarItems = [
+  {
+    id: 0,
+    path: '/dashboard',
+    type: 'img',
+    icon: crownIcon,
+    alt: 'Dashboard',
+    // Custom styles can be added if needed per item.
+    boxStyles: { marginTop: '25px', marginBottom: '10px', height: '45px' },
+    imageStyles: { width: '45px', height: '45px' },
+  },
+  {
+    id: 1,
+    path: '/ledger',
+    type: 'img',
+    icon: ledgerIcon,
+    alt: 'Ledger',
+    boxStyles: { marginTop: '10px', marginBottom: '10px', height: '50px' },
+    imageStyles: { width: '45px', height: '45px' },
+  },
+  {
+    id: 2,
+    path: '/market',
+    type: 'img',
+    icon: marketIcon,
+    alt: 'Market',
+    boxStyles: { marginTop: '10px', marginBottom: '10px', height: '50px' },
+    imageStyles: { width: '45px', height: '45px' },
+  },
+  // {
+  //   id: 3,
+  //   path: '/sector',
+  //   type: 'svg',
+  //   boxStyles: { marginTop: '20px', marginBottom: '20px', height: '40px', width: '40px' },
+  // },
+  // {
+  //   id: 4,
+  //   path: '/ranking',
+  //   type: 'svg',
+  //   boxStyles: { marginTop: '20px', marginBottom: '20px', height: '40px', width: '40px' },
+  // },
+  // {
+  //   id: 6,
+  //   path: '/market-view',
+  //   type: 'svg',
+  //   boxStyles: { marginTop: '20px', marginBottom: '20px', height: '40px', width: '40px' },
+  // },
+  // {
+  //   id: 7,
+  //   path: '/account',
+  //   type: 'svg',
+  //   boxStyles: { marginTop: '20px', marginBottom: '20px', height: '40px', width: '40px' },
+  // },
+  // {
+  //   id: 8,
+  //   path: '/about-us',
+  //   type: 'svg',
+  //   boxStyles: { marginTop: '20px', marginBottom: '20px', height: '40px', width: '40px' },
+  // },
+];
 
 const Sidebar = () => {
-  // State to track the active box
-  const [activeBox, setActiveBox] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Function to handle click and redirect
-  const handleClick = (index) => {
-    setActiveBox(index);
+  // Derives the active sidebar item based on the current URL.
+  // This ensures that even if the page is refreshed,
+  // the correct tab remains active.
+  const getActiveBox = useCallback(() => {
+    const currentPath = location.pathname;
+    const activeItem = sidebarItems.find((item) =>
+      currentPath.startsWith(item.path)
+    );
+    return activeItem ? activeItem.id : 0;
+  }, [location.pathname]);
 
-    // Redirect logic for specific boxes
-    if (index === 0) {
-      navigate('/dashboard') // Redirect for the first box
-    } else if (index === 1) {
-      navigate('/ledger'); // Redirect for the second box
-    }  else if (index === 2) {
-      navigate('/market'); // Redirect for the second box
-    } else if (index === 3) {
-      navigate('/sector'); // Redirect for the second box
-    } else if (index === 4) {
-      navigate('/ranking'); // Redirect for the second box
-    } else if (index === 6) {
-      navigate('/market-view'); // Redirect for the second box
-    } else if (index === 7) {
-      navigate('/account'); // Redirect for the second box
-    } else if (index === 8) {
-      navigate('/about-us'); // Redirect for the second box
-    }else {
-      console.log(`Redirecting to page ${index + 1}`); // Placeholder for other boxes
-    }
+  const activeBox = getActiveBox();
+
+  // Handles click events and navigates immediately,
+  // decoupling the sidebar's active state from any data loading delays.
+  const handleClick = useCallback(
+    (path) => {
+      if (path) {
+        navigate(path);
+      }
+    },
+    [navigate]
+  );
+
+  // Renders a sidebar item using common styles.
+  const renderItem = (item) => {
+    const isActive = activeBox === item.id;
+
+    // Common style for the active state.
+    const commonStyles = {
+      border: isActive ? '1px solid #FFD56B' : 'none',
+      borderRadius: '7px',
+      padding: '5px',
+    };
+
+    return (
+      <Box
+        key={item.id}
+        onClick={() => handleClick(item.path)}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          padding: 0,
+          transition: 'all 0.3s ease',
+          // backgroundColor: isActive ? '#26282B' : 'transparent',
+          ...item.boxStyles, // Custom per-item box styles (height, margins)
+        }}
+      >
+        {item.type === 'img' ? (
+          <img
+            src={item.icon}
+            alt={item.alt}
+            style={{
+              ...item.imageStyles,
+              ...commonStyles,
+            }}
+          />
+        ) : (
+          <svg
+            width={item.boxStyles.width || '40px'}
+            height={item.boxStyles.height || '40px'}
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            style={commonStyles}
+          >
+            <rect
+              x="1"
+              y="1"
+              width="38"
+              height="38"
+              rx="7"
+              fill="#26282B"
+              stroke={isActive ? '#FFD56B' : 'none'}
+              strokeWidth="2"
+            />
+          </svg>
+        )}
+      </Box>
+    );
   };
 
   return (
@@ -49,207 +167,7 @@ const Sidebar = () => {
         position: 'fixed',
       }}
     >
-      {/* Box 1 */}
-      <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center', // Centers horizontally
-            height: '45px', 
-            width: '45x',
-            backgroundColor: activeBox === 0? '#26282B' : 'none',
-            cursor: 'pointer', // Changes cursor on hover
-            padding: '0px', // Add some padding for better appearance
-            transition: 'all 0.3s ease', // Smooth transition for changes
-            marginTop: '30px',
-            marginBottom: '25px'
-          }}
-          onClick={() => handleClick(0)} // Toggle active state on click
-        >
-        <img
-          src={crownIcon}
-          alt="crownIcon"
-          style={{
-            width: '45px',
-            height: '45px',
-            border: activeBox === 0 ? '1px solid #FFD56B' : 'none', // Dynamic border
-            borderRadius: '7px',
-            padding: '5px'
-          }}
-        />
-      </Box>
-
-      {/* Box 2 */}
-      <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center', // Centers horizontally
-            height: '50px', 
-            width: '50px',
-            // backgroundColor: activeBox === 1? '#26282B' : 'none',
-            cursor: 'pointer', // Changes cursor on hover
-            padding: '0px', // Add some padding for better appearance
-            transition: 'all 0.3s ease', // Smooth transition for changes
-          }}
-          onClick={() => handleClick(1)} // Toggle active state on click
-        >
-        <img
-          src={ledgerIcon}
-          alt="ledgerIcon"
-          style={{
-            width: '45px',
-            height: '45px',
-            border: activeBox === 1 ? '1px solid #FFD56B' : 'none', // Dynamic border
-            borderRadius: '7px',
-            padding: '5px'
-          }}
-        />
-      </Box>
-
-      {/* Box 3 */}
-      <Box
-        onClick={() => handleClick(2)} // Click handler for second box
-        sx={{
-          width: 40,
-          height: 40,
-          borderRadius: 1,
-          marginTop: '20px',
-          marginBottom: '33px',
-          cursor: 'pointer', // Pointer cursor for clickable effect
-        }}
-      >
-        <svg
-          width="40"
-          height="40"
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{
-            border: activeBox === 2 ? '1px solid #FFD56B' : 'none', // Dynamic border
-            borderRadius: '7px',
-          }}
-        >
-          <rect
-            x="1"
-            y="1"
-            width="38"
-            height="38"
-            rx="7"
-            fill="#26282B"
-            stroke={activeBox === 2 ? '#FFD56B' : 'none'}
-            strokeWidth="2"
-          />
-        </svg>
-      </Box>
-
-      {/* Box 4 */}
-      {/* <Box
-        onClick={() => handleClick(3)} // Click handler for second box
-        sx={{
-          width: 40,
-          height: 40,
-          borderRadius: 1,
-          marginBottom: '33px',
-          cursor: 'pointer', // Pointer cursor for clickable effect
-        }}
-      >
-        <svg
-          width="40"
-          height="40"
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{
-            border: activeBox === 3 ? '1px solid #FFD56B' : 'none', // Dynamic border
-            borderRadius: '7px',
-          }}
-        >
-          <rect
-            x="1"
-            y="1"
-            width="38"
-            height="38"
-            rx="7"
-            fill="#26282B"
-            stroke={activeBox === 3 ? '#FFD56B' : 'none'}
-            strokeWidth="2"
-          />
-        </svg>
-      </Box> */}
-
-      {/* Box 5 */}
-      {/* <Box
-        onClick={() => handleClick(4)} // Click handler for second box
-        sx={{
-          width: 40,
-          height: 40,
-          borderRadius: 1,
-          marginBottom: '33px',
-          cursor: 'pointer', // Pointer cursor for clickable effect
-        }}
-      >
-        <svg
-          width="40"
-          height="40"
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{
-            border: activeBox === 4 ? '1px solid #FFD56B' : 'none', // Dynamic border
-            borderRadius: '7px',
-          }}
-        >
-          <rect
-            x="1"
-            y="1"
-            width="38"
-            height="38"
-            rx="7"
-            fill="#26282B"
-            stroke={activeBox === 4 ? '#FFD56B' : 'none'}
-            strokeWidth="2"
-          />
-        </svg>
-      </Box> */}
-
-      {/* <Box sx={{ flexGrow: 0.8 }} /> */}
-
-      {/* Bottom Boxes */}
-      {/* {[0, 1].map((index) => (
-        <Box
-          key={6 + index}
-          onClick={() => handleClick(6 + index)} // Click handler
-          sx={{
-            width: 40,
-            height: 40,
-            borderRadius: 1,
-            marginBottom:'20px',
-            cursor: 'pointer', // Pointer cursor for clickable effect
-          }}
-        >
-          <svg
-            width="40"
-            height="40"
-            viewBox="0 0 40 40"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            style={{
-              border: activeBox === 6 + index ? '1px solid #FFD56B' : 'none', // Dynamic border
-              borderRadius: '7px',
-            }}
-          >
-            <rect
-              x="1"
-              y="1"
-              width="38"
-              height="38"
-              rx="7"
-              fill="#26282B"
-              stroke={activeBox === 6 + index ? '#FFD56B' : 'none'}
-              strokeWidth="2"
-            />
-          </svg>
-        </Box>
-      ))} */}
+      {sidebarItems.map(renderItem)}
     </Box>
   );
 };

@@ -156,7 +156,7 @@ function Filters({ onFilterChange }) {
         value={filters.position}
         onChange={handleChange}
         size="small"
-        sx={{ flex: 0.3, minWidth: '150px', ...textFieldStyles }}
+        sx={{ flex: 0.3, minWidth: '100px', ...textFieldStyles }}
         variant="outlined"
       >
         <MenuItem value="" style={menuItemStyle}>
@@ -171,7 +171,7 @@ function Filters({ onFilterChange }) {
       </TextField>
 
       {/* Duration: Combined "From" & "To" in one box */}
-      <Box sx={{ display: 'flex', flex: 1.2, minWidth: '150px', gap: 1 }}>
+      <Box sx={{ display: 'flex', flex: 1, minWidth: '260px', gap: 1 }}>
         <TextField
           variant="outlined"
           type="date"
@@ -182,9 +182,19 @@ function Filters({ onFilterChange }) {
           value={filters.durationFrom || ''}
           onChange={handleChange}
           size="small"
-          InputLabelProps={{ shrink: true }}
+          InputLabelProps={{
+            shrink: true,
+            style: {
+              color: 'rgb(255, 255, 255)',
+              marginTop: '0.5rem',
+              paddingTop: '0rem',
+              fontSize: '0.7rem',
+              marginLeft: '-0.1rem'
+            }
+          }}
           sx={{ flex: 1.5, ...textFieldStyles }}
         />
+
         <TextField
           variant="outlined"
           type="date"
@@ -195,7 +205,16 @@ function Filters({ onFilterChange }) {
           value={filters.durationTo || ''}
           onChange={handleChange}
           size="small"
-          InputLabelProps={{ shrink: true }}
+          InputLabelProps={{
+            shrink: true,
+            style: {
+              color: 'rgb(255, 255, 255)',
+              marginTop: '0.5rem',
+              paddingTop: '0rem',
+              fontSize: '0.7rem',
+              marginLeft: '-0.1rem'
+            }
+          }}
           sx={{ flex: 1.5, ...textFieldStyles }}
         />
       </Box>
@@ -208,16 +227,16 @@ function Filters({ onFilterChange }) {
         value={filters.status}
         onChange={handleChange}
         size="small"
-        sx={{ flex: 0.5, minWidth: '150px', ...textFieldStyles }}
+        sx={{ flex: 0.5, minWidth: '60px', ...textFieldStyles }}
         variant="outlined"
       >
         <MenuItem value="" style={menuItemStyle}>
           All
         </MenuItem>
-        <MenuItem value="Open" style={menuItemStyle}>
+        <MenuItem value="OPEN" style={menuItemStyle}>
           Open
         </MenuItem>
-        <MenuItem value="Close" style={menuItemStyle}>
+        <MenuItem value="CLOSE" style={menuItemStyle}>
           Close
         </MenuItem>
       </TextField>
