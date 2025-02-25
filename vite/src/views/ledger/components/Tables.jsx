@@ -32,7 +32,7 @@ const Tables = ({ trades, onTradeUpdate }) => {
       field: 'symbol',
       headerName: 'Stock',
       headerAlign: 'left',
-      flex: 1.2,
+      flex: 1,
       minWidth: 150,
       renderCell: (params) => (
         <Tooltip
@@ -74,7 +74,10 @@ const Tables = ({ trades, onTradeUpdate }) => {
             style={{
               display: 'inline-block',
               border: `2px solid ${borderColor}`, // Apply border with the color
-              padding: '3px 15px' // Optional: Add padding for better visibility
+              padding: '4px 8px', // Optional: Add padding for better visibility
+              textAlign: 'center',
+              marginRight: '10px',
+              borderRadius: '4px',
             }}
           >
             {params.value}
@@ -84,11 +87,11 @@ const Tables = ({ trades, onTradeUpdate }) => {
     },
     {
       field: 'avgBuyPrice',
-      headerName: 'Entry',
-      // headerAlign: 'left',
-      // align: 'left',
+      headerName: 'Buy',
+      headerAlign: 'left',
+      // align: 'center',
       flex: 0.5,
-      minWidth: 120,
+      minWidth: 60,
       type: 'number',
       renderCell: (params) => {
         const formattedValue = parseFloat(params.value).toFixed(2); // Round the number to 2 decimal places
@@ -97,7 +100,7 @@ const Tables = ({ trades, onTradeUpdate }) => {
     },
     {
       field: 'avgSellPrice',
-      headerName: 'Exit',
+      headerName: 'Sell',
       headerAlign: 'left',
       align: 'left',
       flex: 0.5,
@@ -115,16 +118,19 @@ const Tables = ({ trades, onTradeUpdate }) => {
       flex: 0.5,
       minWidth: 60,
       renderCell: (params) => {
-        const color = params.value === 'Close' ? '#b59ef3' : '#04b5d4'; // Set color based on whether value is 'Close'
+        const color = params.value === 'CLOSE' ? '#b59ef3' : '#04b5d4'; // Set color based on whether value is 'Close'
       
         return (
           <Typography
             className="cell-text"
             style={{
+              display: 'inline-block',
+              padding: '4px 8px',
               color: '#FFFFFF', // Text color remains white
               border: `2px solid ${color}`, // Border color based on the condition
-              padding: '8px 12px', // Add padding for better readability
+              padding: '4px 8px', // Add padding for better readability
               borderRadius: '4px', // Optional: Add border radius for rounded corners
+              textAlign: 'center'
             }}
           >
             {params.value}
@@ -139,7 +145,7 @@ const Tables = ({ trades, onTradeUpdate }) => {
       headerAlign: 'center',
       align: 'center',
       flex: 0.5,
-      minWidth: 80,
+      minWidth: 60,
       type: 'number'
     },
     {
@@ -172,8 +178,9 @@ const Tables = ({ trades, onTradeUpdate }) => {
               color: '#FFFFFF', // Text color should be white
               backgroundColor: backgroundColor, // Lighter background color
               border: `2px solid ${color}`, // Border with the original color
-              padding: '8px 12px', // Add padding for better readability
+              padding: '4px 8px', // Add padding for better readability
               borderRadius: '4px', // Optional: Add border radius for rounded corners
+              textAlign: 'center'
             }}
           >
             {formattedValue}
@@ -284,7 +291,7 @@ const Tables = ({ trades, onTradeUpdate }) => {
       className="ledger-data"
       sx={{
         width: '100%',
-        ml: 2,
+        ml: 0,
         '&::-webkit-scrollbar': { display: 'none' },
         '& .MuiDataGrid-cell': {
           display: 'flex',
@@ -299,17 +306,18 @@ const Tables = ({ trades, onTradeUpdate }) => {
         },
         '& .MuiDataGrid-footerContainer': {
           backgroundColor: '#141516',
-          fontSize: '0.875rem'
+          fontSize: '0.875rem',
+          color: 'red'
         }
       }}
     >
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={10}
-        rowsPerPageOptions={[10]}
+        // pageSize={10}
+        // rowsPerPageOptions={[10]}
         disableSelectionOnClick
-        components={{ Toolbar: GridToolbar }}
+        // components={{ Toolbar: GridToolbar }}
         hideFooterSelectedRowCount
         sx={{
           backgroundColor: '#26282B',

@@ -111,7 +111,6 @@ function FileUpload({ onDataLoaded }) {
             height: '2.5rem',
             border: '1px solid',
             fontSize: '14px',
-            // marginRight: '0px',
             borderImage: 'linear-gradient(93.4deg, #FFC42B 0%, #FFD567 50%, #FFC42B 100%)',
             borderImageSlice: 1,
             color: '#FFC42B',

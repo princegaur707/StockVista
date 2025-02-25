@@ -330,7 +330,7 @@ const HoverChart = ({ token }) => {
     return data; // No need to filter, just return full data
   };
   return (
-    <Box sx={{ width: '100%', height: '455px', position: 'relative', backgroundColor: '#121212', color: '#FFFFFF' }}>
+    <Box sx={{ width: '100%', height: '300px', position: 'relative', backgroundColor: 'red', color: '#FFFFFF' }}>
       {/* <Typography variant="h4" sx={{ textAlign: 'left', padding: '10px', fontWeight: 'bold', color: '#FFD700' }}>
         {selectedStock}
       </Typography> */}
@@ -344,7 +344,7 @@ const HoverChart = ({ token }) => {
             backgroundColor: '#141516',
             color: '#FFFFFF',
             padding: '5px',
-            borderRadius: '5px',
+            borderRadius: '15px',
             pointerEvents: 'none', // Ensure the box does not interfere with cursor events
             zIndex: 1000
           }}

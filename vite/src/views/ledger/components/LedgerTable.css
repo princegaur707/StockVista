@@ -152,7 +152,6 @@
 .ledger-data .MuiDataGrid-footerContainer {
   background-color: #1D1E20 !important;
   /* Darker footer background */
-  margin-right:40px !important;
   width: 100%;
 }
 
@@ -205,4 +204,50 @@
   font-size: 0.875rem;
   width: 100%;
   text-align: left;
+}
+
+
+/* all pagination text is #ffcc19 */
+.ledger-data .MuiTablePagination-root,
+.ledger-data .MuiTablePagination-toolbar,
+.ledger-data .MuiTablePagination-displayedRows,
+.ledger-data .MuiTablePagination-selectLabel,
+.ledger-data .MuiTablePagination-select,
+.ledger-data .MuiInputBase-input,
+.ledger-data .MuiSelect-icon {
+  color: #FFE072 !important;
+}
+
+/* Give extra right padding so "100" and arrow icon don't overlap */
+.ledger-data .MuiTablePagination-select {
+  padding-right: 15px !important; /* Adjust as needed */
+}
+
+/* Optionally, nudge the icon to ensure it doesn't overlap the text */
+.ledger-data .MuiSelect-icon {
+  right: 8px !important; /* Adjust as needed */
+}
+
+/* Remove border and box-shadow for the Select's outlined input */
+.ledger-data .MuiOutlinedInput-notchedOutline {
+  border: none !important;
+}
+
+/* Override focus outline in DataGrid cells and headers */
+.ledger-data .MuiDataGrid-cell:focus-within,
+.ledger-data .MuiDataGrid-columnHeader:focus-within {
+  outline: none !important;
+}
+
+/* Also remove any focus outline from the Select element */
+.ledger-data .MuiOutlinedInput-root:focus,
+.ledger-data .MuiSelect-select:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+
+/* Make pagination arrows #FFE072 */
+.ledger-data .MuiTablePagination-actions .MuiSvgIcon-root {
+  color: #FFE072 !important;
 }

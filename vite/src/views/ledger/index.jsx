@@ -32,9 +32,9 @@ function Ledger() {
    *    - Compute weighted average prices:
    *         weightedAvg = (Sum(price × quantity)) / (Sum(quantity))
    *    - Compute total BUY and SELL quantities.
-   *    - Determine status: if BUY quantity equals SELL quantity → 'Close', otherwise 'Open'.
-   *    - For 'open', set effective quantity = min(totalBuyQuantity, totalSellQuantity) and compute profit/loss using that quantity.
-   *    - For 'close', calculations remain as before.
+   *    - Determine status: if BUY quantity equals SELL quantity → 'CLOSE', otherwise 'OPEN'.
+   *    - For 'OPEN', set effective quantity = min(totalBuyQuantity, totalSellQuantity) and compute profit/loss using that quantity.
+   *    - For 'CLOSE', calculations remain as before.
    *    - Set result as the numeric profit/loss.
    */
   const processTrades = (data) => {
@@ -99,7 +99,7 @@ function Ledger() {
             totalQuantity: totalBuyQuantity,
             profitLoss,
             result: profitLoss,
-            status: 'Close',
+            status: 'CLOSE',
             strategy: '',
             mistakes: ''
           });
@@ -117,7 +117,7 @@ function Ledger() {
             totalQuantity: closedQty,
             profitLoss: profitLossClosed,
             result: profitLossClosed,
-            status: 'Open',
+            status: 'OPEN',
             strategy: '',
             mistakes: ''
           });
@@ -133,7 +133,7 @@ function Ledger() {
             totalQuantity: openQty,
             profitLoss: null,
             result: 'N/A',
-            status: 'Open',
+            status: 'OPEN',
             strategy: '',
             mistakes: ''
           });
@@ -151,7 +151,7 @@ function Ledger() {
           totalQuantity: qty,
           profitLoss: null,
           result: 'N/A',
-          status: 'Open',
+          status: 'OPEN',
           strategy: '',
           mistakes: ''
         });
@@ -172,35 +172,72 @@ function Ledger() {
 
   // Filter trades based on user input.
   const handleFilterChange = (filters) => {
-    const { symbol } = filters;
     let updatedTrades = [...trades];
-    if (symbol) {
-      updatedTrades = updatedTrades.filter((t) => t.symbol.toLowerCase().includes(symbol.toLowerCase()));
+  
+    // Filter by symbol (case-insensitive)
+    if (filters.symbol) {
+      updatedTrades = updatedTrades.filter((t) =>
+        t.symbol.toLowerCase().includes(filters.symbol.toLowerCase())
+      );
     }
+  
+    // Filter by strategy
     if (filters.strategy) {
-      updatedTrades = updatedTrades.filter(t => t.strategy === filters.strategy);
+      updatedTrades = updatedTrades.filter((t) => t.strategy === filters.strategy);
     }
-    if(filters.mistake) {
-      updatedTrades = updatedTrades.filter(t => t.mistake == filters.mistake);
+  
+    // Filter by position (case-insensitive)
+    if (filters.position) {
+      updatedTrades = updatedTrades.filter((t) =>
+        t.position.toLowerCase() === filters.position.toLowerCase()
+      );
     }
-    // if(filters.position) {
-    //   updatedTrades = updatedTrades.filter(t => t.position == );
-    // }
+  
+    // Filter by mistake -- note: your trade objects use "mistakes"
+    if (filters.mistake) {
+      updatedTrades = updatedTrades.filter((t) =>
+        // Convert to string to compare if your filter is a string
+        t.mistakes.toString() === filters.mistake
+      );
+    }
+  
+    // Filter by status
+    if (filters.status) {
+      updatedTrades = updatedTrades.filter((t) => t.status === filters.status);
+    }
+  
+    // Filter by result (if filtering by "profit" or "loss")
     if (filters.result) {
       if (filters.result.toLowerCase() === 'profit') {
-        updatedTrades = updatedTrades.filter(t => Number(t.result) > 0);
+        updatedTrades = updatedTrades.filter((t) => Number(t.result) > 0);
       } else if (filters.result.toLowerCase() === 'loss') {
-        updatedTrades = updatedTrades.filter(t => Number(t.result) < 0);
+        updatedTrades = updatedTrades.filter((t) => Number(t.result) < 0);
       }
     }
+  
+    // Date filtering:
+    // Since trade.date comes as an Excel number, create a helper to convert it.
+    const getTradeDate = (trade) => {
+      const excelDate = Number(trade.date);
+      // Check if it’s a valid number; otherwise, fallback to Date constructor.
+      if (!isNaN(excelDate)) {
+        return new Date((excelDate - 25569) * 86400 * 1000);
+      }
+      return new Date(trade.date);
+    };
+  
     if (filters.durationFrom) {
-      updatedTrades = updatedTrades.filter(t => new Date(t.date) >= new Date(filters.durationFrom));
+      const fromDate = new Date(filters.durationFrom);
+      updatedTrades = updatedTrades.filter((t) => getTradeDate(t) >= fromDate);
     }
     if (filters.durationTo) {
-      updatedTrades = updatedTrades.filter(t => new Date(t.date) <= new Date(filters.durationTo));
-    }            
+      const toDate = new Date(filters.durationTo);
+      updatedTrades = updatedTrades.filter((t) => getTradeDate(t) <= toDate);
+    }
+  
     setFilteredTrades(updatedTrades);
   };
+  
 
   // Update trade entries when dropdown selections change.
   const handleTradeUpdate = (updatedTrades) => {
@@ -210,11 +247,11 @@ function Ledger() {
   };
 
   return (
-    <Box className="scrollable" style={{ height: '100vh', overflowY: 'auto', marginLeft: '105px' }}>
+    <Box className="scrollable" style={{ height: '100vh', overflowY: 'auto', marginLeft: '110px', width:'91%' }}>
       <Grid container rowSpacing={1} columnSpacing={2}>
         {/* Header */}
         <Grid item xs={12}>
-          <Box display="flex" alignItems="center" justifyContent="space-between" width="90vw">
+          <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
             <div className="dashboard-font-box">
               <Typography className="heading-dashboard">LEDGER</Typography>
             </div>
@@ -224,20 +261,26 @@ function Ledger() {
 
         {/* Filters */}
         <Grid item xs={12}>
-          <Filters onFilterChange={handleFilterChange} />
+          <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
+            <Filters onFilterChange={handleFilterChange} />
+          </Box>
         </Grid>
 
         {/* Graphs (side by side above the table; each graph is 100px in height) */}
         {trades.length > 0 && (
           <Grid item xs={12}>
-            <Graphs trades={filteredTrades} />
+            <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
+              <Graphs trades={filteredTrades} />
+            </Box>
           </Grid>
         )}
 
         {/* Table */}
         {trades.length > 0 && (
           <Grid item xs={12}>
-            <Tables trades={filteredTrades} onTradeUpdate={handleTradeUpdate} />
+            <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
+              <Tables trades={filteredTrades} onTradeUpdate={handleTradeUpdate} />
+            </Box>
           </Grid>
         )}
       </Grid>

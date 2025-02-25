@@ -48,10 +48,10 @@ export default function DashboardDefault() {
   const [liveMarketData, setLiveMarketData] = useState([]); // State for live WebSocket data
 
   const [data, setData] = useState({
-    nifty50: { count: '24618.8', change: 31.75, percentage: 0.13 },
-    sensex: { count: '81526.14', change: 16.09, percentage: 0.02 },
-    niftyBank: { count: '53391.35', change: -186.35, percentage: -0.35 },
-    nifty100: { count: '59292.95', change: 157.55, percentage: 0.27 }
+    nifty50: { count: '22547.55', change: -5.8, percentage: 0.03 },
+    sensex: { count: '74602.12', change: 147.71, percentage: 0.2 },
+    niftyBank: { count: '48606.35', change: -43.35, percentage: -0.35 },
+    nifty100: { count: '22987.95', change: -34.55, percentage: -0.15 }
   });
 
   const updateLiveData = (message) => {

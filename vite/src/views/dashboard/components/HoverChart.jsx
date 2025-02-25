@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
 import { Box, CircularProgress, Typography, ButtonGroup, Button } from '@mui/material';
 import './CandleStickChart.css';
+import { Skeleton } from '@mui/material';
+
 
 const HoverChart = ({ token }) => {
   const chartRef = useRef(null);
@@ -267,7 +269,7 @@ const HoverChart = ({ token }) => {
         if (!param || !param.seriesData || !param.time || !param.point) {
           setTooltipData(null); // Hide tooltip if no data
           setVolume(null); // Hide volume if no data
-          return;
+          return; 
         }
 
         const candlestickPoint = param.seriesData.get(candlestickSeries);
@@ -329,8 +331,30 @@ const HoverChart = ({ token }) => {
   const getTimeFilter = (period) => {
     return data; // No need to filter, just return full data
   };
+
+  if (loading)
+    return (
+      <Box
+        sx={{
+          bgcolor: '#121212',
+          p: 8,
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <Skeleton
+          sx={{ bgcolor: '#1D1E20' }}
+          variant="rounded"
+          animation = "wave"
+          width={300}
+          height={200}
+        />
+      </Box>
+    );
+  
   return (
-    <Box sx={{ width: '100%', height: '455px', position: 'relative', backgroundColor: '#121212', color: '#FFFFFF' }}>
+    <Box sx={{ width: '100%', height: '330px', position: 'relative', backgroundColor: '#313437', color: '#FFFFFF' }}>
       {/* <Typography variant="h4" sx={{ textAlign: 'left', padding: '10px', fontWeight: 'bold', color: '#FFD700' }}>
         {selectedStock}
       </Typography> */}
@@ -339,11 +363,11 @@ const HoverChart = ({ token }) => {
         <Box
           sx={{
             position: 'absolute',
-            top: 10, // Position at the top
-            left: 10, // Position at the left
+            top: 0, // Position at the top
+            left: 0, // Position at the left
             backgroundColor: '#141516',
             color: '#FFFFFF',
-            padding: '5px',
+            padding: '0px',
             borderRadius: '5px',
             pointerEvents: 'none', // Ensure the box does not interfere with cursor events
             zIndex: 1000
@@ -352,7 +376,7 @@ const HoverChart = ({ token }) => {
           Volume: {volume}
         </Box>
       )}
-      <div ref={chartRef} style={{ width: '100%', height: '400px' }} />
+      <div ref={chartRef} style={{ width: '100%', height: '300px' }} />
       {tooltipData && (
         <Box
           sx={{
@@ -375,10 +399,10 @@ const HoverChart = ({ token }) => {
       )}
 
       {/* Indian Time Watch at the bottom-right corner */}
-      {/* <Box
+      <Box
         sx={{
           position: 'absolute',
-          bottom: 10, // Position at the bottom
+          bottom: 1, // Position at the bottom
           right: 10, // Position at the right
           // backgroundColor: '#141516',
           color: '#FFFFFF',
@@ -386,13 +410,12 @@ const HoverChart = ({ token }) => {
           borderRadius: '5px',
           pointerEvents: 'none', // Ensure the box does not interfere with cursor events
           zIndex: 1000,
-          mb: '5px'
         }}
       >
         {currentTime} IST
-      </Box> */}
+      </Box>
 
-      <ButtonGroup variant="contained" sx={{ display: 'flex', justifyContent: 'left', marginTop: 2, marginLeft:0.5}}>
+      <ButtonGroup variant="contained" sx={{ display: 'flex', justifyContent: 'left', marginTop: 0.1, marginLeft:0}}>
         {[
           { label: '1D', value: '1D' },
           { label: '5D', value: '5D' },
@@ -407,7 +430,7 @@ const HoverChart = ({ token }) => {
             key={value}
             onClick={() => setTimePeriod(value)}
             sx={{
-              backgroundColor: timePeriod === value ? '#FFE072' : 'inherit',
+              backgroundColor: timePeriod === value ? '#FFE072' : '#121212',
               color: timePeriod === value ? '#000' : '#FFF',
               fontWeight: '400',
               borderRadius: '1px',
