@@ -23,8 +23,8 @@ const sidebarItems = [
     type: 'img',
     icon: ledgerIcon,
     alt: 'Ledger',
-    boxStyles: { marginTop: '10px', marginBottom: '10px', height: '50px' },
-    imageStyles: { width: '45px', height: '45px' },
+    boxStyles: { marginTop: '10px', marginBottom: '5px', height: '50px' },
+    imageStyles: { width: '45px', height: '42px' },
   },
   {
     id: 2,

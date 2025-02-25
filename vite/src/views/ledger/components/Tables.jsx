@@ -48,7 +48,7 @@ const Tables = ({ trades, onTradeUpdate }) => {
             }
           }}
         >
-          <Typography className="cell-text" style={{ color: '#FFE072' }}>
+          <Typography className="cell-text" style={{ color: '#FFE072', fontFamily:'figtree' }}>
             {params.value}
           </Typography>
         </Tooltip>

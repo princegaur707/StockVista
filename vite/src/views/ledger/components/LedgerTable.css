@@ -126,6 +126,7 @@
 .ledger-data .MuiDataGrid-columnHeaderTitle {
   color: #d9d9d9; /* Light grey color for header text */
   font-size: 14px;
+  font-family: 'figtree';
   /* border: none; */
   /* background-color: #00ff00 !important; */
 }
@@ -198,6 +199,7 @@
 }
 
 .cell-text {
+  font-family: 'figtree';
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -220,7 +222,7 @@
 
 /* Give extra right padding so "100" and arrow icon don't overlap */
 .ledger-data .MuiTablePagination-select {
-  padding-right: 15px !important; /* Adjust as needed */
+  padding-right: 24px !important; /* Adjust as needed */
 }
 
 /* Optionally, nudge the icon to ensure it doesn't overlap the text */
