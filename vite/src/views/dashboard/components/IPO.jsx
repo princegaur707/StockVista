@@ -104,7 +104,7 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
     timeoutRef.current = setTimeout(() => {
       setAnchorEl(null);
       setHoveredSymbol(null);
-    }, 300);
+    }, 10);
   };
 
   // --- Handlers for Popper Content Hover ---
