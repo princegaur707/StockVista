@@ -38,7 +38,13 @@ function Filters({ onFilterChange }) {
       backgroundColor: '#141516',
       color: 'white',
       '& fieldset': {
-        border: 'none' // removes the white border, regardless of focus
+        border: 'none'
+      },
+      '& .MuiOutlinedInput-input': {
+        color: '#FFFFFF !important' // force text color to white
+      },
+      '&.Mui-focused .MuiOutlinedInput-input': {
+        color: '#FFFFFF !important' // also when focused, remain white
       }
     },
     '& .MuiOutlinedInput-input::placeholder': {
@@ -52,10 +58,10 @@ function Filters({ onFilterChange }) {
       color: 'white'
     },
     '& .MuiSelect-icon': {
-      color: '#FFFFFF' // dropdown icon color
+      color: '#FFFFFF'
     },
     '& .MuiSvgIcon-root': {
-      color: '#FFFFFF' // calendar icon color (if present)
+      color: '#FFFFFF'
     }
   };
 

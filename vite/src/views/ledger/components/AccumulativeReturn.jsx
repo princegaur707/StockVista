@@ -37,13 +37,15 @@ const AccumulativeReturn = ({ trades }) => {
     >
       {/* Left half: Text */}
       <Box sx={{ width: '40%', display: 'flex', flexDirection: 'column' }}>
-        <Typography variant="h4" sx={{ color: '#b59ef3', marginBottom: '15px' }}>
+        <Typography variant="h4" sx={{ color: '#b59ef3', marginBottom: '15px', fontFamily:'figtree' }}>
           Accumulative Return
         </Typography>
         <Typography
           variant="h2"
           sx={{
-            color: totalAccReturn >= 0 ? '#00EFC8' : '#FFFFFF' // Conditionally apply color
+            color: totalAccReturn >= 0 ? '#00EFC8' : '#FFFFFF', // Conditionally apply color
+            fontFamily:'figtree',
+            fontWeight: '400'
           }}
         >
           {totalAccReturn.toFixed(2)}

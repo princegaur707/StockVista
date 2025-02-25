@@ -37,13 +37,15 @@ const WinsRatio = ({ trades }) => {
     >
       {/* Left half: Text */}
       <Box sx={{ width: '30%', display: 'flex', flexDirection: 'column' }}>
-        <Typography variant="h4" sx={{ color: '#ff8142', marginBottom: '15px' }}>
+        <Typography variant="h4" sx={{ color: '#ff8142', marginBottom: '15px', fontFamily:'figtree' }}>
           Wins Ratio
         </Typography>
         <Typography
           variant="h2"
           sx={{
-            color: winsRatio >= 0 ? '#FFFFFF' : '#FF5966' // Conditionally apply color
+            color: winsRatio >= 0 ? '#FFFFFF' : '#FF5966', // Conditionally apply color
+            fontFamily:'figtree',
+            fontWeight:'400'
           }}
         >
           {winsRatio.toFixed(2)}%

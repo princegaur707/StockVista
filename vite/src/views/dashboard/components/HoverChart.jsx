@@ -4,7 +4,6 @@ import { Box, CircularProgress, Typography, ButtonGroup, Button } from '@mui/mat
 import './CandleStickChart.css';
 import { Skeleton } from '@mui/material';
 
-
 const HoverChart = ({ token }) => {
   const chartRef = useRef(null);
   const [loading, setLoading] = useState(true);
@@ -123,7 +122,7 @@ const HoverChart = ({ token }) => {
               timeZone: 'Asia/Kolkata',
               day: '2-digit',
               month: 'short',
-              year: '2-digit',
+              year: '2-digit'
             });
 
             const formattedTime = istDate.toLocaleTimeString('en-IN', {
@@ -158,7 +157,7 @@ const HoverChart = ({ token }) => {
                     // Extract date and time separately
                     const formattedDate = istDate.toLocaleDateString('en-IN', {
                       timeZone: 'Asia/Kolkata',
-                      day: '2-digit',
+                      day: '2-digit'
                       // month: '2-digit' // Include month to make date changes clear
                     });
 
@@ -269,7 +268,7 @@ const HoverChart = ({ token }) => {
         if (!param || !param.seriesData || !param.time || !param.point) {
           setTooltipData(null); // Hide tooltip if no data
           setVolume(null); // Hide volume if no data
-          return; 
+          return;
         }
 
         const candlestickPoint = param.seriesData.get(candlestickSeries);
@@ -280,7 +279,7 @@ const HoverChart = ({ token }) => {
           setVolume(null);
           return;
         }
-        
+
         if (candlestickPoint) {
           // Convert the UTC time to IST
           const time = new Date(param.time * 1000); // UTC to JavaScript Date
@@ -332,27 +331,25 @@ const HoverChart = ({ token }) => {
     return data; // No need to filter, just return full data
   };
 
-  if (loading)
+  if (loading) {
     return (
       <Box
         sx={{
-          bgcolor: '#121212',
-          p: 8,
-          width: '100%',
           display: 'flex',
           justifyContent: 'center',
+          alignItems: 'center',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%'
         }}
       >
-        <Skeleton
-          sx={{ bgcolor: '#1D1E20' }}
-          variant="rounded"
-          animation = "wave"
-          width={300}
-          height={200}
-        />
+        <CircularProgress sx={{ color: '#FFC42B' }} />
       </Box>
     );
-  
+  }
+
   return (
     <Box sx={{ width: '100%', height: '330px', position: 'relative', backgroundColor: '#313437', color: '#FFFFFF' }}>
       {/* <Typography variant="h4" sx={{ textAlign: 'left', padding: '10px', fontWeight: 'bold', color: '#FFD700' }}>
@@ -409,13 +406,13 @@ const HoverChart = ({ token }) => {
           padding: '5px',
           borderRadius: '5px',
           pointerEvents: 'none', // Ensure the box does not interfere with cursor events
-          zIndex: 1000,
+          zIndex: 1000
         }}
       >
         {currentTime} IST
       </Box>
 
-      <ButtonGroup variant="contained" sx={{ display: 'flex', justifyContent: 'left', marginTop: 0.1, marginLeft:0}}>
+      <ButtonGroup variant="contained" sx={{ display: 'flex', justifyContent: 'left', marginTop: 0.1, marginLeft: 0 }}>
         {[
           { label: '1D', value: '1D' },
           { label: '5D', value: '5D' },

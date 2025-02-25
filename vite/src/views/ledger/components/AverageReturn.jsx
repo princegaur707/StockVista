@@ -44,15 +44,17 @@ const AverageReturn = ({ trades }) => {
       {' '}
       {/* Left half: Text */}
       <Box sx={{ width: '30%', display: 'flex', flexDirection: 'column' }}>
-              <Typography variant="h4" sx={{ color: '#81c99d', marginBottom: '15px' }}>
+        <Typography variant="h4" sx={{ color: '#81c99d', marginBottom: '15px', fontFamily: 'figtree' }}>
           Average Return
         </Typography>
         <Typography
-                  variant="h2"
-                  sx={{
-                    color: overallAverage >= 0 ? '#00EFC8' : '#FFFFFF' // Conditionally apply color
-                  }}
-                >
+          variant="h2"
+          sx={{
+            color: overallAverage >= 0 ? '#00EFC8' : '#FFFFFF', // Conditionally apply color
+            fontFamily:'figtree',
+            fontWeight: '400'
+          }}
+        >
           {overallAverage.toFixed(2)}
         </Typography>
       </Box>
