@@ -49,8 +49,8 @@ const NinetyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
         change: item.change,
         pct_change: item.pct_change,
         price_rating: item.price_rating,
-        earning_rating: null,
-        investo_rating: null,
+        earning_rating: item.earning_rating,
+        investo_rating: item.investo_rating,
         symbolToken: item.token
       }));
       setData(initialData);

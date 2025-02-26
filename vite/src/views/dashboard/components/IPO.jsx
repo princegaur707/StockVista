@@ -29,7 +29,7 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
 
   const fetchReportData = async (retries = 3, delay = 1000) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/service/report/90-day-report`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/service/ipo-data/`);
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
       const result = await response.json();
@@ -49,8 +49,8 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
         change: item.change,
         pct_change: item.pct_change,
         price_rating: item.price_rating,
-        earning_rating: null,
-        investo_rating: null,
+        earning_rating: item.earning_rating,
+        investo_rating: item.investo_rating,
         symbolToken: item.token
       }));
       setData(initialData);
@@ -336,7 +336,7 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
       type: 'string',
       renderCell: (params) => (
         <Box display="flex" alignItems="center" height="100%">
-          <Typography align="center">{params?.value ? params.value : 'N/A'}</Typography>
+          <Typography align="center">{params?.value ? params.value.toFixed(2) : 'N/A'}</Typography>
         </Box>
       )
     },
@@ -348,7 +348,7 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
       type: 'string',
       renderCell: (params) => (
         <Box display="flex" alignItems="center" height="100%">
-          <Typography align="center">{params?.value ? params.value : 'N/A'}</Typography>
+          <Typography align="center">{params?.value ? params.value.toFixed(2) : 'N/A'}</Typography>
         </Box>
       )
     },
@@ -360,7 +360,7 @@ const IPOTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
       type: 'string',
       renderCell: (params) => (
         <Box display="flex" alignItems="center" height="100%">
-          <Typography align="center">{params?.value ? params.value : 'N/A'}</Typography>
+          <Typography align="center">{params?.value ? params.value.toFixed(2) : 'N/A'}</Typography>
         </Box>
       )
     }
