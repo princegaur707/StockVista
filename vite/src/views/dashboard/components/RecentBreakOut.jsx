@@ -333,10 +333,10 @@ const RecentBreakOutTable = ({ setSymbolToken, updateToken, liveMarketData }) =>
       headerName: 'Price Rating',
       flex: 0.8,
       headerAlign: 'left',
-      type: 'number',
+      type: 'string',
       renderCell: (params) => (
         <Box display="flex" alignItems="center" height="100%">
-          <Typography align="center">{params?.value ? params.value.toFixed(2) : 'N/A'}</Typography>
+          <Typography align="center">{params?.value ? params.value : 'N/A'}</Typography>
         </Box>
       )
     },
@@ -345,10 +345,10 @@ const RecentBreakOutTable = ({ setSymbolToken, updateToken, liveMarketData }) =>
       headerName: 'Earning Rating',
       flex: 0.8,
       headerAlign: 'left',
-      type: 'number',
+      type: 'string',
       renderCell: (params) => (
         <Box display="flex" alignItems="center" height="100%">
-          <Typography align="center">{params?.value ? params.value.toFixed(2) : 'N/A'}</Typography>
+          <Typography align="center">{params?.value ? params.value : 'N/A'}</Typography>
         </Box>
       )
     },
@@ -357,10 +357,10 @@ const RecentBreakOutTable = ({ setSymbolToken, updateToken, liveMarketData }) =>
       headerName: 'Investo Rating',
       flex: 0.8,
       headerAlign: 'left',
-      type: 'number',
+      type: 'string',
       renderCell: (params) => (
         <Box display="flex" alignItems="center" height="100%">
-          <Typography align="center">{params?.value ? params.value.toFixed(2) : 'N/A'}</Typography>
+          <Typography align="center">{params?.value ? params.value : 'N/A'}</Typography>
         </Box>
       )
     }

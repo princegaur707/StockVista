@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
 import { Box, CircularProgress, Typography, ButtonGroup, Button } from '@mui/material';
 import './CandleStickChart.css';
-import { Skeleton } from '@mui/material';
 
 const HoverChart = ({ token }) => {
   const chartRef = useRef(null);
