@@ -125,7 +125,6 @@ const Tables = ({ trades, onTradeUpdate }) => {
             className="cell-text"
             style={{
               display: 'inline-block',
-              padding: '4px 8px',
               color: '#FFFFFF', // Text color remains white
               border: `2px solid ${color}`, // Border color based on the condition
               padding: '4px 8px', // Add padding for better readability
