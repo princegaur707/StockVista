@@ -324,7 +324,7 @@ const NinetyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
       type: 'number',
       renderCell: (params) => (
         <Box display="flex" alignItems="center" height="100%">
-          <Typography align="left">{formatMarketValue(params.value)}</Typography>
+          <Typography align="left">{formatMarketValue(params.value.toFixed(2))}</Typography>
         </Box>
       )
     },
@@ -336,7 +336,7 @@ const NinetyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
       type: 'string',
       renderCell: (params) => (
         <Box display="flex" alignItems="center" height="100%">
-          <Typography align="center">{params?.value ? params.value : 'N/A'}</Typography>
+          <Typography align="center">{params?.value ? params.value.toFixed(2) : 'N/A'}</Typography>
         </Box>
       )
     },
@@ -348,7 +348,7 @@ const NinetyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
       type: 'string',
       renderCell: (params) => (
         <Box display="flex" alignItems="center" height="100%">
-          <Typography align="center">{params?.value ? params.value : 'N/A'}</Typography>
+          <Typography align="center">{params?.value ? params.value.toFixed(2) : 'N/A'}</Typography>
         </Box>
       )
     },
@@ -360,7 +360,7 @@ const NinetyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
       type: 'string',
       renderCell: (params) => (
         <Box display="flex" alignItems="center" height="100%">
-          <Typography align="center">{params?.value ? params.value : 'N/A'}</Typography>
+          <Typography align="center">{params?.value ? params.value.toFixed(2) : 'N/A'}</Typography>
         </Box>
       )
     }
