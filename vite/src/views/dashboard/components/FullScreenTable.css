@@ -210,8 +210,7 @@
 .MuiDataGrid-columnHeader:focus,
 .MuiDataGrid-columnHeader:focus-within,
 .MuiDataGrid-columnHeader:active,
-.MuiDataGrid-columnHeader:focus-visible
-.MuiListItemText-primary {
+.MuiDataGrid-columnHeader:focus-visible {
   outline: none !important;
   box-shadow: none !important;
   border: none !important;
@@ -222,3 +221,9 @@
 .MuiDataGrid-columnHeader::-webkit-focus-inner {
   border: 0 !important;
 }
+
+.MuiListItemText-primary{
+  /* background-color: #313437 !important; */
+  color: #FFFFFF !important;
+}
+
