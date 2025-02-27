@@ -311,3 +311,7 @@
 .MuiDataGrid-toolbarContainer .MuiIconButton-root {
   color: #FFFFFF !important;
 }
+
+.MuiSelect-select{
+  color: bisque !important;
+}
