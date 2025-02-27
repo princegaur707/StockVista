@@ -41,29 +41,31 @@ function Filters({ onFilterChange }) {
         border: 'none'
       },
       '& .MuiOutlinedInput-input': {
-        color: '#FFFFFF !important' // force text color to white
-      },
-      '&.Mui-focused .MuiOutlinedInput-input': {
-        color: '#FFFFFF !important' // also when focused, remain white
+        color: '#FFFFFF'
       }
     },
     '& .MuiOutlinedInput-input::placeholder': {
       color: 'white',
       opacity: 1
     },
-    '& .MuiInputLabel-root': {
+    '& .MuiInputLabel-root': { 
       color: '#FFFFFF'
     },
-    '& .MuiSelect-select': {
-      color: 'white'
+    //Managing the shrunk text's color of filter
+    '& .MuiInputLabel-root.Mui-focused': { 
+      color: '#FFFFFF',
     },
-    '& .MuiSelect-icon': {
+    '& .MuiSelect-select': { 
+      color: 'white' 
+    },
+    '& .MuiSelect-icon': { 
       color: '#FFFFFF'
     },
-    '& .MuiSvgIcon-root': {
+    '& .MuiSvgIcon-root': { 
       color: '#FFFFFF'
     }
   };
+  
 
   const menuItemStyle = { color: '#FFFFFF' };
 
