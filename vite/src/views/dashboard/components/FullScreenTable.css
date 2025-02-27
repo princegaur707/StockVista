@@ -191,3 +191,28 @@
   background-color: #1d1e20 !important;
   color: #eeeeee;
 }
+
+
+/* FullScreenTable.css */
+
+/* Override the toolbar styling */
+.MuiDataGrid-toolbarContainer {
+  background-color: #313437 !important;
+  color: #FFFFFF !important;
+}
+
+/* Override the column menu styling */
+.MuiDataGrid-columnMenuContainer,
+.MuiDataGrid-menuList,
+.MuiMenuItem-root {
+  background-color: #313437 !important;
+  color: #FFFFFF !important;
+}
+
+/* Remove focus outline from DataGrid column headers */
+.MuiDataGrid-columnHeader:focus,
+.MuiDataGrid-columnHeader:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
