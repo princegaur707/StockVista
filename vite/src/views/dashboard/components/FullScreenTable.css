@@ -192,9 +192,6 @@
   color: #eeeeee;
 }
 
-
-/* FullScreenTable.css */
-
 /* Override the toolbar styling */
 .MuiDataGrid-toolbarContainer {
   background-color: #313437 !important;
@@ -209,10 +206,18 @@
   color: #FFFFFF !important;
 }
 
-/* Remove focus outline from DataGrid column headers */
+/* Remove focus outline from DataGrid column headers on all platforms including macOS */
 .MuiDataGrid-columnHeader:focus,
-.MuiDataGrid-columnHeader:focus-within {
+.MuiDataGrid-columnHeader:focus-within,
+.MuiDataGrid-columnHeader:active,
+.MuiDataGrid-columnHeader:focus-visible {
   outline: none !important;
   box-shadow: none !important;
   border: none !important;
+  -webkit-focus-ring-color: transparent !important;
+}
+
+/* Optional: Remove inner focus border on WebKit browsers */
+.MuiDataGrid-columnHeader::-webkit-focus-inner {
+  border: 0 !important;
 }
