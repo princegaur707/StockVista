@@ -253,3 +253,28 @@
 .ledger-data .MuiTablePagination-actions .MuiSvgIcon-root {
   color: #FFE072 !important;
 }
+
+/* Ensure all text (and child elements) inside the DataGrid toolbar are white */
+.ledger-data .MuiDataGrid-toolbarContainer,
+.MuiDataGrid-toolbarContainer * {
+  color: #FFFFFF !important;
+}
+
+/* Set toolbar container background and text color */
+.ledger-data .MuiDataGrid-toolbarContainer {
+  background-color: #313437 !important;
+  color: #FFFFFF !important;
+}
+
+/* Ensure all direct children of the toolbar inherit the background and text color */
+.ledger-data .MuiDataGrid-toolbarContainer * {
+  background-color: #313437 !important;
+  color: #FFFFFF !important;
+}
+
+/* For any pop-up menus or option boxes triggered from the toolbar */
+.ledger-data .MuiMenu-root .MuiPaper-root,
+.MuiPopover-paper {
+  background-color: #313437 !important;
+  color: #FFFFFF !important;
+}

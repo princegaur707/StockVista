@@ -125,6 +125,7 @@
 .market-data .MuiDataGrid-columnHeaderTitle {
   color: #d9d9d9; /* Light grey color for header text */
   font-size: 14px;
+  /* font-family: 'figtree'; */
   /* border: none; */
   /* background-color: #00ff00 !important; */
 }
@@ -227,3 +228,86 @@
   color: #FFFFFF !important;
 }
 
+/* Ensure all text (and child elements) inside the DataGrid toolbar are white */
+.MuiDataGrid-toolbarContainer,
+.MuiDataGrid-toolbarContainer * {
+  color: #FFFFFF !important;
+}
+
+.MuiFormControlLabel-label{
+  color: #FFFFFF !important;
+}
+
+/* Make pagination arrows #FFE072 */
+.market-data .MuiTablePagination-actions .MuiSvgIcon-root {
+  color: #FFE072 !important;
+}
+
+/* Also remove any focus outline from the Select element */
+.market-data .MuiOutlinedInput-root:focus,
+.market-data .MuiSelect-select:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Set toolbar container background and text color */
+.market-data .MuiDataGrid-toolbarContainer {
+  background-color: #313437 !important;
+  color: #FFFFFF !important;
+}
+
+/* Ensure all direct children of the toolbar inherit the background and text color */
+.market-data .MuiDataGrid-toolbarContainer * {
+  background-color: #313437 !important;
+  color: #FFFFFF !important;
+}
+
+/* For any pop-up menus or option boxes triggered from the toolbar */
+.MuiMenu-root .MuiPaper-root,
+.MuiPopover-paper {
+  background-color: #313437 !important;
+  color: #FFFFFF !important;
+}
+/* Global override for all Paper components rendered in popups/menus */
+.MuiPaper-root {
+  background-color: #1D1E20 !important;
+  color: #FFFFFF !important;
+}
+
+/* Specifically target popover and menu elements */
+.market-data .MuiPopover-paper,
+.MuiMenu-root .MuiPaper-root {
+  background-color: #313437 !important;
+  color: #FFFFFF !important;
+}
+
+/* Global override for all Paper components rendered in popups/menus */
+.market-data .MuiPaper-root {
+  background-color: #313437 !important;
+  color: #FFFFFF !important;
+}
+
+/* Specifically target popover and menu elements */
+.market-data .MuiPopover-paper,
+.MuiMenu-root .MuiPaper-root {
+  background-color: #313437 !important;
+  color: #FFFFFF !important;
+}
+
+.css-1ew92b2-MuiFormLabel-root-MuiInputLabel-root{
+  color: #FFFFFF;
+}
+
+/* Targeting everything within the toolbar container */
+.MuiDataGrid-toolbarContainer,
+.MuiDataGrid-toolbarContainer * {
+  color: #FFFFFF !important;
+}
+
+/* In case some buttons or typography elements have separate classes */
+.MuiDataGrid-toolbarContainer .MuiButtonBase-root,
+.MuiDataGrid-toolbarContainer .MuiTypography-root,
+.MuiDataGrid-toolbarContainer .MuiInputBase-root,
+.MuiDataGrid-toolbarContainer .MuiIconButton-root {
+  color: #FFFFFF !important;
+}
