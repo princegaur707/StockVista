@@ -221,3 +221,9 @@
 .MuiDataGrid-columnHeader::-webkit-focus-inner {
   border: 0 !important;
 }
+
+.MuiListItemText-primary{
+  /* background-color: #313437 !important; */
+  color: #FFFFFF !important;
+}
+
