@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import { useNavigate } from 'react-router-dom';
+import AuthContext from '../authentication/auth-forms/AuthContext.jsx'; // Import your AuthContext
 const apiUrl = import.meta.env.VITE_API_URL;
 import './Login3.css';
 
@@ -13,49 +13,21 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const [errorFontSize, setErrorFontSize] = useState('5px');
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext); // Get the login function from context
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); // Reset error
-    setErrorFontSize('5px');
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/service/login/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, password })
-      });
-
-      if (!response.ok) {
-        throw new Error('Login failed');
-      }
-
-      // Check for tokens in the response
-      const { access, refresh } = await response.json();
-
-      if (access && refresh) {
-        // Save tokens to localStorage or sessionStorage
-        sessionStorage.setItem('accessToken', access);
-        sessionStorage.setItem('refreshToken', refresh);
-
-        // Redirect using useNavigate
-        navigate('/dashboard');
-        // console.log("HI");
-      } 
-      else {
-        setError('Invalid Credentials');
-        setErrorFontSize('5px');
-      }
-    } 
-    catch (err) {
-      console.error('Login error:', err.response?.data || err.message);
-      setError(err.response?.data?.detail || 'Login failed !');
-      setErrorFontSize('5px');
+      await login(username, password);
+      console.log("Login successful, redirecting to dashboard...");
+      navigate('/dashboard');
+      console.log("Navigation called");
+    } catch (error) {
+      console.error("Login error:", error);
     }
   };
+  
 
   return (
     <Box
@@ -65,20 +37,20 @@ const Login = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#121212' // Dark background color
+        backgroundColor: '#121212'
       }}
     >
       <Box
         sx={{
-          width: 620, // Fixed width
-          height: 548, // Fixed height
-          padding: '40px 80px', // Padding
-          gap: '30px', // Gap
-          backgroundColor: '#141516', // Darker background for the card
+          width: 620,
+          height: 548,
+          padding: '40px 80px',
+          gap: '30px',
+          backgroundColor: '#141516',
           boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
           borderRadius: 2,
           textAlign: 'center',
-          border: '1px solid #313437' // Border color
+          border: '1px solid #313437'
         }}
       >
         <Box className="login-heading">
@@ -88,34 +60,27 @@ const Login = () => {
         </Box>
 
         <form onSubmit={handleSubmit} className="FormInput">
-          {/* Username Input */}
           <TextField
             fullWidth
             variant="outlined"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            autoComplete="username"  // Added autocomplete for username
             sx={{
               mb: 2,
-              backgroundColor: '#141516', // Match the card's background color
+              backgroundColor: '#141516',
               '& .MuiOutlinedInput-root': {
                 color: '#ffffff',
-                backgroundColor: '#141516', // Explicitly set background color
-                '& fieldset': {
-                  borderColor: '#F5F5DC'
-                },
-                '&:hover fieldset': {
-                  borderColor: '#ffffff'
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#ffffff'
-                }
+                backgroundColor: '#141516',
+                '& fieldset': { borderColor: '#F5F5DC' },
+                '&:hover fieldset': { borderColor: '#ffffff' },
+                '&.Mui-focused fieldset': { borderColor: '#ffffff' }
               },
               input: { color: '#ffffff' }
             }}
           />
 
-          {/* Password Input */}
           <TextField
             fullWidth
             variant="outlined"
@@ -123,30 +88,23 @@ const Login = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete="current-password"  // Added autocomplete for current password
             sx={{
               mb: 3,
               backgroundColor: '#141516',
               '& .MuiOutlinedInput-root': {
                 color: '#ffffff',
                 backgroundColor: '#141516',
-                '& fieldset': {
-                  borderColor: '#F5F5DC',
-                },
-                '&:hover fieldset': {
-                  borderColor: '#ffffff'
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#ffffff'
-                }
+                '& fieldset': { borderColor: '#F5F5DC' },
+                '&:hover fieldset': { borderColor: '#ffffff' },
+                '&.Mui-focused fieldset': { borderColor: '#ffffff' }
               },
               input: { color: '#ffffff' }
             }}
           />
 
-          {/* Error Message */}
           {error && <Typography sx={{ color: 'red', mb: 2, textAlign: 'left' }}>{error}</Typography>}
 
-          {/* Login Button */}
           <Button
             fullWidth
             type="submit"
@@ -157,31 +115,22 @@ const Login = () => {
               fontSize: '14px',
               borderColor: '#ffffff',
               mb: 4,
-              '&:hover': {
-                backgroundColor: '#ffffff',
-                color: '#1e1e1e'
-              }
+              '&:hover': { backgroundColor: '#ffffff', color: '#1e1e1e' }
             }}
           >
             LOGIN
           </Button>
         </form>
 
-        {/* Divider with "OR" text */}
         <div
           className="DividerContainer"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
           <Divider sx={{ color: '#777C81', my: 3, borderColor: '#777C81', flex: 1 }} />
           <span style={{ margin: '0 10px', color: '#ffffff' }}>OR</span>
           <Divider sx={{ color: '#777C81', my: 3, borderColor: '#777C81', flex: 1 }} />
         </div>
 
-        {/* Sign Up Button */}
         <Button
           fullWidth
           variant="outlined"
@@ -192,25 +141,12 @@ const Login = () => {
             fontFamily: 'figtree',
             fontSize: '14px',
             mb: 2,
-            '&:hover': {
-              backgroundColor: '#ffffff',
-              color: '#1e1e1e'
-            }
+            '&:hover': { backgroundColor: '#ffffff', color: '#1e1e1e' }
           }}
           onClick={() => navigate('/register')}
         >
           SIGN UP 
         </Button>
-
-        {/* Link to Signup */}
-        {/* <div className='Signuplogin'>
-          <Typography
-            variant="body2"
-            sx={{ color: '#ffffff', fontSize: '12px', mt: 2, textAlign: 'center' }}
-          >
-            Don't have an account? <Link to="/register" style={{ color: '#00aaff' }}>Sign up</Link>
-          </Typography>
-        </div> */}
       </Box>
     </Box>
   );

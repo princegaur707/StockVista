@@ -77,7 +77,7 @@ function Filters({ onFilterChange }) {
         alignItems: 'center',
         width: '90vw',
         backgroundColor: '#26282A',
-        p: 1,
+        p: 0.5,
         borderRadius: 1,
         gap: 0.5
       }}

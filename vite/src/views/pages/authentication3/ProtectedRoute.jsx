@@ -1,16 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
+import AuthContext from '../authentication/auth-forms/AuthContext.jsx';
 
 const ProtectedRoute = ({ children }) => {
-  // Check if the user is authenticated
-  const isAuthenticated = sessionStorage.getItem('accessToken');
+  const { accessToken } = useContext(AuthContext);
+  const token = accessToken || localStorage.getItem('accessToken');
 
-  // Redirect to login if not authenticated
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return children; // Render the child routes/components if authenticated
+  return token ? children : <Navigate to="/login" replace />;
 };
 
 export default ProtectedRoute;

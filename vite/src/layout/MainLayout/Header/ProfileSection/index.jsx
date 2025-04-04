@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -25,7 +25,6 @@ import Popper from '@mui/material/Popper';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
-// import { useNavigate } from 'react-router-dom';
 
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -35,6 +34,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
 import UpgradePlanCard from './UpgradePlanCard';
 import User1 from 'assets/images/users/user-round.svg';
+import AuthContext from 'views/pages/authentication/auth-forms/AuthContext';
 
 // assets
 import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons-react';
@@ -51,15 +51,20 @@ const ProfileSection = () => {
   const [notification, setNotification] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
+  const { logout } = useContext(AuthContext); // Access logout from AuthContext
+
   /**
    * anchorRef is used on different componets and specifying one type leads to other components throwing an error
    * */
   const anchorRef = useRef(null);
   const handleLogout = async () => {
-    sessionStorage.removeItem('accessToken');
-    sessionStorage.removeItem('refreshToken');
-    navigate('/login');
-    // console.log('Logout');
+    try {
+      await logout(); // Assuming logout is an async function
+      console.log('Logged out successfully');
+      // Redirect or handle post-logout actions, if needed
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   const handleClose = (event) => {
@@ -166,11 +171,11 @@ const ProfileSection = () => {
                       color: '#FFFFFF', // Default text color
                       padding: '10px 25px',
                       '&:hover': {
-                        backgroundColor: '#141516', // Custom color on hover
+                        backgroundColor: '#141516' // Custom color on hover
                       }
                     }}
                   >
-                    <ListItemIcon >
+                    <ListItemIcon>
                       <IconLogout size="1.5rem" />
                     </ListItemIcon>
                     <ListItemText

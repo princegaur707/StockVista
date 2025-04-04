@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import { createChart } from 'lightweight-charts';
 import { Box, CircularProgress, Typography, ButtonGroup, Button } from '@mui/material';
 import './CandleStickChart.css';
+import AuthContext from '../../pages/authentication/auth-forms/AuthContext.jsx';
 
 const CandlestickChart = ({ token }) => {
   const chartRef = useRef(null);
@@ -16,6 +17,8 @@ const CandlestickChart = ({ token }) => {
   const [volume, setVolume] = useState(null); // New state for volume
   const [currentTime, setCurrentTime] = useState('');
   const lastDate = null;
+  // Import the requestWithToken helper from AuthContext
+  const { requestWithToken } = useContext(AuthContext);
 
   const toIST = (timestamp) => {
     const date = new Date(timestamp);
@@ -30,7 +33,7 @@ const CandlestickChart = ({ token }) => {
           ? `${import.meta.env.VITE_API_URL}/api/service/get-historical-data-minute-wise/?symbol=${selectedStock}`
           : `${import.meta.env.VITE_API_URL}/api/service/get-historical-data/?symbol=${selectedStock}&period=${period}`;
 
-      const response = await fetch(url);
+      const response = await requestWithToken(url);
       if (!response.ok) throw new Error('Network response was not ok');
       const jsonData = await response.json();
 
@@ -121,7 +124,7 @@ const CandlestickChart = ({ token }) => {
               timeZone: 'Asia/Kolkata',
               day: '2-digit',
               month: 'short',
-              year: '2-digit',
+              year: '2-digit'
             });
 
             const formattedTime = istDate.toLocaleTimeString('en-IN', {

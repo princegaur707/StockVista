@@ -4,8 +4,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import crownIcon from 'assets/images/sidebar/crownicon.svg';
 import ledgerIcon from 'assets/images/sidebar/ledgerIcon.svg';
 import marketIcon from 'assets/images/sidebar/marketIcon.svg';
-// Central mapping of sidebar items.
-// This array makes it easy to add, remove, or change items.
+import investorIcon from 'assets/images/sidebar/investorIcon.png';
+import calculatorIcon from 'assets/images/sidebar/calculatorIcon.png';
+
 const sidebarItems = [
   {
     id: 0,
@@ -15,7 +16,7 @@ const sidebarItems = [
     alt: 'Dashboard',
     // Custom styles can be added if needed per item.
     boxStyles: { marginTop: '25px', marginBottom: '10px', height: '45px' },
-    imageStyles: { width: '45px', height: '45px' },
+    imageStyles: { width: '45px', height: '45px' }
   },
   {
     id: 1,
@@ -24,7 +25,7 @@ const sidebarItems = [
     icon: ledgerIcon,
     alt: 'Ledger',
     boxStyles: { marginTop: '10px', marginBottom: '5px', height: '50px' },
-    imageStyles: { width: '45px', height: '42px' },
+    imageStyles: { width: '45px', height: '42px' }
   },
   {
     id: 2,
@@ -33,20 +34,27 @@ const sidebarItems = [
     icon: marketIcon,
     alt: 'Market',
     boxStyles: { marginTop: '10px', marginBottom: '10px', height: '50px' },
-    imageStyles: { width: '45px', height: '45px' },
+    imageStyles: { width: '45px', height: '45px' }
   },
-  // {
-  //   id: 3,
-  //   path: '/sector',
-  //   type: 'svg',
-  //   boxStyles: { marginTop: '20px', marginBottom: '20px', height: '40px', width: '40px' },
-  // },
-  // {
-  //   id: 4,
-  //   path: '/ranking',
-  //   type: 'svg',
-  //   boxStyles: { marginTop: '20px', marginBottom: '20px', height: '40px', width: '40px' },
-  // },
+  {
+    id: 3,
+    path: '/investor',
+    type: 'img',
+    icon: investorIcon,
+    alt: 'Investor',
+    boxStyles: { marginTop: '10px', marginBottom: '10px', height: '50px' },
+    imageStyles: { width: '45px', height: '45px' }
+  },
+
+  {
+    id: 4,
+    path: '/calculator',
+    type: 'img',
+    icon: calculatorIcon,
+    alt: 'Calculator',
+    boxStyles: { marginTop: '10px', marginBottom: '10px', height: '50px' },
+    imageStyles: { width: '40px', height: '45px' }
+  },
   // {
   //   id: 6,
   //   path: '/market-view',
@@ -76,9 +84,7 @@ const Sidebar = () => {
   // the correct tab remains active.
   const getActiveBox = useCallback(() => {
     const currentPath = location.pathname;
-    const activeItem = sidebarItems.find((item) =>
-      currentPath.startsWith(item.path)
-    );
+    const activeItem = sidebarItems.find((item) => currentPath.startsWith(item.path));
     return activeItem ? activeItem.id : 0;
   }, [location.pathname]);
 
@@ -103,7 +109,7 @@ const Sidebar = () => {
     const commonStyles = {
       border: isActive ? '1px solid #FFD56B' : 'none',
       borderRadius: '7px',
-      padding: '5px',
+      padding: '5px'
     };
 
     return (
@@ -117,7 +123,7 @@ const Sidebar = () => {
           padding: 0,
           transition: 'all 0.3s ease',
           // backgroundColor: isActive ? '#26282B' : 'transparent',
-          ...item.boxStyles, // Custom per-item box styles (height, margins)
+          ...item.boxStyles // Custom per-item box styles (height, margins)
         }}
       >
         {item.type === 'img' ? (
@@ -126,7 +132,7 @@ const Sidebar = () => {
             alt={item.alt}
             style={{
               ...item.imageStyles,
-              ...commonStyles,
+              ...commonStyles
             }}
           />
         ) : (
@@ -138,16 +144,7 @@ const Sidebar = () => {
             xmlns="http://www.w3.org/2000/svg"
             style={commonStyles}
           >
-            <rect
-              x="1"
-              y="1"
-              width="38"
-              height="38"
-              rx="7"
-              fill="#26282B"
-              stroke={isActive ? '#FFD56B' : 'none'}
-              strokeWidth="2"
-            />
+            <rect x="1" y="1" width="38" height="38" rx="7" fill="#26282B" stroke={isActive ? '#FFD56B' : 'none'} strokeWidth="2" />
           </svg>
         )}
       </Box>
@@ -164,7 +161,7 @@ const Sidebar = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        position: 'fixed',
+        position: 'fixed'
       }}
     >
       {sidebarItems.map(renderItem)}

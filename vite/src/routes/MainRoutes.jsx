@@ -8,7 +8,10 @@ import Loadable from 'ui-component/Loadable';
 import ProtectedRoute from 'views/pages/authentication3/ProtectedRoute.jsx';
 const Dashboard = Loadable(lazy(() => import('views/dashboard')));
 const Ledger = Loadable(lazy(() => import('views/ledger')));
-const MarketDepth = Loadable(lazy(() => import('views/MarketDepth')))
+const MarketDepth = Loadable(lazy(() => import('views/MarketDepth')));
+const InvestorArea = Loadable(lazy(() => import('views/Investor')));
+const Calculator = Loadable(lazy(() => import('views/Calculator')));
+
 // utilities routing
 const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
 const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
@@ -60,6 +63,32 @@ const MainRoutes = {
           element: (
             <ProtectedRoute>
               <MarketDepth />
+            </ProtectedRoute>
+          ),
+        }
+      ]
+    },
+    {
+      path: 'investor',
+      children: [
+        {
+          path: '',
+          element: (
+            <ProtectedRoute>
+              <InvestorArea />
+            </ProtectedRoute>
+          ),
+        }
+      ]
+    },
+    {
+      path: 'calculator',
+      children: [
+        {
+          path: '',
+          element: (
+            <ProtectedRoute>
+              <Calculator />
             </ProtectedRoute>
           ),
         }

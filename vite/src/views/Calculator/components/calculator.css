@@ -1,0 +1,50 @@
+/* Default label color */
+.MuiInputLabel-root {
+  color: '#26282B' !important;
+  top: 50% !important;
+  left: 3%;
+  transform: translateY(-50%) !important;
+}
+
+/* Label color when focused */
+.MuiInputLabel-root.Mui-focused {
+  color: #fff !important;
+}
+
+/* Moves label up when field is focused or filled */
+.MuiInputLabel-shrink {
+  top: -12px !important;
+  transform: translateY(0) !important;
+}
+
+/* Ensures label is visible when shrinking */
+.MuiInputLabel-root.MuiInputLabel-shrink {
+  top: -10px !important;
+  transform: translateY(0) !important;
+}
+
+/* Adjusts the input border fieldset to prevent cutting */
+.MuiOutlinedInput-root fieldset {
+  padding-top: 12px !important;
+}
+
+/* Target all MUI TextFields */
+.MuiTextField-root .MuiInputBase-input {
+  background: #131415 !important;
+  color: #fff !important;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+/* Styling the OutlinedInput border */
+.MuiTextField-root .MuiOutlinedInput-root fieldset {
+  border-color: #444 !important;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root:hover fieldset {
+  border-color: #666 !important;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root.Mui-focused fieldset {
+  border-color: #fff !important;
+}

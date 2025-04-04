@@ -1,19 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import {
-  Box,
-  IconButton,
-  TextField,
-  CircularProgress,
-  Typography,
-  Popper
-} from '@mui/material';
+import { Box, IconButton, TextField, CircularProgress, Typography, Popper } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import './FullScreenTable.css';
 import HoverChart from './HoverChart';
+import AuthContext from '../../pages/authentication/auth-forms/AuthContext.jsx';
 
-const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
+const ThirtyDayReportTable = ({ setSymbolToken, liveMarketData }) => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,14 +16,18 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [hoveredSymbol, setHoveredSymbol] = useState(null);
-  
+
   // Ref for the popper content so we can check where the mouse is
   const popperRef = useRef(null);
   const timeoutRef = useRef(null);
 
+  // Import the requestWithToken helper from AuthContext
+  const { requestWithToken } = useContext(AuthContext);
+
+  // Fetch report data using the requestWithToken helper to validate JWT before API call.
   const fetchReportData = async (retries = 3, delay = 1000) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/service/report/30-day-report/`);
+      const response = await requestWithToken(`${import.meta.env.VITE_API_URL}/api/service/report/30-day-report/`);
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
       const result = await response.json();
@@ -49,11 +47,12 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
         change: item.change,
         pct_change: item.pct_change,
         price_rating: item.price_rating,
-        earning_rating: item.earning_rating,
+        earning_rating: item.price_rating, // Adjust if needed
         investo_rating: item.investo_rating,
         symbolToken: item.token
       }));
       setData(initialData);
+      setFilteredData(initialData);
       setError('');
     } catch (err) {
       if (retries > 0) {
@@ -70,16 +69,14 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
 
   useEffect(() => {
     fetchReportData();
-  }, []);
+  }, [requestWithToken]);
 
   const handleSearch = (searchValue) => {
     setSearchText(searchValue);
     if (searchValue.trim() === '') {
       setFilteredData(data);
     } else {
-      const filtered = data.filter((row) =>
-        row.tradingSymbol.toLowerCase().includes(searchValue.toLowerCase())
-      );
+      const filtered = data.filter((row) => row.tradingSymbol.toLowerCase().includes(searchValue.toLowerCase()));
       setFilteredData(filtered);
     }
   };
@@ -90,14 +87,12 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
-    // Update anchor to the element (the symbol text) and set the hovered symbol
     setAnchorEl(event.currentTarget);
     setHoveredSymbol(symbol);
   };
 
   const handleSymbolMouseLeave = (event) => {
     const related = event.relatedTarget;
-    // If the mouse moves into the popper content, do not close
     if (popperRef.current && related && popperRef.current.contains(related)) {
       return;
     }
@@ -117,7 +112,6 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
 
   const handlePopperMouseLeave = (event) => {
     const related = event.relatedTarget;
-    // If the mouse moves back into the symbol element, do not close
     if (anchorEl && related && anchorEl.contains(related)) {
       return;
     }
@@ -127,14 +121,12 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
     }, 300);
   };
 
-  // Clear timeout on unmount
   useEffect(() => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, []);
 
-  // utils/numberFormatter.js
   const formatMarketValue = (value) => {
     if (value == null) return 'N/A';
     if (value >= 1_000_000_0) {
@@ -169,8 +161,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
       setData((prevData) =>
         prevData.map((item) => {
           const liveData = liveMarketData.find(
-            (liveItem) =>
-              standardizeSymbol(liveItem.tradingSymbol) === standardizeSymbol(item.tradingSymbol)
+            (liveItem) => standardizeSymbol(liveItem.tradingSymbol) === standardizeSymbol(item.tradingSymbol)
           );
           return liveData && liveData.ltp ? { ...item, ltp: liveData.ltp } : item;
         })
@@ -261,7 +252,6 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
           )}
         </Box>
       ),
-      // Attach the hover events to the symbol text.
       renderCell: (params) => (
         <Box display="flex" alignItems="center" height="100%" mt={0.2} sx={{ cursor: 'pointer' }}>
           <svg width="46" height="28" viewBox="0 0 46 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -273,11 +263,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
               fill="#EEEEEE"
             />
           </svg>
-          <Typography
-            ml={1}
-            onMouseEnter={(e) => handleSymbolMouseEnter(e, params.value)}
-            onMouseLeave={handleSymbolMouseLeave}
-          >
+          <Typography ml={1} onMouseEnter={(e) => handleSymbolMouseEnter(e, params.value)} onMouseLeave={handleSymbolMouseLeave}>
             {params.value}
           </Typography>
         </Box>
@@ -287,31 +273,58 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
       field: 'ltp',
       headerName: 'Price',
       headerAlign: 'left',
-      flex: 1,
+      flex: 0.8,
       type: 'number',
       renderCell: (params) => (
         <Box display="flex" alignItems="center" height="100%">
-          <Typography align="center">{params?.value}</Typography>
+          <Typography align="center">{params?.value.toFixed(2)}</Typography>
         </Box>
       )
     },
     {
       field: 'change',
       headerName: 'Change',
-      flex: 1.2,
+      flex: 0.8,
       headerAlign: 'left',
       type: 'number',
       renderCell: (params) => {
         const { change, pct_change } = params.row;
         if (change == null || pct_change == null) {
-          return <Typography align="left" color="error">N/A</Typography>;
+          return (
+            <Typography align="left" color="error">
+              N/A
+            </Typography>
+          );
         }
         const changeColor = change > 0 ? '#00EFC8' : change < 0 ? '#FF5966' : '#EEEEEE';
+        return (
+          <Box display="flex" alignItems="center" height="100%">
+            <Typography align="left" sx={{ color: changeColor }}>
+              {change.toFixed(2)}
+            </Typography>
+          </Box>
+        );
+      }
+    },
+    {
+      field: 'pct_change',
+      headerName: '30 Day Performance',
+      flex: 1,
+      headerAlign: 'left',
+      type: 'number',
+      renderCell: (params) => {
+        const { pct_change } = params.row;
+        if (pct_change == null) {
+          return (
+            <Typography align="center" color="error">
+              N/A
+            </Typography>
+          );
+        }
         const pctChangeColor = pct_change > 0 ? '#00EFC8' : pct_change < 0 ? '#FF5966' : '#EEEEEE';
         return (
           <Box display="flex" alignItems="center" height="100%">
-            <Typography align="left" sx={{ color: changeColor }}>{change.toFixed(2)}</Typography>
-            <Typography sx={{ color: pctChangeColor }}>({pct_change.toFixed(2)}%)</Typography>
+            <Typography sx={{ color: pctChangeColor }}>{pct_change.toFixed(2)}%</Typography>
           </Box>
         );
       }
@@ -319,7 +332,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
     {
       field: 'market_cap',
       headerName: 'Market Cap',
-      flex: 1.3,
+      flex: 1,
       headerAlign: 'left',
       type: 'number',
       renderCell: (params) => (
@@ -331,7 +344,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
     {
       field: 'price_rating',
       headerName: 'Price Rating',
-      flex: 0.8,
+      flex: 0.7,
       headerAlign: 'left',
       type: 'number',
       renderCell: (params) => (
@@ -343,7 +356,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
     {
       field: 'earning_rating',
       headerName: 'Earning Rating',
-      flex: 0.8,
+      flex: 0.7,
       headerAlign: 'left',
       type: 'number',
       renderCell: (params) => (
@@ -355,7 +368,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
     {
       field: 'investo_rating',
       headerName: 'Investo Rating',
-      flex: 0.8,
+      flex: 0.7,
       headerAlign: 'left',
       type: 'number',
       renderCell: (params) => (
@@ -379,10 +392,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
   }));
 
   return (
-    <Box
-      className="market-data"
-      sx={{ mt: 0, width: '100%', '&::-webkit-scrollbar': { display: 'none' } }}
-    >
+    <Box className="market-data" sx={{ mt: 0, width: '100%', '&::-webkit-scrollbar': { display: 'none' } }}>
       <Box sx={{ height: '86vh', width: '90vw' }}>
         <DataGrid
           rows={rows}
@@ -394,8 +404,7 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
           pagination
           hideFooterSelectedRowCount
           initialState={{
-            pagination: { paginationModel: { pageSize: 10 } },
-            sorting: { sortModel: [{ field: 'price_rating', sort: 'desc' }] }
+            pagination: { paginationModel: { pageSize: 10 } }
           }}
         />
       </Box>
@@ -406,10 +415,9 @@ const ThirtyDayReportTable = ({ setSymbolToken, updateToken, liveMarketData }) =
             sx={{
               bgcolor: '#141516',
               width: '520px',
-            height: '335px',
+              height: '335px',
               border: '5px solid #313437'
             }}
-            
             onMouseEnter={handlePopperMouseEnter}
             onMouseLeave={handlePopperMouseLeave}
           >

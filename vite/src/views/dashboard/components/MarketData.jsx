@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Box, CircularProgress, Typography, CssBaseline } from '@mui/material';
 import './FullScreenTable.css';
 import { IconBackground } from '@tabler/icons-react';
+import AuthContext from '../../pages/authentication/auth-forms/AuthContext.jsx';
 
 const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, setSymbolToken, liveMarketData }) => {
   // console.log(liveMarketData, 'bro');
@@ -10,11 +11,13 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  // Import the requestWithToken helper from AuthContext
+  const { requestWithToken } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchMarketData = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/service/market-data`);
+        const response = await requestWithToken(`${import.meta.env.VITE_API_URL}/api/service/market-data`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

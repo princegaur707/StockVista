@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Box, CircularProgress, Typography, FormControl, Select, MenuItem } from '@mui/material';
+import AuthContext from '../../pages/authentication/auth-forms/AuthContext.jsx';
 
 const HistoricalDataTable = ({ token }) => {
   const [data, setData] = useState([]);
@@ -60,6 +61,8 @@ const HistoricalDataTable = ({ token }) => {
     { name: 'POWERGRID-EQ', token: '14977' }
   ]); // Stocks fetched from the API
   const [searchTerm, setSearchTerm] = useState(''); // For searching stocks
+  // Import the requestWithToken helper from AuthContext
+  const { requestWithToken } = useContext(AuthContext);
 
   // useEffect(() => {
   //   const fetchStockData = async () => {
@@ -83,7 +86,9 @@ const HistoricalDataTable = ({ token }) => {
   useEffect(() => {
     const fetchHistoricalData = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/historical-data/?exchange=${'NSE'}&token=${selectedStock}&timeperiod=ONE_DAY`);
+        const response = await requestWithToken(
+          `${import.meta.env.VITE_API_URL}/historical-data/?exchange=${'NSE'}&token=${selectedStock}&timeperiod=ONE_DAY`
+        );
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
