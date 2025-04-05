@@ -49,10 +49,10 @@ export default function DashboardDefault() {
   const [liveMarketData, setLiveMarketData] = useState([]); // State for live WebSocket data
 
   const [data, setData] = useState({
-    nifty50: { count: '22547.55', change: -5.8, percentage: 0.03 },
-    sensex: { count: '74602.12', change: 147.71, percentage: 0.2 },
-    niftyBank: { count: '48606.35', change: -43.35, percentage: -0.35 },
-    nifty100: { count: '22987.95', change: -34.55, percentage: -0.15 }
+    nifty50: { count: 22547.55, change: 5.8, percentage: 0.03 },
+    sensex: { count: 74602.12, change: -147.71, percentage: -0.2 },
+    niftyBank: { count: 48606.35, change: 43.35, percentage: 0.35 },
+    nifty100: { count: 22987.95, change: -34.55, percentage: -0.15 }
   });
 
   // Import requestWithToken from AuthContext

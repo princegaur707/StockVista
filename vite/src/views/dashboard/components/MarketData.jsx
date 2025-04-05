@@ -191,7 +191,7 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
   return (
     <Box className="market-data" sx={{ mt: 0, width: '100vw' }}>
       {/* <CssBaseline /> */}
-      <Box sx={{ height: '86vh' }}>
+      <Box sx={{ height: '90vh' }}>
         {/* <Box className="scrollable" style={{ height: '100vh', overflowY:'auto', marginRight: '25px'}}> */}
         <DataGrid
           rows={rows}

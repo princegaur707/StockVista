@@ -67,6 +67,7 @@ export const AuthProvider = ({ children }) => {
       setAccessToken(access);
       setRefreshToken(refresh);
       setUser(userData);
+      
     } catch (error) {
       console.error('Login error:', error);
       throw error;

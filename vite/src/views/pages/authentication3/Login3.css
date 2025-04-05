@@ -17,3 +17,112 @@
   font: "Figtree", sans-serif;
   
 }
+
+/* Login Page Styles */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #121212;
+}
+
+/* Login Container */
+.login-container {
+  width: 620px;
+  height: 548px;
+  padding: 40px 80px;
+  background-color: #141516;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #313437;
+}
+
+/* Login Heading */
+.login-heading {
+  color: #ffffff;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+/* Input Fields */
+.input-field {
+  margin-bottom: 16px;
+  background-color: #141516;
+}
+
+.input-field .MuiOutlinedInput-root {
+  color: #ffffff;
+  background-color: #141516;
+}
+
+.input-field .MuiOutlinedInput-root fieldset {
+  border-color: #F5F5DC;
+}
+
+.input-field .MuiOutlinedInput-root:hover fieldset {
+  border-color: #ffffff;
+}
+
+.input-field .MuiOutlinedInput-root.Mui-focused fieldset {
+  border-color: #ffffff;
+}
+
+.input-field input {
+  color: #ffffff;
+}
+
+/* Error Text */
+.error-text {
+  color: red;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+/* Login Button */
+.login-button {
+  color: #ffffff;
+  font-family: 'Figtree', sans-serif;
+  font-size: 14px;
+  border-color: #ffffff;
+  margin-bottom: 24px;
+}
+
+.login-button:hover {
+  background-color: #ffffff;
+  color: #1e1e1e;
+}
+
+/* Divider Section */
+.divider-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 24px 0;
+}
+
+.divider {
+  color: #777C81;
+  border-color: #777C81;
+  flex: 1;
+}
+
+.or-text {
+  margin: 0 10px;
+  color: #ffffff;
+}
+
+/* Sign Up Button */
+.signup-button {
+  color: #ffffff;
+  border-color: #ffffff;
+  font-family: 'Figtree', sans-serif;
+  font-size: 14px;
+  margin-top: 24px;
+}
+
+.signup-button:hover {
+  background-color: #ffffff;
+  color: #1e1e1e;
+}

@@ -85,8 +85,9 @@
 .market-data .MuiDataGrid-scrollbar {
   width: 0px;
 }
-.market-data MuiDataGrid-cell {
+.market-data .MuiDataGrid-cell {
   border: 'none';
+  padding: "4px 8px" !important;
 }
 
 .market-data .MuiDataGrid-columnSeparator {

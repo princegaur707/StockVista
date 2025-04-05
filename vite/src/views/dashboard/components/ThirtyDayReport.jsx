@@ -393,15 +393,14 @@ const ThirtyDayReportTable = ({ setSymbolToken, liveMarketData }) => {
 
   return (
     <Box className="market-data" sx={{ mt: 0, width: '100%', '&::-webkit-scrollbar': { display: 'none' } }}>
-      <Box sx={{ height: '86vh', width: '90vw' }}>
+      <Box sx={{ height: '90vh', width: '90vw' }}>
         <DataGrid
           rows={rows}
           columns={columns}
           pageSize={10}
-          rowsPerPageOptions={[10]}
+          rowsPerPageOptions={[10, 25 , 50]}
           onCellClick={handleCellClick}
           components={{ Toolbar: GridToolbar }}
-          pagination
           hideFooterSelectedRowCount
           initialState={{
             pagination: { paginationModel: { pageSize: 10 } }

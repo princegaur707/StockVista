@@ -395,7 +395,7 @@ const BigPlayersTable = ({ setSymbolToken, updateToken, liveMarketData }) => {
 
   return (
     <Box className="market-data" sx={{ mt: 0, width: '100%', '&::-webkit-scrollbar': { display: 'none' } }}>
-      <Box sx={{ height: '86vh', width: '90vw' }}>
+      <Box sx={{ height: '90vh', width: '90vw' }}>
         <DataGrid
           rows={rows}
           columns={columns}
