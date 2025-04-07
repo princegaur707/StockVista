@@ -6,6 +6,7 @@ import './index.css';
 import MarketTrendChart from './components/graph';
 import MarketTrendChartLT from './components/LTgraph';
 import CurrentMarketMeter from './components/marketmeter';
+import SectorTreemap from './components/sectorgraph';
 import Gauge from './components/meter2';
 
 function MarketFlow() {
@@ -27,10 +28,16 @@ function MarketFlow() {
         {/* Grid for side-by-side chart display */}
         <Grid container spacing={4}>
           <Grid item xs={12} md={6}>
-            <MarketTrendChartLT />
+            <MarketTrendChart />
           </Grid>
           <Grid item xs={12} md={6}>
-            <MarketTrendChart />
+            <MarketTrendChartLT />
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={4}  marginTop={2}>
+          <Grid item xs={12} md={12}>
+            <SectorTreemap />
           </Grid>
         </Grid>
 

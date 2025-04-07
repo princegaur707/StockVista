@@ -17,6 +17,7 @@ function Filters({ onFilterChange }) {
 
   const [filters, setFilters] = useState(defaultFilters);
   const fromDateRef = useRef(null);
+  const toDateRef = useRef(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,9 +76,9 @@ function Filters({ onFilterChange }) {
         display: 'flex',
         flexWrap: 'wrap',
         alignItems: 'center',
-        width: '90vw',
+        width: '88vw',
         backgroundColor: '#26282A',
-        p: 0.5,
+        p: 0.3,
         borderRadius: 1,
         gap: 0.5
       }}
@@ -145,14 +146,14 @@ function Filters({ onFilterChange }) {
         <MenuItem value="" style={menuItemStyle}>
           All
         </MenuItem>
-        <MenuItem value="1" style={menuItemStyle}>
-          1
+        <MenuItem value="ChasingLoses" style={menuItemStyle}>
+          Chasing Loses
         </MenuItem>
-        <MenuItem value="2" style={menuItemStyle}>
-          2
+        <MenuItem value="RiskNeglect" style={menuItemStyle}>
+          Risk Neglect
         </MenuItem>
-        <MenuItem value="3" style={menuItemStyle}>
-          3
+        <MenuItem value="EmotionalTrading" style={menuItemStyle}>
+          Emotional Trading
         </MenuItem>
       </TextField>
 
@@ -207,8 +208,8 @@ function Filters({ onFilterChange }) {
           variant="outlined"
           type="date"
           name="durationTo"
-          inputRef={fromDateRef}
-          onClick={() => fromDateRef.current?.showPicker()}
+          inputRef={toDateRef}
+          onClick={() => toDateRef.current?.showPicker()}
           label="to"
           value={filters.durationTo || ''}
           onChange={handleChange}
@@ -304,7 +305,7 @@ function Filters({ onFilterChange }) {
       <IconButton onClick={handleReset} color="primary" aria-label="reset filters">
         <Button
           variant="outlined"
-          onClick={handleApply}
+          // onClick={handleApply}
           size="small"
           sx={{
             fontFamily: 'Figtree',

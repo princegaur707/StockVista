@@ -1,23 +1,23 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Box, CircularProgress, IconButton, Button, Typography } from '@mui/material';
+import { Box, CircularProgress, Button, Typography, Select, MenuItem } from '@mui/material';
 import AuthContext from '../../pages/authentication/auth-forms/AuthContext.jsx';
 
-const MarketTrendChartLT = () => {
+const MarketTrendChart = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [dataUpdatedTime, setDataUpdatedTime] = useState('');
-  // Import the requestWithToken helper from AuthContext
+  const [weeks, setWeeks] = useState(50); // NEW: dropdown state
   const { requestWithToken } = useContext(AuthContext);
 
-  const fetchData = async () => {
+  const fetchData = async (selectedWeeks = weeks) => {
     setLoading(true);
     try {
       const response = await requestWithToken(`${import.meta.env.VITE_API_URL}/api/service/market-trend-weekly/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ weeks: 10 })
+        body: JSON.stringify({ weeks: selectedWeeks })
       });
 
       if (!response.ok) {
@@ -25,8 +25,6 @@ const MarketTrendChartLT = () => {
       }
 
       const jsonData = await response.json();
-
-      // Use the "date" field from the last entry as the updated time.
       const updatedTime = jsonData && jsonData.length > 0 ? jsonData[jsonData.length - 1].date : 'N/A';
       setDataUpdatedTime(updatedTime);
       setData(jsonData);
@@ -41,9 +39,10 @@ const MarketTrendChartLT = () => {
     fetchData();
   }, []);
 
-  // Handlers for the Reset button (which re-fetches the data)
-  const handleReset = () => {
-    fetchData();
+  const handleWeeksChange = (event) => {
+    const newWeeks = event.target.value;
+    setWeeks(newWeeks);
+    fetchData(newWeeks);
   };
 
   const handleApply = () => {
@@ -75,30 +74,24 @@ const MarketTrendChartLT = () => {
 
   return (
     <div>
-      {/* Styled updated time entry */}
+      {/* Top Bar */}
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '2px 2px',
-          // background: 'linear-gradient(90deg, #1d1e20, #2c2d31)',
+          padding: '2px 8px',
           borderRadius: '8px',
           marginLeft: '60px',
           marginRight: '20px'
         }}
       >
-        <Typography
-          variant="body1"
-          sx={{
-            color: '#FFFFFF',
-            fontFamily: 'Figtree',
-            fontWeight: 400
-          }}
-        >
+        {/* Left: Date */}
+        <Typography variant="body1" sx={{ color: '#FFFFFF', fontFamily: 'Figtree', fontWeight: 400 }}>
           {dataUpdatedTime}
         </Typography>
 
+        {/* Center: Title */}
         <Typography
           variant="body1"
           sx={{
@@ -108,17 +101,57 @@ const MarketTrendChartLT = () => {
             fontSize: '1.2rem'
           }}
         >
-          Market Trend LT
+          Weekly Market Trend
         </Typography>
 
-        {/* Reset Button using the provided style */}
-        <IconButton
-          onClick={handleReset}
-          color="primary"
-          aria-label="reset filters"
-          // sx={{ position: 'absolute', top: 10, right: 10, zIndex: 1 }}
-        >
-          <Button 
+        {/* Right: Dropdown + Refresh */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          {/* Dropdown */}
+          <Select
+            value={weeks}
+            onChange={handleWeeksChange}
+            size="small"
+            sx={{
+              fontFamily: 'Figtree',
+              fontSize: '14px',
+              height: '35px',
+              color: '#FFFFFF',
+              backgroundColor: '#1d1e20',
+              '.MuiSelect-select': {
+                paddingRight: '32px'
+              },
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#FFFFFF'
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#FFC42B'
+              },
+              '& .MuiSvgIcon-root': {
+                color: '#FFC42B',
+                right: '8px',
+                position: 'absolute'
+              },
+              minWidth: '60px'
+            }}
+            MenuProps={{
+              PaperProps: {
+                sx: {
+                  backgroundColor: '#1d1e20',
+                  color: '#fff',
+                  fontFamily: 'Figtree'
+                }
+              }
+            }}
+          >
+            {[10, 20, 30, 40, 50].map((week) => (
+              <MenuItem key={week} value={week}>
+                {week}
+              </MenuItem>
+            ))}
+          </Select>
+
+          {/* Refresh Button */}
+          <Button
             variant="outlined"
             onClick={handleApply}
             size="small"
@@ -139,9 +172,10 @@ const MarketTrendChartLT = () => {
           >
             Refresh
           </Button>
-        </IconButton>
+        </Box>
       </Box>
 
+      {/* Chart */}
       <Box sx={{ position: 'relative', width: '100%', height: 400 }}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 2, right: 30, left: 0, bottom: 20 }}>
@@ -159,4 +193,4 @@ const MarketTrendChartLT = () => {
   );
 };
 
-export default MarketTrendChartLT;
+export default MarketTrendChart;

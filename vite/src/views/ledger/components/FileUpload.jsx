@@ -1,94 +1,115 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import * as XLSX from 'xlsx';
+import AuthContext from 'views/pages/authentication/auth-forms/AuthContext';
 
-// Style the hidden file input so our MUI Button can trigger it.
 const Input = styled('input')({
-  display: 'none',
+  display: 'none'
 });
 
-function FileUpload({ onDataLoaded }) {
-  /**
-   * handleFileUpload:
-   * 1. Reads the Excel file as a binary string.
-   * 2. Converts the sheet into an array of arrays (header: 1) so every row is preserved.
-   * 3. Dynamically finds the header row by checking for expected column names.
-   * 4. Constructs JSON objects using that header row.
-   * 5. Calls onDataLoaded(jsonData) to pass the data to the parent.
-   */
-  const handleFileUpload = (e) => {
+function FileUpload({ onUploadComplete }) {
+  // Import the requestWithToken helper from AuthContext
+  const { requestWithToken } = useContext(AuthContext);
+
+  const convertExcelDate = (excelDate) => {
+    if (!excelDate || isNaN(excelDate)) return null;
+    const jsDate = new Date((excelDate - 25569) * 86400 * 1000); // Excel date to JS
+    return jsDate.toISOString(); // Or format as needed
+  };
+  
+  const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (evt) => {
+      reader.onload = async (evt) => {
         const binaryStr = evt.target.result;
         const workbook = XLSX.read(binaryStr, { type: 'binary' });
-        
-        // Select the first sheet (adjust if needed)
         const sheetName = workbook.SheetNames[0];
         const sheet = workbook.Sheets[sheetName];
-        
-        // Convert the entire sheet into an array of arrays.
         const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
-        // console.log("All rows:", rows);
 
-        // Define a list of expected header names (at least a few must be present).
-        const expectedHeaders = [
-          "Scrip/Contract", 
-          "Buy/Sell", 
-          "Buy Price", 
-          "Sell Price", 
-          "Quantity", 
-          "Order ID", 
-          "Trade ID", 
-          "Date"
-        ];
-        
-        // Dynamically detect the header row index:
+        const expectedHeaders = ['Scrip/Contract', 'Buy/Sell', 'Buy Price', 'Sell Price', 'Quantity', 'Order ID', 'Trade ID', 'Date'];
+
         let headerRowIndex = -1;
         for (let i = 0; i < rows.length; i++) {
           const row = rows[i];
-          // Count how many expected headers appear in this row.
           let count = 0;
           expectedHeaders.forEach((header) => {
-            if (row.indexOf(header) !== -1) {
-              count++;
-            }
+            if (row.indexOf(header) !== -1) count++;
           });
-          // If at least 3 expected header names are found, consider this row the header.
           if (count >= 3) {
             headerRowIndex = i;
             break;
           }
         }
-        
-        // If headerRowIndex is not found, alert the user.
+
         if (headerRowIndex === -1) {
-          alert("Could not detect the header row. Please ensure the file has valid column names.");
+          alert('Could not detect the header row. Please ensure the file has valid column names.');
           return;
         }
-        
-        // console.log("Detected header row index:", headerRowIndex);
+
         const headerRow = rows[headerRowIndex];
-        // console.log("Header row:", headerRow);
-        
-        // Build JSON objects for all rows after the header row.
         const dataRows = rows.slice(headerRowIndex + 1);
+
         const jsonData = dataRows.map((row) => {
           let obj = {};
-          // For each cell in the header, assign the corresponding value from this row.
           for (let j = 0; j < headerRow.length; j++) {
-            // Trim header text to remove accidental spaces.
             const key = headerRow[j].trim();
             obj[key] = row[j] || '';
           }
           return obj;
         });
-        
-        console.log("Parsed JSON Data:", jsonData);
-        onDataLoaded(jsonData);
+
+        // console.log('Parsed JSON Data:', jsonData);
+
+        // Send to backend
+        const username = localStorage.getItem('username');
+        if (!username) {
+          alert('Username not found in localStorage.');
+          return;
+        }
+
+        const trades = jsonData.map((row) => ({
+          scrip_contract: row['Scrip/Contract'],
+          buy_sell: row['Buy/Sell'],
+          buy_price: parseFloat(row['Buy Price']) || 0,
+          sell_price: parseFloat(row['Sell Price']) || 0,
+          quantity: parseInt(row['Quantity']) || 0,
+          brokerage: parseFloat(row['Brokerage']) || 0,
+          gst: parseFloat(row['GST']) || 0,
+          sst: parseFloat(row['SST']) || 0,
+          sebi_tax: parseFloat(row['SEBI Tax']) || 0,
+          exchange_turnover_charges: parseFloat(row['Exchange Turnover Charges']) || 0,
+          stamp_duty: parseFloat(row['Stamp Duty']) || 0,
+          other_charges: parseFloat(row['Other Charges']) || 0,
+          ipft_charges: parseFloat(row['IPFT Charges']) || 0,
+          order_type: row['Order Type'],
+          segment: row['Segment'],
+          exchange: row['Exchange'],
+          order_id: row['Order ID'],
+          trade_id: row['Trade ID'],
+          date: convertExcelDate(row['Date'])
+        }));
+
+        try {
+          const res = await requestWithToken(`${import.meta.env.VITE_API_URL}/api/service/process-trade-data/`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, trades })
+          });
+
+          if (!res.ok) throw new Error('Upload failed');
+          // console.log("res",res.json());
+          onUploadComplete(); //Tell parent to refresh the table
+        } catch (error) {
+          console.error('Error uploading file:', error);
+          alert('Something went wrong while uploading.');
+        }
       };
+
       reader.readAsBinaryString(file);
     }
   };
@@ -96,12 +117,7 @@ function FileUpload({ onDataLoaded }) {
   return (
     <div>
       <label htmlFor="contained-button-file">
-        <Input
-          accept=".xlsx, .xls"
-          id="contained-button-file"
-          type="file"
-          onChange={handleFileUpload}
-        />
+        <Input accept=".xlsx, .xls" id="contained-button-file" type="file" onChange={handleFileUpload} />
         <Button
           variant="contained"
           component="span"

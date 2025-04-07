@@ -58,6 +58,7 @@ export const AuthProvider = ({ children }) => {
       const { access, refresh } = await response.json();
       localStorage.setItem('accessToken', access);
       localStorage.setItem('refreshToken', refresh);
+      localStorage.setItem('username', username);
 
       // Decode user details from token
       const decoded = jwtDecode(access);

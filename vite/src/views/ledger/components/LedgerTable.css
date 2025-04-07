@@ -218,6 +218,9 @@
 .ledger-data .MuiInputBase-input,
 .ledger-data .MuiSelect-icon {
   color: #FFE072 !important;
+  /* background-color: #1D1E20; */
+  /* height: 50px; */
+  padding: 0px;
 }
 
 /* Give extra right padding so "100" and arrow icon don't overlap */
@@ -227,7 +230,7 @@
 
 /* Optionally, nudge the icon to ensure it doesn't overlap the text */
 .ledger-data .MuiSelect-icon {
-  right: 8px !important; /* Adjust as needed */
+  right: 4px !important; /* Adjust as needed */
 }
 
 /* Remove border and box-shadow for the Select's outlined input */
