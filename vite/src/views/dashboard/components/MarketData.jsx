@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Box, CircularProgress, Typography, CssBaseline } from '@mui/material';
 import './FullScreenTable.css';
 import { IconBackground } from '@tabler/icons-react';
+import AuthContext from '../../pages/authentication/auth-forms/AuthContext.jsx';
 
 const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, setSymbolToken, liveMarketData }) => {
   // console.log(liveMarketData, 'bro');
@@ -10,11 +11,13 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  // Import the requestWithToken helper from AuthContext
+  const { requestWithToken } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchMarketData = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/service/market-data/');
+        const response = await requestWithToken(`${import.meta.env.VITE_API_URL}/api/service/market-data`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -83,7 +86,8 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
   const columns = [
     { field: 'tradingSymbol', headerName: 'Name', headerClassName: 'header-name', flex: 1 },
     {
-      field: 'ltp',      headerName: 'LTP',
+      field: 'ltp',
+      headerName: 'LTP',
       headerClassName: 'header-name',
       flex: 1,
       type: 'number',
@@ -185,13 +189,14 @@ const MarketDataTable = ({ updateToken, displayTopGainers, displayTopLosers, set
   }));
 
   return (
-    <Box className="market-data" sx={{ mt: 0, width: '100vw'}}>
+    <Box className="market-data" sx={{ mt: 0, width: '100vw' }}>
       {/* <CssBaseline /> */}
-      <Box sx={{ height: '86vh'}}>
-      {/* <Box className="scrollable" style={{ height: '100vh', overflowY:'auto', marginRight: '25px'}}> */}
+      <Box sx={{ height: '90vh' }}>
+        {/* <Box className="scrollable" style={{ height: '100vh', overflowY:'auto', marginRight: '25px'}}> */}
         <DataGrid
           rows={rows}
           columns={columns}
+          hideFooterSelectedRowCount
           pageSize={10}
           rowsPerPageOptions={[10]} // Set the rows per page options
           onCellClick={handleCellClick}

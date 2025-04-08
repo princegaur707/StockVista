@@ -1,0 +1,10 @@
+.MuiInputBase-input {
+  background-color: #1d1e20 !important;
+  color: #EEEEEE !important;
+  border-radius: 0px !important;
+  padding: 10px 10px !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}

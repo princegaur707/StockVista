@@ -5,7 +5,12 @@ import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 
 // dashboard routing
-const DashboardDefault = Loadable(lazy(() => import('views/dashboard')));
+import ProtectedRoute from 'views/pages/authentication3/ProtectedRoute.jsx';
+const Dashboard = Loadable(lazy(() => import('views/dashboard')));
+const Ledger = Loadable(lazy(() => import('views/ledger')));
+const MarketDepth = Loadable(lazy(() => import('views/MarketDepth')));
+const InvestorArea = Loadable(lazy(() => import('views/Investor')));
+const Calculator = Loadable(lazy(() => import('views/Calculator')));
 
 // utilities routing
 const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
@@ -14,55 +19,90 @@ const UtilsShadow = Loadable(lazy(() => import('views/utilities/Shadow')));
 // const UtilsMaterialIcons = Loadable(lazy(() => import('views/utilities/MaterialIcons')));
 // const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons')));
 
-// sample page routing
-const SamplePage = Loadable(lazy(() => import('views/sample-page')));
-
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
   path: '/',
   element: <MainLayout />,
   children: [
-    {
-      path: '/',
-      element: <DashboardDefault />
-    },
+    // {
+    //   path: '/',
+    //   element: <DashboardDefault />
+    // },
     {
       path: 'dashboard',
       children: [
         {
-          path: 'default',
-          element: <DashboardDefault />
+          path: '',
+          element: (
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          ),
         }
       ]
     },
     {
-      path: 'utils',
+      path: 'ledger',
       children: [
         {
-          path: 'util-typography',
-          element: <UtilsTypography />
+          path: '',
+          element: (
+            <ProtectedRoute>
+              <Ledger />
+            </ProtectedRoute>
+          ),
         }
       ]
     },
     {
-      path: 'utils',
+      path: 'market',
       children: [
         {
-          path: 'util-color',
-          element: <UtilsColor />
+          path: '',
+          element: (
+            <ProtectedRoute>
+              <MarketDepth />
+            </ProtectedRoute>
+          ),
         }
       ]
     },
     {
-      path: 'utils',
+      path: 'investor',
       children: [
         {
-          path: 'util-shadow',
-          element: <UtilsShadow />
+          path: '',
+          element: (
+            <ProtectedRoute>
+              <InvestorArea />
+            </ProtectedRoute>
+          ),
         }
       ]
     },
+    {
+      path: 'calculator',
+      children: [
+        {
+          path: '',
+          element: (
+            <ProtectedRoute>
+              <Calculator />
+            </ProtectedRoute>
+          ),
+        }
+      ]
+    },
+    // {
+    //   path: 'utils',
+    //   children: [
+    //     {
+    //       path: 'util-shadow',
+    //       element: <UtilsShadow />
+    //     }
+    //   ]
+    // },
     // {
     //   path: 'icons',
     //   children: [
@@ -81,10 +121,10 @@ const MainRoutes = {
     //     }
     //   ]
     // },
-    {
-      path: 'sample-page',
-      element: <SamplePage />
-    }
+    // {
+    //   path: 'sample-page',
+    //   element: <SamplePage />
+    // }
   ]
 };
 

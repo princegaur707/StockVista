@@ -1,0 +1,24 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+.Signup-heading .MuiTypography-root {
+  font-family: "Playfair Display", serif;;
+  font-size: 48px;
+  font-weight: 500;
+  line-height: 44.16px;
+}
+
+.FormInput .MuiInputBase-input {
+  background: #141516;
+}
+
+.MuiButtonBase-root {
+  font: "Figtree", sans-serif;
+  
+}
+
+.Signuplogin .MuiTypography-root {
+  font-family: "Playfair Display", serif;;
+  font-size: 20px;
+}

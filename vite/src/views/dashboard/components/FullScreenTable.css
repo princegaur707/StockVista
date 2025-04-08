@@ -4,7 +4,7 @@
   border: none; /* Remove outer border */
   font-size: 12px; /* Enteries of rows */
   --DataGrid-rowBorderColor: #1d1e20;
-  --DataGrid-containerBackground: #1D1E20;
+  --DataGrid-containerBackground: #1d1e20;
   /* For border b/w rows */
 }
 
@@ -55,45 +55,46 @@
   box-shadow: none !important; /* Remove the box-shadow */
 }
 
-
 /* Additional custom styles for the TextField input field */
 .MuiInputBase-root {
   background-color: #1d1e20 !important;
-  color: #EEEEEE !important;
+  color: #eeeeee !important;
   border-radius: 0px !important;
   padding: 1px 1px !important;
 }
 
 /* Additional custom styles for the IconButton */
 .MuiIconButton-root {
-  color: #EEEEEE !important;
+  color: #eeeeee !important;
 }
 
 /* Optional: For the search icon (just for styling the SVG icon) */
 .MuiSvgIcon-root {
-  color: #EEEEEE !important;
+  color: #eeeeee !important;
 }
 
-
 /* Main Scrollbar hidden */
-&::-webkit-scrollbar { display: none; }
-
-.market-data .MuiDataGrid-scrollbarFiller-filler{
+&::-webkit-scrollbar {
   display: none;
 }
 
-.market-data .MuiDataGrid-scrollbar{
-  width: 0px;;
+.market-data .MuiDataGrid-scrollbarFiller-filler {
+  display: none;
 }
-.market-data MuiDataGrid-cell {
+
+.market-data .MuiDataGrid-scrollbar {
+  width: 0px;
+}
+.market-data .MuiDataGrid-cell {
   border: 'none';
+  padding: "4px 8px" !important;
 }
 
 .market-data .MuiDataGrid-columnSeparator {
   display: none !important;
 }
 
-.market-data{
+.market-data {
   width: 89vw;
   /* max-width: 100%; */
   overflow-x: auto;
@@ -125,6 +126,7 @@
 .market-data .MuiDataGrid-columnHeaderTitle {
   color: #d9d9d9; /* Light grey color for header text */
   font-size: 14px;
+  /* font-family: 'figtree'; */
   /* border: none; */
   /* background-color: #00ff00 !important; */
 }
@@ -132,7 +134,8 @@
 .market-data .MuiDataGrid-cell {
   /* border-bottom: 1px solid #1D1E20;  */
   /* Light border between rows */
-  border: 0px solid rgb(92, 92, 95); /* Remove border between rows */
+  border: 0px solid rgb(92, 92, 95); 
+  /* Remove border between rows */
 }
 
 .market-data .MuiDataGrid-row.Mui-selected {
@@ -154,26 +157,167 @@
 
 /* Customize pagination style */
 .market-data .MuiDataGrid-footerContainer {
-  background-color: #1D1E20 !important;
+  background-color: #1d1e20 !important;
   /* Darker footer background */
-  margin-right:40px !important;
+  margin-right: 40px !important;
   color: #eeeeee !important;
 }
 
-.market-data .MuiTablePagination-root{
+/* footer of table */
+.market-data .MuiTablePagination-root {
   color: #ffd56b !important;
+  padding: 0px !important;
+  /* overflow: hidden; */
 }
 
-.market-data .css-m87zkl-MuiInputBase-input-MuiOutlinedInput-input{
+.market-data .MuiDataGrid-withBorderColor {
+  border-color: #1d1e20 !important;
+}
+.market-data .MuiTablePagination-displayedRows {
+  color: #ffd56b !important;
+}
+.market-data .css-m87zkl-MuiInputBase-input-MuiOutlinedInput-input {
   background-color: transparent;
   color: white;
   border: none;
 }
 
-.market-data .MuiOutlinedInput-root{
-  border:none !important;
+.market-data .MuiOutlinedInput-root {
+  border: none !important;
 }
 
-.market-data .MuiDataGrid-columnHeader[data-field="name"] {
+.market-data .MuiDataGrid-columnHeader[data-field='name'] {
   padding-right: 20px; /* Add right padding to the "Name" column header */
+}
+
+.market-data input {
+  background-color: #1d1e20 !important;
+  color: #eeeeee;
+}
+
+/* Override the toolbar styling */
+.MuiDataGrid-toolbarContainer {
+  background-color: #313437 !important;
+  color: #FFFFFF !important;
+}
+
+/* Override the column menu styling */
+.MuiDataGrid-columnMenuContainer,
+.MuiDataGrid-menuList,
+.MuiMenuItem-root {
+  background-color: #313437 !important;
+  color: #FFFFFF !important;
+}
+
+/* Remove focus outline from DataGrid column headers on all platforms including macOS */
+.MuiDataGrid-columnHeader:focus,
+.MuiDataGrid-columnHeader:focus-within,
+.MuiDataGrid-columnHeader:active,
+.MuiDataGrid-columnHeader:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  -webkit-focus-ring-color: transparent !important;
+}
+
+/* Optional: Remove inner focus border on WebKit browsers */
+.MuiDataGrid-columnHeader::-webkit-focus-inner {
+  border: 0 !important;
+}
+
+.MuiListItemText-primary{
+  /* background-color: #313437 !important; */
+  color: #FFFFFF !important;
+}
+
+/* Ensure all text (and child elements) inside the DataGrid toolbar are white */
+.MuiDataGrid-toolbarContainer,
+.MuiDataGrid-toolbarContainer * {
+  color: #FFFFFF !important;
+}
+
+.MuiFormControlLabel-label{
+  color: #FFFFFF !important;
+}
+
+/* Make pagination arrows #FFE072 */
+.market-data .MuiTablePagination-actions .MuiSvgIcon-root {
+  color: #FFE072 !important;
+}
+
+/* Also remove any focus outline from the Select element */
+.market-data .MuiOutlinedInput-root:focus,
+.market-data .MuiSelect-select:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Set toolbar container background and text color */
+.market-data .MuiDataGrid-toolbarContainer {
+  background-color: #313437 !important;
+  color: #FFFFFF !important;
+}
+
+/* Ensure all direct children of the toolbar inherit the background and text color */
+.market-data .MuiDataGrid-toolbarContainer * {
+  background-color: #313437 !important;
+  color: #FFFFFF !important;
+}
+
+/* For any pop-up menus or option boxes triggered from the toolbar */
+.MuiMenu-root .MuiPaper-root,
+.MuiPopover-paper {
+  background-color: #313437 !important;
+  color: #FFFFFF !important;
+}
+/* Global override for all Paper components rendered in popups/menus */
+.MuiPaper-root {
+  background-color: #1D1E20 !important;
+  color: #FFFFFF !important;
+}
+
+/* Specifically target popover and menu elements */
+.market-data .MuiPopover-paper,
+.MuiMenu-root .MuiPaper-root {
+  background-color: #313437 !important;
+  color: #FFFFFF !important;
+}
+
+/* Global override for all Paper components rendered in popups/menus */
+.market-data .MuiPaper-root {
+  background-color: #313437 !important;
+  color: #FFFFFF !important;
+}
+
+/* Specifically target popover and menu elements */
+.market-data .MuiPopover-paper,
+.MuiMenu-root .MuiPaper-root {
+  background-color: #313437 !important;
+  color: #FFFFFF !important;
+}
+
+.css-1ew92b2-MuiFormLabel-root-MuiInputLabel-root{
+  color: #FFFFFF;
+}
+
+/* Targeting everything within the toolbar container */
+.MuiDataGrid-toolbarContainer,
+.MuiDataGrid-toolbarContainer * {
+  color: #FFFFFF !important;
+}
+
+/* In case some buttons or typography elements have separate classes */
+.MuiDataGrid-toolbarContainer .MuiButtonBase-root,
+.MuiDataGrid-toolbarContainer .MuiTypography-root,
+.MuiDataGrid-toolbarContainer .MuiInputBase-root,
+.MuiDataGrid-toolbarContainer .MuiIconButton-root {
+  color: #FFFFFF !important;
+}
+
+.MuiSelect-select{
+  color: bisque !important;
+}
+
+.MuiInputBase-input-MuiInput-input{
+  color: green !important;
 }

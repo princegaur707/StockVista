@@ -22,17 +22,17 @@ const pages = {
 
       children: [
         {
-          id: 'login3',
+          id: 'login',
           title: 'Login',
           type: 'item',
-          url: '/pages/login/login3',
+          url: '/login',
           target: true
         },
         {
-          id: 'register3',
+          id: 'register',
           title: 'Register',
           type: 'item',
-          url: '/pages/register/register3',
+          url: '/register',
           target: true
         }
       ]

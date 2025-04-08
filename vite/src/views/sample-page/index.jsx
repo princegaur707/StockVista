@@ -49,7 +49,7 @@ const RootContainer = styled('div')({
   minHeight: '100vh',
   display: 'flex',
   flexDirection: 'column',
-  background: 'linear-gradient(90deg, rgba(18, 18, 18, 1) 0%, rgba(35, 35, 35, 1) 50%, rgba(10, 10, 10, 0.5) 100%)',
+  background: 'linear-gradient(90deg, rgba(18, 18, 18, 1) 0%, rgba(35, 35, 35, 1) 50%, rgba(10, 10, 10, 0.5) 100%)'
   // backgroundColor: 'linear-gradient(90deg, #000000 10%, #121212 100%, #141516 100%)'
 });
 
@@ -75,7 +75,7 @@ const ContentContainer = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
   gap: '20px',
-  marginTop: '10rem',
+  marginTop: '10rem'
 });
 
 const RowContainer = styled(Box)({
@@ -102,13 +102,13 @@ const SmallBoxContent = styled(Box)({
   flexDirection: 'column',
   alignItems: 'center',
   textAlign: 'center',
-  letterSpacing:'10px',
-  gap: '10px'//gap b/w the lines vertically
+  letterSpacing: '10px',
+  gap: '10px' //gap b/w the lines vertically
 });
 
 const LargeBox = styled(Box)({
   width: '50rem',
-  height:'30rem',
+  height: '30rem',
   backdropFilter: 'blur(200px)',
   background: '#FFFFFF0A',
   padding: '20px',
@@ -158,7 +158,7 @@ const SampleReview = styled(Typography)({
   color: '#443E4E',
   fontStyle: 'italic',
   fontFamily: 'Figtree',
-  letterSpacing:'1px'
+  letterSpacing: '1px'
 });
 
 const TestimonialFooter = styled(Box)({
@@ -238,7 +238,7 @@ const FullWidthImage = styled('div')({
 const FooterContainer = ({ children }) => (
   <Box
     sx={{
-      marginTop:'125px',
+      marginTop: '125px',
       backgroundColor: '#FFFFFF',
       borderRadius: '16px 16px 0 0',
       overflow: 'hidden' // Optional, prevents content from overflowing rounded corners
@@ -247,8 +247,6 @@ const FooterContainer = ({ children }) => (
     {children}
   </Box>
 );
-
-
 
 const SamplePage = () => (
   <RootContainer>
@@ -263,7 +261,7 @@ const SamplePage = () => (
           >
             <span className="custom-product-name">INVESTO</span>
           </Typography>
-          <Box sx={{ display: { xs: 'flex', sm: 'block' }, flexDirection: 'column', alignItems: 'center', mr:'75px' }}>
+          <Box sx={{ display: { xs: 'flex', sm: 'block' }, flexDirection: 'column', alignItems: 'center', mr: '75px' }}>
             <NavbarLink href="#features" variant="body2">
               FEATURES
             </NavbarLink>
@@ -284,30 +282,33 @@ const SamplePage = () => (
           {index % 2 === 0 ? (
             <FlexColumnContainer>
               {' '}
-              {/* New wrapper for column layout */}  
-                {index === 0 ? (
-                  <Box display="flex"> 
+              {/* New wrapper for column layout */}
+              {index === 0 ? (
+                <Box display="flex">
                   <SmallBox>
-                    <SmallBoxContent sx={{display:'flex', alignItems:'flex-start'}}>
-                      <Typography sx={{ fontSize: '3.6rem', fontWeight: '600', fontFamily: 'Playfair Display', letterSpacing:'2px' }}>
+                    <SmallBoxContent sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                      <Typography sx={{ fontSize: '3.6rem', fontWeight: '600', fontFamily: 'Playfair Display', letterSpacing: '2px' }}>
                         See Beyond,
                         <br />
                         Stand Apart
                       </Typography>
-                      <Box sx={{width:'250px', mr:'200px'}}>
-                        <Typography sx={{ fontSize: '0.9rem', color: '#d3d3d3', fontFamily: 'Figtree', textAlign:'left'}}>
+                      <Box sx={{ width: '250px', mr: '200px' }}>
+                        <Typography sx={{ fontSize: '0.9rem', color: '#d3d3d3', fontFamily: 'Figtree', textAlign: 'left' }}>
                           Your edge in the market starts with superior analysis.
                         </Typography>
-                        </Box>
-                      <Box sx={{width:'13rem'}}>
-                        <Button variant="contained"
-                          onClick={() => { window.location.href = 'http://localhost:3000/myapp/pages/login/login3'; }}                          
-                          sx={{           
+                      </Box>
+                      <Box sx={{ width: '13rem' }}>
+                        <Button
+                          variant="contained"
+                          // onClick={() => { window.location.href = 'http://localhost:3000/investinmind/pages/register/register3'; }}
+                          onClick={() => {
+                            window.location.href = `/investinmind/register`;
+                          }}
+                          sx={{
                             fontFamily: 'Figtree',
-                            width:'13rem',
-                            height:'3.2rem',
+                            width: '13rem',
+                            height: '3.2rem',
                             backgroundColor: '#231E13',
-                            border: 'none',
                             borderWidth: '2px',
                             borderStyle: 'solid',
                             borderImage: 'linear-gradient(93.4deg, #FFC42B 0%, #FFD567 50%, #FFC42B 100%)',
@@ -316,7 +317,8 @@ const SamplePage = () => (
                             mt: '10px',
                             '&:hover': {
                               backgroundColor: 'rgba(255, 196, 43, 0.1)',
-                              borderImage: 'linear-gradient(93.4deg, #FFC42B 100%, #FFD567 100%, #FFC42B 100%)'
+                              borderImage: 'linear-gradient(93.4deg, #FFC42B 100%, #FFD567 100%, #FFC42B 100%)',
+                              border: 'none'
                             }
                           }}
                         >
@@ -324,23 +326,23 @@ const SamplePage = () => (
                         </Button>
                       </Box>
                     </SmallBoxContent>
-                    </SmallBox >
-                    <LargeBox  />
-                    </Box>
-                  ) : (
-                    <Box display="flex">
-                    <SmallBox >
-                      <SmallBoxContent sx={{mr:'100px'}}>
-                        <Box className="feature-preview">
-                          <img src={content[index].icon} className="feature-icon" />
-                          <Heading>{content[index].title}</Heading>
-                          <Description>{content[index].description}</Description>
-                        </Box>
-                      </SmallBoxContent>
-                    </SmallBox >
-                    <LargeBox  sx={{width:'150rem', height:'30rem'}}/>
-                    </Box>
-                  )}
+                  </SmallBox>
+                  <LargeBox />
+                </Box>
+              ) : (
+                <Box display="flex">
+                  <SmallBox>
+                    <SmallBoxContent sx={{ mr: '100px' }}>
+                      <Box className="feature-preview">
+                        <img src={content[index].icon} className="feature-icon" />
+                        <Heading>{content[index].title}</Heading>
+                        <Description>{content[index].description}</Description>
+                      </Box>
+                    </SmallBoxContent>
+                  </SmallBox>
+                  <LargeBox sx={{ width: '150rem', height: '30rem' }} />
+                </Box>
+              )}
               {index === 0 && ( // Product info container should be below the boxes
                 <div className="product-info-container">
                   <TextContainer>
@@ -353,9 +355,9 @@ const SamplePage = () => (
           ) : (
             <FlexColumnContainer>
               <Box display="flex">
-                <LargeBox sx={{width:'150rem', height:'30rem'}}/>
-                <SmallBox >
-                  <SmallBoxContent sx={{ml:'80px'}}>
+                <LargeBox sx={{ width: '150rem', height: '30rem' }} />
+                <SmallBox>
+                  <SmallBoxContent sx={{ ml: '80px' }}>
                     <Box className="feature-preview">
                       <img src={content[index].icon} className="feature-icon" />
                       <Heading>{content[index].title}</Heading>

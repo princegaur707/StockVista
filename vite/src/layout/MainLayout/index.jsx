@@ -65,7 +65,7 @@ const MainLayout = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex',backgroundColor: '#1D1E20', }}>
       {/* <CssBaseline /> */}
       {/* header */}
       <AppBar
@@ -74,7 +74,7 @@ const MainLayout = () => {
         // color="inherit"
         elevation={0}
         sx={{
-          bgcolor:'#1D1E20',
+          // bgcolor:'#1D1E20',
           // bgcolor:'red',
           borderBottom: 1.25, // Transparent border to show the gradient
           borderImage: 'linear-gradient(90deg, #FFCC19 65%, #FFE791 65%, #FFCC19 65%)', // Gradient border
@@ -94,11 +94,12 @@ const MainLayout = () => {
       {/* main content */}
       <Main theme={theme} open={leftDrawerOpened}
       sx={{
-        bgcolor: '#141516'
+        // bgcolor:'red'
+        bgcolor: '#141516',
       }}
       >
         {/* breadcrumb */}
-        <Breadcrumbs separator={IconChevronRight} navigation={navigation} icon title rightAlign />
+        {/* <Breadcrumbs separator={IconChevronRight} navigation={navigation} icon title rightAlign /> */}
         <Outlet />
       </Main>
       <Customization />
