@@ -166,6 +166,7 @@
 /* footer of table */
 .market-data .MuiTablePagination-root {
   color: #ffd56b !important;
+  padding: 0px !important;
   /* overflow: hidden; */
 }
 

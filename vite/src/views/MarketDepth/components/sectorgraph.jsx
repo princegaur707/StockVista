@@ -154,7 +154,7 @@ const SectorTreemap = () => {
       }));
 
       const totalAbs = rawValues.reduce((sum, item) => sum + Math.abs(item.pct_change), 0);
-      const maxAllowed = totalAbs / 400;
+      const maxAllowed = totalAbs / 900;
 
       const formatted = rawValues.map(item => {
         const absChange = Math.abs(item.pct_change);

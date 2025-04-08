@@ -144,9 +144,9 @@ const EquityCurveChart = ({ tradeData }) => {
         </IconButton>
       </Box>
 
-      <Box sx={{ flex: 1, padding: '0 8px 16px' }}>
+      <Box sx={{ flex: 1, padding: '0 0px 16px' }}>
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart margin={{ top: 10, right: 20, bottom: 30, left: 20 }}>
+          <AreaChart margin={{ top: 10, right: 60, bottom: 30, left: 0 }}>
             <CartesianGrid stroke="#2c2c2e" strokeDasharray="3 3" />
             <XAxis
               dataKey="date"
